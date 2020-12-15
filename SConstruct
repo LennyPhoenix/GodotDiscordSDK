@@ -183,6 +183,7 @@ env.Append(LIBS=[f"libgodot-cpp.{env['platform']}.{env['target']}.{arch_suffix}{
 
 # Sources to compile
 env.Append(CPPPATH=['src/'])
+env.Append(LIBPATH=['lib/'])
 sources = Glob('src/*.cpp')
 
 folder_name = f"{env['platform']}-{arch_suffix}"
