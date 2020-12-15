@@ -2,9 +2,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "relationship_manager.h"
+#include "relationship_manager.hpp"
 
-#include "core.h"
+#include "core.hpp"
 
 #include <cstring>
 #include <memory>

@@ -2,9 +2,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "overlay_manager.h"
+#include "overlay_manager.hpp"
 
-#include "core.h"
+#include "core.hpp"
 
 #include <cstring>
 #include <memory>

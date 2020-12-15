@@ -1,18 +1,18 @@
 #pragma once
 
-#include "types.h"
-#include "application_manager.h"
-#include "user_manager.h"
-#include "image_manager.h"
-#include "activity_manager.h"
-#include "relationship_manager.h"
-#include "lobby_manager.h"
-#include "network_manager.h"
-#include "overlay_manager.h"
-#include "storage_manager.h"
-#include "store_manager.h"
-#include "voice_manager.h"
-#include "achievement_manager.h"
+#include "types.hpp"
+#include "application_manager.hpp"
+#include "user_manager.hpp"
+#include "image_manager.hpp"
+#include "activity_manager.hpp"
+#include "relationship_manager.hpp"
+#include "lobby_manager.hpp"
+#include "network_manager.hpp"
+#include "overlay_manager.hpp"
+#include "storage_manager.hpp"
+#include "store_manager.hpp"
+#include "voice_manager.hpp"
+#include "achievement_manager.hpp"
 
 namespace discord
 {

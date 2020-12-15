@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "core.h"
+#include "core.hpp"
 
 #include <cstring>
 #include <memory>

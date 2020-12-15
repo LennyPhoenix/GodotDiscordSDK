@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ffi.h"
-#include "event.h"
+#include "event.hpp"
 
 namespace discord
 {
