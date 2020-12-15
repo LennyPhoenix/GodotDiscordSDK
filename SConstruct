@@ -168,7 +168,7 @@ elif env['platform'] == 'windows':
             '-static-libstdc++',
         ])
 
-arch_suffix = env['bits']
+arch = env['bits']
 
 # Godot Bindings
 env.Append(CPPPATH=[
@@ -179,14 +179,15 @@ env.Append(CPPPATH=[
     cpp_bindings_path + 'include/gen/'
 ])
 env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
-env.Append(LIBS=[f"libgodot-cpp.{env['platform']}.{env['target']}.{arch_suffix}{env['LIBSUFFIX']}"])
+env.Append(LIBS=[f"libgodot-cpp.{env['platform']}.{env['target']}.{arch}{env['LIBSUFFIX']}"])
 
 # Sources to compile
 env.Append(CPPPATH=['src/'])
 env.Append(LIBPATH=['lib/'])
+env.Append(LIBS=['discord_game_sdk.' + arch])
 sources = Glob('src/*.cpp')
 
-folder_name = f"{env['platform']}-{arch_suffix}"
+folder_name = f"{env['platform']}-{arch}"
 
 library = env.SharedLibrary(target=f"{env['target_path']}{folder_name}/{env['target_name']}", source=sources)
 Default(library)
