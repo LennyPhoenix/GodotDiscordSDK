@@ -82,7 +82,7 @@ Help(opts.GenerateHelpText(env))
 # This makes sure to keep the session environment variables on Windows.
 # This way, you can run SCons in a Visual Studio 2017 prompt and it will find
 # all the required tools
-if host_platform == 'windows' and env['platform'] != 'android':
+if host_platform == 'windows':
     if env['bits'] == '64':
         env = Environment(TARGET_ARCH='amd64')
     elif env['bits'] == '32':
