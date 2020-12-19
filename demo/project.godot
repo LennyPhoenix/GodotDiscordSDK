@@ -8,11 +8,17 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "DiscordCore",
+"language": "NativeScript",
+"path": "res://discord_sdk/core.gdns"
+} ]
 _global_script_class_icons={
-
+"DiscordCore": ""
 }
 
 [application]
 
 config/name="DiscordSDK Demo Project"
+run/main_scene="res://main.tscn"
