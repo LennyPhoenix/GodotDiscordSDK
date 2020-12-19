@@ -7,18 +7,18 @@ reloadable=true
 
 [entry]
 
-X11.64="res://bin/x11-64/godot_discord_game_sdk.so"
-X11.32="res://bin/x11-32/godot_discord_game_sdk.so"
-Windows.64="res://bin/windows-64/godot_discord_game_sdk.dll"
-Windows.32="res://bin/windows-32/godot_discord_game_sdk.dll"
-OSX.64="res://bin/osx-64/godot_discord_game_sdk.dylib"
-OSX.32="res://bin/osx-32/godot_discord_game_sdk.dylib"
+OSX.64="res://bin/osx-64/gdsdk.dylib"
+OSX.32="res://bin/osx-32/gdsdk.dylib"
+Windows.64="res://bin/windows-64/gdsdk.dll"
+Windows.32="res://bin/windows-32/gdsdk.dll"
+X11.64="res://bin/linux-64/gdsdk.so"
+X11.32="res://bin/linux-32/gdsdk.so"
 
 [dependencies]
 
-Windows.64=[  ]
-Windows.32=[  ]
-X11.64=[  ]
-X11.32=[  ]
-OSX.64=[  ]
-OSX.32=[  ]
+OSX.64=[ "res://bin/osx-64/discord_game_sdk.dylib" ]
+OSX.32=[ "res://bin/osx-32/discord_game_sdk.dylib" ]
+Windows.64=[ "res://bin/windows-64/discord_game_sdk.dll" ]
+Windows.32=[ "res://bin/windows-32/discord_game_sdk.dll" ]
+X11.64=[ "res://bin/linux-64/discord_game_sdk.so" ]
+X11.32=[ "res://bin/linux-32/discord_game_sdk.so" ]
