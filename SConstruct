@@ -67,7 +67,7 @@ opts.Add(PathVariable(
 opts.Add(PathVariable(
     'target_name',
     'The library name.',
-    'godot_discord_game_sdk',
+    'gdsdk',
     PathVariable.PathAccept
 ))
 
