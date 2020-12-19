@@ -14,7 +14,7 @@
 #include "voice_manager.hpp"
 #include "achievement_manager.hpp"
 
-namespace discord
+namespace godot
 {
 
     class Core final
@@ -27,18 +27,18 @@ namespace discord
         Result RunCallbacks();
         void SetLogHook(LogLevel minLevel, std::function<void(LogLevel, char const *)> hook);
 
-        discord::ApplicationManager &ApplicationManager();
-        discord::UserManager &UserManager();
-        discord::ImageManager &ImageManager();
-        discord::ActivityManager &ActivityManager();
-        discord::RelationshipManager &RelationshipManager();
-        discord::LobbyManager &LobbyManager();
-        discord::NetworkManager &NetworkManager();
-        discord::OverlayManager &OverlayManager();
-        discord::StorageManager &StorageManager();
-        discord::StoreManager &StoreManager();
-        discord::VoiceManager &VoiceManager();
-        discord::AchievementManager &AchievementManager();
+        godot::ApplicationManager &ApplicationManager();
+        godot::UserManager &UserManager();
+        godot::ImageManager &ImageManager();
+        godot::ActivityManager &ActivityManager();
+        godot::RelationshipManager &RelationshipManager();
+        godot::LobbyManager &LobbyManager();
+        godot::NetworkManager &NetworkManager();
+        godot::OverlayManager &OverlayManager();
+        godot::StorageManager &StorageManager();
+        godot::StoreManager &StoreManager();
+        godot::VoiceManager &VoiceManager();
+        godot::AchievementManager &AchievementManager();
 
     private:
         Core() = default;
@@ -49,18 +49,18 @@ namespace discord
 
         IDiscordCore *internal_;
         Event<LogLevel, char const *> setLogHook_;
-        discord::ApplicationManager applicationManager_;
-        discord::UserManager userManager_;
-        discord::ImageManager imageManager_;
-        discord::ActivityManager activityManager_;
-        discord::RelationshipManager relationshipManager_;
-        discord::LobbyManager lobbyManager_;
-        discord::NetworkManager networkManager_;
-        discord::OverlayManager overlayManager_;
-        discord::StorageManager storageManager_;
-        discord::StoreManager storeManager_;
-        discord::VoiceManager voiceManager_;
-        discord::AchievementManager achievementManager_;
+        godot::ApplicationManager applicationManager_;
+        godot::UserManager userManager_;
+        godot::ImageManager imageManager_;
+        godot::ActivityManager activityManager_;
+        godot::RelationshipManager relationshipManager_;
+        godot::LobbyManager lobbyManager_;
+        godot::NetworkManager networkManager_;
+        godot::OverlayManager overlayManager_;
+        godot::StorageManager storageManager_;
+        godot::StoreManager storeManager_;
+        godot::VoiceManager voiceManager_;
+        godot::AchievementManager achievementManager_;
     };
 
-} // namespace discord
+} // namespace godot

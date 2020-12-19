@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class VoiceManager final
@@ -36,4 +36,4 @@ namespace discord
         static IDiscordVoiceEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

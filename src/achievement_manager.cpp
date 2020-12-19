@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     class AchievementEvents final
@@ -103,4 +103,4 @@ namespace discord
         return static_cast<Result>(result);
     }
 
-} // namespace discord
+} // namespace godot

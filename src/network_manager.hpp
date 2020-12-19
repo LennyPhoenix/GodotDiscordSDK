@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class NetworkManager final
@@ -62,4 +62,4 @@ namespace discord
         static IDiscordNetworkEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class UserManager final
@@ -30,4 +30,4 @@ namespace discord
         static IDiscordUserEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

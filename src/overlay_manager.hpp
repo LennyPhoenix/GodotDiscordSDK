@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class OverlayManager final
@@ -32,4 +32,4 @@ namespace discord
         static IDiscordOverlayEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

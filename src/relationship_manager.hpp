@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class RelationshipManager final
@@ -31,4 +31,4 @@ namespace discord
         static IDiscordRelationshipEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

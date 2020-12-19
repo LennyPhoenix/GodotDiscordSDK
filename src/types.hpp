@@ -3,7 +3,7 @@
 #include "ffi.h"
 #include "event.hpp"
 
-namespace discord
+namespace godot
 {
 
     enum class Result
@@ -529,4 +529,4 @@ namespace discord
         IDiscordLobbySearchQuery *internal_;
     };
 
-} // namespace discord
+} // namespace godot

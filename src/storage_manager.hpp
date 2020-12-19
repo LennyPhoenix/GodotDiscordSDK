@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class StorageManager final
@@ -45,4 +45,4 @@ namespace discord
         static IDiscordStorageEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

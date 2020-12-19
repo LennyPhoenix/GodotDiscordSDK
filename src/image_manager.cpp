@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     void ImageManager::Fetch(ImageHandle handle,
@@ -57,4 +57,4 @@ namespace discord
         return static_cast<Result>(result);
     }
 
-} // namespace discord
+} // namespace godot

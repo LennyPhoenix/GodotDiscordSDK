@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class LobbyManager final
@@ -87,4 +87,4 @@ namespace discord
         static IDiscordLobbyEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     void ApplicationManager::ValidateOrExit(std::function<void(Result)> callback)
@@ -81,4 +81,4 @@ namespace discord
         internal_->get_ticket(internal_, cb.release(), wrapper);
     }
 
-} // namespace discord
+} // namespace godot

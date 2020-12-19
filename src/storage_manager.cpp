@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     Result StorageManager::Read(char const *name,
@@ -165,4 +165,4 @@ namespace discord
         return static_cast<Result>(result);
     }
 
-} // namespace discord
+} // namespace godot

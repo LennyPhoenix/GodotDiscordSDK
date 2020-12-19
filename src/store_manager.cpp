@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     class StoreEvents final
@@ -171,4 +171,4 @@ namespace discord
         internal_->start_purchase(internal_, skuId, cb.release(), wrapper);
     }
 
-} // namespace discord
+} // namespace godot

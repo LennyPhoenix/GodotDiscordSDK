@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class StoreManager final
@@ -37,4 +37,4 @@ namespace discord
         static IDiscordStoreEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

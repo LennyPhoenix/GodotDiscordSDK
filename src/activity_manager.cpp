@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     class ActivityEvents final
@@ -185,4 +185,4 @@ namespace discord
         internal_->accept_invite(internal_, userId, cb.release(), wrapper);
     }
 
-} // namespace discord
+} // namespace godot

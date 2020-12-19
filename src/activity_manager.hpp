@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class ActivityManager final
@@ -41,4 +41,4 @@ namespace discord
         static IDiscordActivityEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

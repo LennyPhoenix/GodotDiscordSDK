@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-namespace discord
+namespace godot
 {
 
     class ImageManager final
@@ -27,4 +27,4 @@ namespace discord
         static IDiscordImageEvents events_;
     };
 
-} // namespace discord
+} // namespace godot

@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     class RelationshipEvents final
@@ -95,4 +95,4 @@ namespace discord
         return static_cast<Result>(result);
     }
 
-} // namespace discord
+} // namespace godot

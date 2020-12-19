@@ -9,7 +9,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     class OverlayEvents final
@@ -118,4 +118,4 @@ namespace discord
         internal_->open_voice_settings(internal_, cb.release(), wrapper);
     }
 
-} // namespace discord
+} // namespace godot

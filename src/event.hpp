@@ -3,7 +3,7 @@
 #include <functional>
 #include <vector>
 
-namespace discord
+namespace godot
 {
 
     template <typename... Args>
@@ -62,4 +62,4 @@ namespace discord
         std::vector<Slot> slots_{};
     };
 
-} // namespace discord
+} // namespace godot

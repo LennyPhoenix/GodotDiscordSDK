@@ -7,7 +7,7 @@
 #include <cstring>
 #include <memory>
 
-namespace discord
+namespace godot
 {
 
     Result Core::Create(ClientId clientId, std::uint64_t flags, Core **instance)
@@ -76,7 +76,7 @@ namespace discord
             internal_, static_cast<EDiscordLogLevel>(minLevel), &setLogHook_, wrapper);
     }
 
-    discord::ApplicationManager &Core::ApplicationManager()
+    godot::ApplicationManager &Core::ApplicationManager()
     {
         if (!applicationManager_.internal_)
         {
@@ -86,7 +86,7 @@ namespace discord
         return applicationManager_;
     }
 
-    discord::UserManager &Core::UserManager()
+    godot::UserManager &Core::UserManager()
     {
         if (!userManager_.internal_)
         {
@@ -96,7 +96,7 @@ namespace discord
         return userManager_;
     }
 
-    discord::ImageManager &Core::ImageManager()
+    godot::ImageManager &Core::ImageManager()
     {
         if (!imageManager_.internal_)
         {
@@ -106,7 +106,7 @@ namespace discord
         return imageManager_;
     }
 
-    discord::ActivityManager &Core::ActivityManager()
+    godot::ActivityManager &Core::ActivityManager()
     {
         if (!activityManager_.internal_)
         {
@@ -116,7 +116,7 @@ namespace discord
         return activityManager_;
     }
 
-    discord::RelationshipManager &Core::RelationshipManager()
+    godot::RelationshipManager &Core::RelationshipManager()
     {
         if (!relationshipManager_.internal_)
         {
@@ -126,7 +126,7 @@ namespace discord
         return relationshipManager_;
     }
 
-    discord::LobbyManager &Core::LobbyManager()
+    godot::LobbyManager &Core::LobbyManager()
     {
         if (!lobbyManager_.internal_)
         {
@@ -136,7 +136,7 @@ namespace discord
         return lobbyManager_;
     }
 
-    discord::NetworkManager &Core::NetworkManager()
+    godot::NetworkManager &Core::NetworkManager()
     {
         if (!networkManager_.internal_)
         {
@@ -146,7 +146,7 @@ namespace discord
         return networkManager_;
     }
 
-    discord::OverlayManager &Core::OverlayManager()
+    godot::OverlayManager &Core::OverlayManager()
     {
         if (!overlayManager_.internal_)
         {
@@ -156,7 +156,7 @@ namespace discord
         return overlayManager_;
     }
 
-    discord::StorageManager &Core::StorageManager()
+    godot::StorageManager &Core::StorageManager()
     {
         if (!storageManager_.internal_)
         {
@@ -166,7 +166,7 @@ namespace discord
         return storageManager_;
     }
 
-    discord::StoreManager &Core::StoreManager()
+    godot::StoreManager &Core::StoreManager()
     {
         if (!storeManager_.internal_)
         {
@@ -176,7 +176,7 @@ namespace discord
         return storeManager_;
     }
 
-    discord::VoiceManager &Core::VoiceManager()
+    godot::VoiceManager &Core::VoiceManager()
     {
         if (!voiceManager_.internal_)
         {
@@ -186,7 +186,7 @@ namespace discord
         return voiceManager_;
     }
 
-    discord::AchievementManager &Core::AchievementManager()
+    godot::AchievementManager &Core::AchievementManager()
     {
         if (!achievementManager_.internal_)
         {
@@ -196,4 +196,4 @@ namespace discord
         return achievementManager_;
     }
 
-} // namespace discord
+} // namespace godot
