@@ -2,12 +2,12 @@
 
 **NOTE:** This wrapper is still under development.
 
-> A Discord Game SDK wrapper for Godot, written using GDNative C++.
+> A Discord Game SDK wrapper for Godot, written using GDNative C++ for Windows, Linux and MacOS.
 
 ## Compiling & Installing
 
 - Clone the repository: `git clone https://github.com/LennyPhoenix/Godot-Discord-SDK.git`
-  - Update submodules: 
+  - Update submodules:
   
   ```cmd
   cd Godot-Discord-SDK
@@ -30,14 +30,14 @@
 - Compile the library:
   - Windows Example: `scons platform=windows bits=64`
   
-- You can then copy the compiled libraries from [the demo's bin directory](demo/bin/).
+- The compiled binaries will be available from [the demo's bin directory](demo/bin/).
 
   **NOTE**: The output directory for the compiled binaries can be changed by passing the `target_path` parameter in `scons`, e.g `scons platform=windows bits=64 target_path=project/bin`
 
-- The compiled binaries may now be used in a GDNative library in your godot project. See [the demo project](demo/) for an example.
+- Make sure to place the appropriate Discord Game SDK shared library in the binding's bin folder (and the directory of any exports), like so:
 
-- Make sure to place the Discord Game SDK shared libraries in your project's folder (and the directory of any exports), like so:
-
-  ![The Discord Game SDK shared libraries](static/sdk_dlls.png)
+  ![The compiled bindings with the Discord Game SDK shared library.](static/compiled.png)
 
   These files can be retrieved from the `lib/x86` and `lib/x86_64` folders of the SDK. (`x86` being 32-Bit, and `x86_64` being 64-Bit)
+
+- These may now be used in a GDNative library in your godot project. See [the demo project](demo/) for an example.
