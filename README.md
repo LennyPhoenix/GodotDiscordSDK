@@ -34,7 +34,7 @@
 
   **NOTE**: The output directory for the compiled binaries can be changed by passing the `target_path` parameter in `scons`, e.g `scons platform=windows bits=64 target_path=project/bin`
 
-- Make sure to place the appropriate Discord Game SDK shared library in the binding's bin folder (and the directory of any exports), like so:
+- Make sure to place the appropriate Discord Game SDK shared library in [the demo's bin directory](demo/bin/) (ensure it is also placed in any exports, this should be automatic if it is selected as a dependency), like so:
 
   ![The compiled bindings with the Discord Game SDK shared library.](static/compiled.png)
 
