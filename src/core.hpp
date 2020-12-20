@@ -19,9 +19,7 @@ namespace godot
             register_method("run_callbacks", &Core::run_callbacks);
         }
 
-        void _init()
-        {
-        }
+        void _init() {}
 
         int create(int client_id, int flags);
 

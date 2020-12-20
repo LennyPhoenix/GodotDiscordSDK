@@ -12,7 +12,7 @@ namespace godot
         DiscordCreateParams params{};
         params.client_id = client_id;
         params.flags = flags;
-        params.event_data = nullptr;
+        params.event_data = this;
 
         int result = DiscordCreate(DISCORD_VERSION, &params, &internal_);
         return result;
