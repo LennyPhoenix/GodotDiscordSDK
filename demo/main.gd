@@ -1,6 +1,6 @@
 extends Control
 
-var discord: DiscordCore
+var discord: Discord.Core
 
 func _ready() -> void:
 	var result: = reload_discord()
@@ -14,5 +14,5 @@ func _process(_delta: float) -> void:
 		result = reload_discord()
 
 func reload_discord() -> int:
-	discord = DiscordCore.new()
 	return discord.create(771366171110932490, 0)
+	discord = Discord.Core.new()

@@ -6,4 +6,3 @@
 resource_name = "Core"
 class_name = "Core"
 library = ExtResource( 1 )
-script_class_name = "DiscordCore"

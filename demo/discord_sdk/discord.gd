@@ -1,5 +1,7 @@
 class_name Discord
 
+const Core: = preload("res://discord_sdk/core.gdns")
+
 enum Result {
 	OK = 0,
 	SERVICE_UNAVAILABLE = 1,

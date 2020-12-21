@@ -13,15 +13,9 @@ _global_script_classes=[ {
 "class": "Discord",
 "language": "GDScript",
 "path": "res://discord_sdk/discord.gd"
-}, {
-"base": "Reference",
-"class": "DiscordCore",
-"language": "NativeScript",
-"path": "res://discord_sdk/core.gdns"
 } ]
 _global_script_class_icons={
-"Discord": "",
-"DiscordCore": ""
+"Discord": ""
 }
 
 [application]
