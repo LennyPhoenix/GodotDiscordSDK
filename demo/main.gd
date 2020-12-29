@@ -10,7 +10,7 @@ func enum_to_string(the_enum: Dictionary, value: int) -> String:
 func _ready() -> void:
 	core = Discord.Core.new()
 	var result: int = core.create(
-		771366171110932490,
+		793449535632441374,
 		Discord.CreateFlags.DEFAULT
 	)
 	print("Created Discord Core: ", enum_to_string(Discord.Result, result))
