@@ -11,7 +11,7 @@
   
   ```cmd
   cd Godot-Discord-SDK
-  git submodule update --init --recursive
+  git submodule update --init --recursive --remote
   ```
   
 - Download the [Discord Game SDK (3.2.0)](https://dl-game-sdk.discordapp.net/3.2.0/discord_game_sdk.zip).
