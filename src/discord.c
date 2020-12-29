@@ -45,11 +45,11 @@ void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_opt
 
 void GDN_EXPORT godot_nativescript_init(void *p_handle)
 {
-    if (lib.nativescript_1_1_api)
+    if (!lib.nativescript_1_1_api)
     {
         godot_string string;
         lib.api->godot_string_new(&string);
-        lib.api->godot_string_parse_utf8(&string, "Loaded nativescript 1.1...");
+        lib.api->godot_string_parse_utf8(&string, "Failed to load nativescript 1.1...");
         lib.api->godot_print(&string);
         lib.api->godot_string_destroy(&string);
     }
