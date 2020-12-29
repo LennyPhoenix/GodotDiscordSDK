@@ -2,7 +2,7 @@
 
 **NOTE:** This wrapper is still under development.
 
-> A Discord Game SDK wrapper for Godot, written using GDNative C++ for Windows, Linux and MacOS.
+> A Discord Game SDK wrapper for Godot, written using GDNative C for Windows, Linux and MacOS.
 
 ## Compiling & Installing
 

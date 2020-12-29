@@ -46,11 +46,6 @@ opts.Add(BoolVariable(
     'Use the LLVM compiler - only effective when targeting Linux',
     False
 ))
-opts.Add(BoolVariable(
-    'use_mingw',
-    'Use the MinGW compiler instead of MSVC - only effective on Windows',
-    False
-))
 # Must be the same setting as used for cpp_bindings
 opts.Add(EnumVariable(
     'target',
@@ -71,18 +66,16 @@ opts.Add(PathVariable(
     PathVariable.PathAccept
 ))
 
-# Local dependency paths, adapt them to your setup
-godot_headers_path = "godot-cpp/godot_headers/"
-cpp_bindings_path = "godot-cpp/"
-cpp_library = "libgodot-cpp"
+# Define the relative path to the Godot headers.
+godot_headers_path = 'godot_headers/'
 
 opts.Update(env)
 Help(opts.GenerateHelpText(env))
 
-# This makes sure to keep the session environment variables on Windows.
-# This way, you can run SCons in a Visual Studio 2017 prompt and it will find
-# all the required tools
+env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
+
 if host_platform == 'windows':
+    env.Append(ENV=os.environ)
     if env['bits'] == '64':
         env = Environment(TARGET_ARCH='amd64')
     elif env['bits'] == '32':
@@ -92,15 +85,12 @@ if host_platform == 'windows':
 
 if env['platform'] == 'linux':
     if env['use_llvm']:
-        env['CXX'] = 'clang++'
+        env['CC'] = 'clang'
 
-    env.Append(CCFLAGS=['-fPIC', '-std=c++14', '-Wwrite-strings'])
-    env.Append(LINKFLAGS=["-Wl,-R,'$$ORIGIN'"])
-
-    if env['target'] == 'debug':
-        env.Append(CCFLAGS=['-Og', '-g'])
-    elif env['target'] == 'release':
-        env.Append(CCFLAGS=['-O3'])
+    if env["target"] in ("debug", "d"):
+        env.Append(CCFLAGS=["-fPIC", "-g3", "-Og"])
+    else:
+        env.Append(CCFLAGS=["-fPIC", "-g", "-O3"])
 
     if env['bits'] == '64':
         env.Append(CCFLAGS=['-m64'])
@@ -109,85 +99,41 @@ if env['platform'] == 'linux':
         env.Append(CCFLAGS=['-m32'])
         env.Append(LINKFLAGS=['-m32'])
 
+# Check our platform specifics
 elif env['platform'] == 'osx':
-    # Use Clang on macOS by default
-    env['CXX'] = 'clang++'
+    if env["target"] in ("debug", "d"):
+        env.Append(CCFLAGS=["-g", "-O2", "-arch", "x86_64"])
+        env.Append(LINKFLAGS=["-arch", "x86_64"])
+    else:
+        env.Append(CCFLAGS=["-g", "-O3", "-arch", "x86_64"])
+        env.Append(LINKFLAGS=["-arch", "x86_64"])
 
-    if env['bits'] == '32':
-        raise ValueError(
-            'Only 64-bit builds are supported for the macOS target.'
-        )
-
-    env.Append(CCFLAGS=['-std=c++14', '-arch', 'x86_64'])
-    env.Append(LINKFLAGS=[
-        '-arch',
-        'x86_64',
-        '-framework',
-        'Cocoa',
-        '-Wl,-undefined,dynamic_lookup',
-    ])
-
-    if env['target'] == 'debug':
-        env.Append(CCFLAGS=['-Og', '-g'])
-    elif env['target'] == 'release':
-        env.Append(CCFLAGS=['-O3'])
-
-elif env['platform'] == 'windows':
-    if host_platform == 'windows' and not env['use_mingw']:
-        # MSVC
-        env.Append(LINKFLAGS=['/WX'])
-        if env['target'] == 'debug':
-            env.Append(CCFLAGS=['/Z7', '/Od', '/EHsc', '/D_DEBUG', '/MDd'])
-        elif env['target'] == 'release':
-            env.Append(CCFLAGS=['/O2', '/EHsc', '/DNDEBUG', '/MD'])
-
-    elif host_platform == 'linux' or host_platform == 'osx':
-        # Cross-compilation using MinGW
-        if env['bits'] == '64':
-            env['CXX'] = 'x86_64-w64-mingw32-g++'
-            env['AR'] = "x86_64-w64-mingw32-ar"
-            env['RANLIB'] = "x86_64-w64-mingw32-ranlib"
-            env['LINK'] = "x86_64-w64-mingw32-g++"
-        elif env['bits'] == '32':
-            env['CXX'] = 'i686-w64-mingw32-g++'
-            env['AR'] = "i686-w64-mingw32-ar"
-            env['RANLIB'] = "i686-w64-mingw32-ranlib"
-            env['LINK'] = "i686-w64-mingw32-g++"
-    elif host_platform == 'windows' and env['use_mingw']:
-        env = env.Clone(tools=['mingw'])
-        env["SPAWN"] = mySpawn
-
-    # Native or cross-compilation using MinGW
-    if host_platform == 'linux' or host_platform == 'osx' or env['use_mingw']:
-        # These options are for a release build even using target=debug
-        env.Append(CCFLAGS=['-O3', '-std=c++14', '-Wwrite-strings'])
-        env.Append(LINKFLAGS=[
-            '--static',
-            '-Wl,--no-undefined',
-            '-static-libgcc',
-            '-static-libstdc++',
-        ])
+elif env["platform"] == "windows":
+    env.Append(CCFLAGS=["-DWIN32", "-D_WIN32", "-D_WINDOWS", "-W3", "-GR", "-D_CRT_SECURE_NO_WARNINGS"])
+    if env["target"] in ("debug", "d"):
+        env.Append(CCFLAGS=["-EHsc", "-D_DEBUG", "-MDd"])
+    else:
+        env.Append(CCFLAGS=["-O2", "-EHsc", "-DNDEBUG", "-MD"])
 
 arch = env['bits']
 
-# Godot Bindings
-env.Append(CPPPATH=[
-    '.',
-    godot_headers_path,
-    cpp_bindings_path + 'include/',
-    cpp_bindings_path + 'include/core/',
-    cpp_bindings_path + 'include/gen/'
-])
-env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
-env.Append(LIBS=[f"libgodot-cpp.{env['platform']}.{env['target']}.{arch}{env['LIBSUFFIX']}"])
+# Make sure our library includes the Godot headers.
+env.Append(CPPPATH=['.', godot_headers_path])
 
-# Sources to compile
-env.Append(CPPPATH=['src/'])
+# Make sure our library looks in the target path for any other
+# libraries it may need. The path needs to be project-relative.
+env.Append(LINKFLAGS=["-Wl,-rpath,gdnative/" + env["platform"]])
+
+# Source Files
 env.Append(LIBPATH=['lib/'])
 env.Append(LIBS=['discord_game_sdk.' + arch])
-sources = Glob('src/*.cpp')
+env.Append(CPPPATH=['src/'])
+sources = Glob('src/*.c')
 
-folder_name = f"{env['platform']}-{arch}"
+folder_name = f'{env["platform"]}-{arch}/'
 
-library = env.SharedLibrary(target=f"{env['target_path']}{folder_name}/{env['target_name']}", source=sources)
+library = env.SharedLibrary(target=env['target_path'] + folder_name + env['target_name'], source=sources)
 Default(library)
+
+# Generates help for the -h scons option.
+Help(opts.GenerateHelpText(env))

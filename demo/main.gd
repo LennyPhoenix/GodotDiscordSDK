@@ -1,18 +1,24 @@
 extends Control
 
-var discord: Discord.Core
+var core: Discord.Core
+
+func enum_to_string(the_enum: Dictionary, value: int) -> String:
+	var index: = the_enum.values().find(value)
+	var string: String = the_enum.keys()[index]
+	return string
 
 func _ready() -> void:
-	var result: = reload_discord()
+	core = Discord.Core.new()
+	var result: int = core.create(
+		771366171110932490,
+		Discord.CreateFlags.DEFAULT
+	)
+	print("Created Discord Core: ", enum_to_string(Discord.Result, result))
 	if result != Discord.Result.OK:
-		print(result)
+		core = null
 
 func _process(_delta: float) -> void:
-	var result: int = discord.run_callbacks()
-	print(result)
-	if result != Discord.Result.OK:
-		result = reload_discord()
-
-func reload_discord() -> int:
-	return discord.create(771366171110932490, 0)
-	discord = Discord.Core.new()
+	if core:
+		var result: int = core.run_callbacks()
+		if result != Discord.Result.OK:
+			print("Callbacks failed: ", enum_to_string(Discord.Result, result))
