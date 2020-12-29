@@ -1,6 +1,7 @@
 extends Control
 
 var core: Discord.Core
+var users: Discord.UserManager
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:
 	var index: = the_enum.values().find(value)
@@ -16,9 +17,26 @@ func _ready() -> void:
 	print("Created Discord Core: ", enum_to_string(Discord.Result, result))
 	if result != Discord.Result.OK:
 		core = null
+	else:
+		users = _get_user_manager()
+		users.connect("current_user_update", self, "_on_current_user_update")
 
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
 		if result != Discord.Result.OK:
 			print("Callbacks failed: ", enum_to_string(Discord.Result, result))
+
+func _get_user_manager() -> Discord.UserManager:
+	var result = core.get_user_manager()
+	if result is int:
+		print(
+			"Failed to get user manager: ",
+			enum_to_string(Discord.Result, result)
+		)
+		return null
+	else:
+		return result
+
+func _on_current_user_update() -> void:
+	print("User updated!")

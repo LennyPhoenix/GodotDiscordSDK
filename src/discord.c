@@ -5,6 +5,7 @@ Library lib;
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
 {
     lib.api = p_options->api_struct;
+    lib.gdnlib = p_options->gd_native_library;
 
     for (unsigned int i = 0; i < lib.api->num_extensions; i++)
     {
@@ -55,4 +56,5 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     }
 
     register_core(p_handle, &lib);
+    register_user_manager(p_handle, &lib);
 }
