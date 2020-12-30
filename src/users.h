@@ -8,6 +8,42 @@
 
 #include <gdnative_api_struct.gen.h>
 
+void *user_constructor(godot_object *p_instance, struct Library *p_lib);
+void user_destructor(godot_object *p_instance, struct Library *p_lib,
+                     struct DiscordUser *p_user);
+
+godot_variant user_get_id(godot_object *p_instance, struct Library *p_lib,
+                          struct DiscordUser *p_user);
+void user_set_id(godot_object *p_instance, struct Library *p_lib,
+                 struct DiscordUser *p_user,
+                 godot_variant *p_id);
+
+godot_variant user_get_username(godot_object *p_instance, struct Library *p_lib,
+                                struct DiscordUser *p_user);
+void user_set_username(godot_object *p_instance, struct Library *p_lib,
+                       struct DiscordUser *p_user,
+                       godot_variant *p_username);
+
+godot_variant user_get_discriminator(godot_object *p_instance, struct Library *p_lib,
+                                     struct DiscordUser *p_user);
+void user_set_discriminator(godot_object *p_instance, struct Library *p_lib,
+                            struct DiscordUser *p_user,
+                            godot_variant *p_discriminator);
+
+godot_variant user_get_avatar(godot_object *p_instance, struct Library *p_lib,
+                              struct DiscordUser *p_user);
+void user_set_avatar(godot_object *p_instance, struct Library *p_lib,
+                     struct DiscordUser *p_user,
+                     godot_variant *p_avatar);
+
+godot_variant user_get_bot(godot_object *p_instance, struct Library *p_lib,
+                           struct DiscordUser *p_user);
+void user_set_bot(godot_object *p_instance, struct Library *p_lib,
+                  struct DiscordUser *p_user,
+                  godot_variant *p_bot);
+
+void register_user(void *p_handle, struct Library *p_lib);
+
 typedef struct UserManager
 {
     struct IDiscordUserManager *internal;
@@ -18,12 +54,12 @@ typedef struct UserManager
     struct Library *lib;
 } UserManager;
 
-void on_current_user_update(struct Core *p_core);
-
 void *user_manager_constructor(godot_object *p_instance, struct Library *p_lib);
 void user_manager_destructor(godot_object *p_instance, struct Library *p_lib,
                              struct UserManager *p_user_manager);
 
 void register_user_manager(void *p_handle, struct Library *p_lib);
+
+void on_current_user_update(struct Core *p_core);
 
 #endif

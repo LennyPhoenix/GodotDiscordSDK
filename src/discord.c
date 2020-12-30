@@ -48,13 +48,11 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
 {
     if (!lib.nativescript_1_1_api)
     {
-        godot_string string;
-        lib.api->godot_string_new(&string);
-        lib.api->godot_string_parse_utf8(&string, "Failed to load nativescript 1.1...");
+        godot_string string = lib.api->godot_string_chars_to_utf8("Failed to load nativescript 1.1...");
         lib.api->godot_print(&string);
-        lib.api->godot_string_destroy(&string);
     }
 
     register_core(p_handle, &lib);
+    register_user(p_handle, &lib);
     register_user_manager(p_handle, &lib);
 }

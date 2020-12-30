@@ -7,7 +7,6 @@
 
 #include "discord_game_sdk.h"
 
-#include <stdio.h>
 #include <gdnative_api_struct.gen.h>
 
 typedef struct Core

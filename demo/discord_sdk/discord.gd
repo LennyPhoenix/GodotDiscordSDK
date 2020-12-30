@@ -1,7 +1,10 @@
 class_name Discord
 
 const Core: = preload("res://discord_sdk/core.gdns")
+
 const UserManager: = preload("res://discord_sdk/user_manager.gdns")
+
+const User: = preload("res://discord_sdk/user.gdns")
 
 enum Result {
 	OK = 0,

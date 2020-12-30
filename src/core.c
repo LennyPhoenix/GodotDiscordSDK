@@ -129,32 +129,40 @@ void register_core(void *p_handle, Library *p_lib)
                                                                "Core", "Reference",
                                                                constructor, destructor);
 
-    godot_method_attributes default_method_attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+    // Methods
+    {
+        godot_instance_method method;
+        godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
 
-    godot_instance_method create;
-    memset(&create, 0, sizeof(create));
-    create.method = &core_create;
-    create.method_data = p_lib;
+        // Create
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = &core_create;
+            method.method_data = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                "Core", "create",
-                                                                default_method_attributes, create);
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "create",
+                                                                        attributes, method);
+        }
+        // Run Callbacks
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = &core_run_callbacks;
+            method.method_data = p_lib;
 
-    godot_instance_method run_callbacks;
-    memset(&run_callbacks, 0, sizeof(run_callbacks));
-    run_callbacks.method = &core_run_callbacks;
-    run_callbacks.method_data = p_lib;
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "run_callbacks",
+                                                                        attributes, method);
+        }
+        // Get User Manager
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = &core_get_user_manager;
+            method.method_data = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                "Core", "run_callbacks",
-                                                                default_method_attributes, run_callbacks);
-
-    godot_instance_method get_user_manager;
-    memset(&get_user_manager, 0, sizeof(get_user_manager));
-    get_user_manager.method = &core_get_user_manager;
-    get_user_manager.method_data = p_lib;
-
-    p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                "Core", "get_user_manager",
-                                                                default_method_attributes, get_user_manager);
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "get_user_manager",
+                                                                        attributes, method);
+        }
+    }
 }
