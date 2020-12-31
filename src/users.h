@@ -60,6 +60,6 @@ void user_manager_destructor(godot_object *p_instance, struct Library *p_lib,
 
 void register_user_manager(void *p_handle, struct Library *p_lib);
 
-void on_current_user_update(struct Core *p_core);
+void DISCORD_API on_current_user_update(struct Core *p_core);
 
 #endif

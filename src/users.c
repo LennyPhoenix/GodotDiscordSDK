@@ -334,7 +334,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
     }
 }
 
-void on_current_user_update(struct Core *p_core)
+void DISCORD_API on_current_user_update(Core *p_core)
 {
     object_emit_signal(p_core->users->object, "current_user_update", 0, NULL, p_core->lib);
 }
