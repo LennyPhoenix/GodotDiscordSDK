@@ -12,7 +12,7 @@ typedef struct Library
     const godot_gdnative_ext_nativescript_api_struct *nativescript_api;
     const godot_gdnative_ext_nativescript_1_1_api_struct *nativescript_1_1_api;
 
-    const void *gdnlib;
+    const godot_object *gdnlib;
 } Library;
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options);
