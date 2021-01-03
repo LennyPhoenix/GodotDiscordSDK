@@ -398,6 +398,43 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
     return result_variant;
 }
 
+godot_variant user_manager_get_current_user_premium_type(godot_object *p_instance, Library *p_lib,
+                                                         UserManager *p_user_manager,
+                                                         int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 2) // Callback Object, Callback Name
+    {
+        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[0]);
+        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[1]);
+
+        enum EDiscordPremiumType premium_type;
+        enum EDiscordResult result = p_user_manager->internal->get_current_user_premium_type(p_user_manager->internal, &premium_type);
+
+        // Run Callback
+        {
+            godot_variant result_variant;
+            godot_variant premium_type_variant;
+
+            p_lib->api->godot_variant_new_int(&result_variant, result);
+            p_lib->api->godot_variant_new_int(&premium_type_variant, premium_type);
+
+            godot_variant *args[] = {&result_variant, &premium_type_variant};
+
+            object_call(callback_object, &callback_name, 2, args, p_lib);
+        }
+
+        p_lib->api->godot_variant_new_nil(&result_variant);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -437,6 +474,16 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "UserManager", "get_user",
+                                                                        attributes, method);
+        }
+        // Get Current User Premium Type
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = user_manager_get_current_user_premium_type;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "UserManager", "get_current_user_premium_type",
                                                                         attributes, method);
         }
     }

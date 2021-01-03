@@ -41,6 +41,9 @@ func _get_user_manager() -> Discord.UserManager:
 
 func _on_current_user_update() -> void:
 	users.get_current_user(self, "get_current_user_callback")
+	users.get_current_user_premium_type(
+		self, "get_current_user_premium_type_callback"
+	)
 
 func get_current_user_callback(result: int, user: Discord.User) -> void:
 	if result != Discord.Result.OK:
@@ -49,7 +52,7 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 			enum_to_string(Discord.Result, result)
 		)
 	else:
-		print("Current User Updated:")
+		print("Got Current User:")
 		print(user.username, "#", user.discriminator, "  ID: ", user.id)
 
 func get_user_callback(result: int, user: Discord.User) -> void:
@@ -58,3 +61,16 @@ func get_user_callback(result: int, user: Discord.User) -> void:
 		print(user.username, "#", user.discriminator, "  ID: ", user.id)
 	else:
 		print("Failed to fetch user: ", enum_to_string(Discord.Result, result))
+
+func get_current_user_premium_type_callback(
+	result: int,
+	premium_type: int
+) -> void:
+	if result != Discord.Result.OK:
+		print(
+			"Failed to get user premium type: ",
+			enum_to_string(Discord.Result, result)
+		)
+	else:
+		print("Current User Premium Type:")
+		print(enum_to_string(Discord.PremiumType, premium_type))
