@@ -129,9 +129,7 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
     godot_variant_call_error error;
     p_lib->api->godot_variant_call(&variant, &method_name, args, p_num_args + 1, &error);
 
-    p_lib->api->godot_variant_destroy(&variant);
-    p_lib->api->godot_string_destroy(&method_name);
-    p_lib->api->godot_variant_destroy(&variant_signal_name);
+    free(args);
 
     return error;
 }

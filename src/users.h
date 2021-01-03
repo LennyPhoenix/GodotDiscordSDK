@@ -58,6 +58,10 @@ void *user_manager_constructor(godot_object *p_instance, struct Library *p_lib);
 void user_manager_destructor(godot_object *p_instance, struct Library *p_lib,
                              struct UserManager *p_user_manager);
 
+godot_variant user_manager_get_current_user(godot_object *p_instance, struct Library *p_lib,
+                                            struct UserManager *p_user_manager,
+                                            int p_num_args, godot_variant **p_args);
+
 void register_user_manager(void *p_handle, struct Library *p_lib);
 
 void DISCORD_API on_current_user_update(struct Core *p_core);
