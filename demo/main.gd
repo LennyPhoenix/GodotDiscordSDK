@@ -40,3 +40,12 @@ func _get_user_manager() -> Discord.UserManager:
 
 func _on_current_user_update() -> void:
 	print("User updated!")
+	var result = users.get_current_user()
+	if result is int:
+		print(
+			"Failed to get user: ",
+			enum_to_string(Discord.Result, result)
+		)
+	else:
+		var user: Discord.User = result
+		print(user.username, "#", user.discriminator, "  ID: ", user.id)

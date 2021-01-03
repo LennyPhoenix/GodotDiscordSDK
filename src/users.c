@@ -303,6 +303,29 @@ void user_manager_destructor(godot_object *p_instance, Library *p_lib,
     p_lib->api->godot_free(p_user_manager);
 }
 
+godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p_lib,
+                                            UserManager *p_user_manager,
+                                            int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    godot_object *user = instantiate_custom_class("User", "Resource", p_lib);
+    struct DiscordUser *user_internal = p_lib->nativescript_api->godot_nativescript_get_userdata(user);
+    enum EDiscordResult result = p_user_manager->internal->get_current_user(p_user_manager->internal, user_internal);
+
+    if (result == DiscordResult_Ok)
+    {
+        p_lib->api->godot_variant_new_object(&result_variant, user);
+    }
+    else
+    {
+        p_lib->api->godot_object_destroy(user);
+        p_lib->api->godot_variant_new_int(&result_variant, result);
+    }
+
+    return result_variant;
+}
+
 void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -318,6 +341,23 @@ void register_user_manager(void *p_handle, Library *p_lib)
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
                                                                "UserManager", "Reference",
                                                                constructor, destructor);
+
+    // Methods
+    {
+        godot_instance_method method;
+        godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+
+        // Get Current User
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = user_manager_get_current_user;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "UserManager", "get_current_user",
+                                                                        attributes, method);
+        }
+    }
 
     // Signals
     {
