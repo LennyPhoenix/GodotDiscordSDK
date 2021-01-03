@@ -20,6 +20,7 @@ func _ready() -> void:
 	else:
 		users = _get_user_manager()
 		users.connect("current_user_update", self, "_on_current_user_update")
+		users.get_user(425340416531890178, self, "get_user_callback")
 
 func _process(_delta: float) -> void:
 	if core:
@@ -39,7 +40,6 @@ func _get_user_manager() -> Discord.UserManager:
 		return result
 
 func _on_current_user_update() -> void:
-	print("User updated!")
 	var result = users.get_current_user()
 	if result is int:
 		print(
@@ -48,4 +48,12 @@ func _on_current_user_update() -> void:
 		)
 	else:
 		var user: Discord.User = result
+		print("Current User Updated:")
 		print(user.username, "#", user.discriminator, "  ID: ", user.id)
+
+func get_user_callback(result: int, user: Discord.User) -> void:
+	if result == Discord.Result.OK:
+		print("Fetched User:")
+		print(user.username, "#", user.discriminator, "  ID: ", user.id)
+	else:
+		print("Failed to fetch user: ", enum_to_string(Discord.Result, result))

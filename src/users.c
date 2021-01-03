@@ -326,6 +326,63 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
     return result_variant;
 }
 
+void DISCORD_API get_user_callback(CallbackData *p_data,
+                                   enum EDiscordResult p_result, struct DiscordUser *p_user)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant result_variant;
+    godot_variant user_variant;
+
+    godot_object *user = instantiate_custom_class("User", "Resource", lib);
+    struct DiscordUser *data = lib->nativescript_api->godot_nativescript_get_userdata(user);
+
+    memcpy(data, p_user, sizeof(struct DiscordUser));
+
+    lib->api->godot_variant_new_int(&result_variant, p_result);
+    lib->api->godot_variant_new_object(&user_variant, user);
+
+    godot_variant *args[] = {&result_variant, &user_variant};
+
+    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+
+    free(p_data);
+}
+
+godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
+                                    UserManager *p_user_manager,
+                                    int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 3) // ID, Callback Object, Callback Name
+    {
+        int64_t id = p_lib->api->godot_variant_as_int(p_args[0]);
+        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[1]);
+        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[2]);
+
+        godot_object *user = instantiate_custom_class("User", "Resource", p_lib);
+
+        CallbackData *callback_data = calloc(1, sizeof(CallbackData));
+        callback_data->callback_object = callback_object;
+        callback_data->callback_name = callback_name;
+        callback_data->core = p_user_manager->core;
+        callback_data->lib = p_lib;
+
+        p_user_manager->internal->get_user(p_user_manager->internal,
+                                           id,
+                                           callback_data, &get_user_callback);
+
+        p_lib->api->godot_variant_new_nil(&result_variant);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -355,6 +412,16 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "UserManager", "get_current_user",
+                                                                        attributes, method);
+        }
+        // Get User
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = user_manager_get_user;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "UserManager", "get_user",
                                                                         attributes, method);
         }
     }

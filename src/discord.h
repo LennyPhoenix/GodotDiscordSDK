@@ -15,6 +15,17 @@ typedef struct Library
     const godot_object *gdnlib;
 } Library;
 
+typedef struct CallbackData
+{
+    godot_object *callback_object;
+    godot_string callback_name;
+
+    void *data;
+
+    struct Library *lib;
+    struct Core *core;
+} CallbackData;
+
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options);
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options);
 void GDN_EXPORT godot_nativescript_init(void *p_handle);

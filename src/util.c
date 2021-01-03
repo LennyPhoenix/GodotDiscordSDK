@@ -133,3 +133,32 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
 
     return error;
 }
+
+godot_variant_call_error object_call(godot_object *p_object,
+                                     godot_string *p_method_name,
+                                     int p_num_args, godot_variant **p_args,
+                                     Library *p_lib)
+{
+    godot_variant variant;
+    p_lib->api->godot_variant_new_object(&variant, p_object);
+
+    godot_variant **args = calloc(p_num_args + 1, sizeof(godot_variant *));
+
+    godot_variant variant_method_name;
+    p_lib->api->godot_variant_new_string(&variant_method_name, p_method_name);
+    args[0] = &variant_method_name;
+
+    for (int i = 0; i < p_num_args; i++)
+    {
+        args[i + 1] = p_args[i];
+    }
+
+    godot_string method_name = p_lib->api->godot_string_chars_to_utf8("call");
+
+    godot_variant_call_error error;
+    p_lib->api->godot_variant_call(&variant, &method_name, args, p_num_args + 1, &error);
+
+    free(args);
+
+    return error;
+}
