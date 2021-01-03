@@ -130,12 +130,12 @@ void register_user(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
     memset(&constructor, 0, sizeof(constructor));
-    constructor.create_func = &user_constructor;
+    constructor.create_func = user_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
     memset(&destructor, 0, sizeof(destructor));
-    destructor.destroy_func = &user_destructor;
+    destructor.destroy_func = user_destructor;
     destructor.method_data = p_lib;
 
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
@@ -163,11 +163,11 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(get));
-            get.get_func = &user_get_id;
+            get.get_func = user_get_id;
             get.method_data = p_lib;
 
             memset(&set, 0, sizeof(set));
-            set.set_func = &user_set_id;
+            set.set_func = user_set_id;
             set.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
@@ -190,11 +190,11 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(get));
-            get.get_func = &user_get_username;
+            get.get_func = user_get_username;
             get.method_data = p_lib;
 
             memset(&set, 0, sizeof(set));
-            set.set_func = &user_set_username;
+            set.set_func = user_set_username;
             set.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
@@ -217,11 +217,11 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(get));
-            get.get_func = &user_get_discriminator;
+            get.get_func = user_get_discriminator;
             get.method_data = p_lib;
 
             memset(&set, 0, sizeof(set));
-            set.set_func = &user_set_discriminator;
+            set.set_func = user_set_discriminator;
             set.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
@@ -244,11 +244,11 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(get));
-            get.get_func = &user_get_avatar;
+            get.get_func = user_get_avatar;
             get.method_data = p_lib;
 
             memset(&set, 0, sizeof(set));
-            set.set_func = &user_set_avatar;
+            set.set_func = user_set_avatar;
             set.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
@@ -270,11 +270,11 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(get));
-            get.get_func = &user_get_bot;
+            get.get_func = user_get_bot;
             get.method_data = p_lib;
 
             memset(&set, 0, sizeof(set));
-            set.set_func = &user_set_bot;
+            set.set_func = user_set_bot;
             set.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
@@ -307,12 +307,12 @@ void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
     memset(&constructor, 0, sizeof(constructor));
-    constructor.create_func = &user_manager_constructor;
+    constructor.create_func = user_manager_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
     memset(&destructor, 0, sizeof(destructor));
-    destructor.destroy_func = &user_manager_destructor;
+    destructor.destroy_func = user_manager_destructor;
     destructor.method_data = p_lib;
 
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
@@ -336,5 +336,6 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
 void DISCORD_API on_current_user_update(Core *p_core)
 {
-    object_emit_signal(p_core->users->object, "current_user_update", 0, NULL, p_core->lib);
+    godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("current_user_update");
+    object_emit_signal(p_core->users->object, &signal, 0, NULL, p_core->lib);
 }
