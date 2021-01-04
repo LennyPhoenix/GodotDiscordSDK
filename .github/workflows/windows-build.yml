@@ -26,7 +26,7 @@ jobs:
 
       - name: Setup Discord SDK
         shell: cmd
-        run: call setup.cmd
+        run: call setup
 
       - name: Configuring Python packages
         run: |
@@ -62,7 +62,7 @@ jobs:
 
       - name: Setup Discord SDK
         shell: cmd
-        run: call setup.cmd
+        run: call setup
 
       - name: Configuring Python packages
         run: |
@@ -98,7 +98,7 @@ jobs:
 
       - name: Setup Discord SDK
         shell: cmd
-        run: call setup.cmd
+        run: call setup
 
       - name: Configuring Python packages
         run: |
@@ -134,7 +134,7 @@ jobs:
 
       - name: Setup Discord SDK
         shell: cmd
-        run: call setup.cmd
+        run: call setup
 
       - name: Configuring Python packages
         run: |
