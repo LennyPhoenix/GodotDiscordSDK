@@ -23,8 +23,6 @@ For detailed documentation, head to [the wiki](https://github.com/LennyPhoenix/G
 - Place the `discord_game_sdk.dll.lib` file from the `lib/x86` folder of the SDK in [the lib folder](lib/) of the repo and rename it to `discord_game_sdk.32.lib`.
 
   Do the same with the `discord_game_sdk.dll.lib` file from the `lib/x86_64` folder, renaming it to `discord_game_sdk.64.lib`.
-
-  ![The .lib files renamed correctly in the lib/ folder.](static/lib.png)
   
 - Install SCons: (If not already installed)
   - Download and install [Python](https://python.org/downloads) (Make sure to add to PATH)
