@@ -8,9 +8,9 @@ on:
       - "main"
 
 jobs:
-  setup:
+  build-64-release:
     runs-on: "windows-latest"
-    name: Setup
+    name: Build 64-Bit Release (scons platform=windows target=release bits=64)
     steps:
       - uses: actions/checkout@v2
 
@@ -27,11 +27,6 @@ jobs:
           python --version
           scons --version
 
-  build-64-release:
-    needs: setup
-    runs-on: "windows-latest"
-    name: Build 64-Bit Release (scons platform=windows target=release bits=64)
-    steps:
       - name: Compilation
         run: |
           scons platform=windows target=release bits=64
@@ -42,10 +37,24 @@ jobs:
           path: demo/bin/windows-64/gdsdk.dll
 
   build-64-debug:
-    needs: setup
     runs-on: "windows-latest"
-    name: Build 64-Bit Release (scons platform=windows target=debug bits=64)
+    name: Build 64-Bit Debug (scons platform=windows target=debug bits=64)
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons pywin32
+          python --version
+          scons --version
+
       - name: Compilation
         run: |
           scons platform=windows target=debug bits=64
@@ -56,10 +65,24 @@ jobs:
           path: demo/bin/windows-64/gdsdk.dll
 
   build-32-release:
-    needs: setup
     runs-on: "windows-latest"
     name: Build 32-Bit Release (scons platform=windows target=release bits=32)
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons pywin32
+          python --version
+          scons --version
+
       - name: Compilation
         run: |
           scons platform=windows target=release bits=32
@@ -70,10 +93,24 @@ jobs:
           path: demo/bin/windows-32/gdsdk.dll
 
   build-32-debug:
-    needs: setup
     runs-on: "windows-latest"
-    name: Build 32-Bit Release (scons platform=windows target=debug bits=32)
+    name: Build 32-Bit Debug (scons platform=windows target=debug bits=32)
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons pywin32
+          python --version
+          scons --version
+
       - name: Compilation
         run: |
           scons platform=windows target=debug bits=32
