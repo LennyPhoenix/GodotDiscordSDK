@@ -435,6 +435,37 @@ godot_variant user_manager_get_current_user_premium_type(godot_object *p_instanc
     return result_variant;
 }
 
+godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Library *p_lib,
+                                                 UserManager *p_user_manager,
+                                                 int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 1) // User Flag
+    {
+        int64_t flag = p_lib->api->godot_variant_as_int(p_args[0]);
+
+        bool has_flag;
+        enum EDiscordResult result = p_user_manager->internal->current_user_has_flag(p_user_manager->internal,
+                                                                                     flag, &has_flag);
+
+        if (result == DiscordResult_Ok)
+        {
+            p_lib->api->godot_variant_new_bool(&result_variant, has_flag);
+        }
+        else
+        {
+            p_lib->api->godot_variant_new_int(&result_variant, result);
+        }
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -484,6 +515,16 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "UserManager", "get_current_user_premium_type",
+                                                                        attributes, method);
+        }
+        // Current User Has Flag
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = user_manager_current_user_has_flag;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "UserManager", "current_user_has_flag",
                                                                         attributes, method);
         }
     }
