@@ -18,6 +18,9 @@ jobs:
         run: |
           git submodule update --init --remote --recursive
 
+      - name: List directory
+        run: dir
+
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -26,7 +29,7 @@ jobs:
 
       - name: Setup Discord SDK
         run: |
-          setup.bat
+          setup
 
       - name: Configuring Python packages
         run: |
@@ -62,7 +65,7 @@ jobs:
 
       - name: Setup Discord SDK
         run: |
-          setup.bat
+          setup
 
       - name: Configuring Python packages
         run: |
@@ -98,7 +101,7 @@ jobs:
 
       - name: Setup Discord SDK
         run: |
-          setup.bat
+          setup
 
       - name: Configuring Python packages
         run: |
@@ -134,7 +137,7 @@ jobs:
 
       - name: Setup Discord SDK
         run: |
-          setup.bat
+          setup
 
       - name: Configuring Python packages
         run: |
