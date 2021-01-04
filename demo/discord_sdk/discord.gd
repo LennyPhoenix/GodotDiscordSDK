@@ -66,7 +66,7 @@ enum LogLevel {
 }
 
 enum UserFlag {
-	PARTNET = 2,
+	PARTNER = 2,
 	HYPESQUAD_EVENTS = 4,
 	HYPESQUAD_HOUSE_1 = 64,
 	HYPESQUAD_HOUSE_2 = 128,
