@@ -14,11 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
           architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: |
+          setup.bat
 
       - name: Configuring Python packages
         run: |
@@ -42,11 +50,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
           architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: |
+          setup.bat
 
       - name: Configuring Python packages
         run: |
@@ -70,11 +86,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
           architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: |
+          setup.bat
 
       - name: Configuring Python packages
         run: |
@@ -98,11 +122,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
           architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: |
+          setup.bat
 
       - name: Configuring Python packages
         run: |
