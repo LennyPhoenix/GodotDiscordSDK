@@ -1,0 +1,201 @@
+name: 🐧 Linux
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build-64-release:
+    runs-on: "ubuntu-20.04"
+    name: Build 64-Bit Release (scons platform=linux target=release bits=64)
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      # Azure repositories are not reliable, prevent azure giving packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages except SCons
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=linux target=release bits=64
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_64_release
+          path: demo/bin/linux-64/libgdsdk.so
+
+  build-64-debug:
+    runs-on: "ubuntu-20.04"
+    name: Build 64-Bit Debug (scons platform=linux target=debug bits=64)
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      # Azure repositories are not reliable, prevent azure giving packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages except SCons
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=linux target=debug bits=64
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_64_debug
+          path: demo/bin/linux-64/libgdsdk.so
+
+  build-32-release:
+    runs-on: "ubuntu-20.04"
+    name: Build 32-Bit Release (scons platform=linux target=release bits=32)
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      # Azure repositories are not reliable, prevent azure giving packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages except SCons
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=linux target=release bits=32
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_32_release
+          path: demo/bin/linux-32/libgdsdk.so
+
+  build-32-debug:
+    runs-on: "ubuntu-20.04"
+    name: Build 32-Bit Debug (scons platform=linux target=debug bits=32)
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      # Azure repositories are not reliable, prevent azure giving packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages except SCons
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=linux target=debug bits=32
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_32_debug
+          path: demo/bin/linux-32/libgdsdk.so
