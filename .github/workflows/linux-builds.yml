@@ -18,19 +18,6 @@ jobs:
         run: |
           git submodule update --init --remote --recursive
 
-      # Azure repositories are not reliable, prevent azure giving packages.
-      - name: Make apt sources.list use the default Ubuntu repositories
-        run: |
-          sudo rm -f /etc/apt/sources.list.d/*
-          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
-          sudo apt-get update
-
-      # Install all packages except SCons
-      - name: Configure dependencies
-        run: |
-          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
-            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
-
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -65,19 +52,6 @@ jobs:
       - name: Update Submodules
         run: |
           git submodule update --init --remote --recursive
-
-      # Azure repositories are not reliable, prevent azure giving packages.
-      - name: Make apt sources.list use the default Ubuntu repositories
-        run: |
-          sudo rm -f /etc/apt/sources.list.d/*
-          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
-          sudo apt-get update
-
-      # Install all packages except SCons
-      - name: Configure dependencies
-        run: |
-          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
-            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
 
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
@@ -114,19 +88,6 @@ jobs:
         run: |
           git submodule update --init --remote --recursive
 
-      # Azure repositories are not reliable, prevent azure giving packages.
-      - name: Make apt sources.list use the default Ubuntu repositories
-        run: |
-          sudo rm -f /etc/apt/sources.list.d/*
-          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
-          sudo apt-get update
-
-      # Install all packages except SCons
-      - name: Configure dependencies
-        run: |
-          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
-            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
-
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -161,19 +122,6 @@ jobs:
       - name: Update Submodules
         run: |
           git submodule update --init --remote --recursive
-
-      # Azure repositories are not reliable, prevent azure giving packages.
-      - name: Make apt sources.list use the default Ubuntu repositories
-        run: |
-          sudo rm -f /etc/apt/sources.list.d/*
-          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
-          sudo apt-get update
-
-      # Install all packages except SCons
-      - name: Configure dependencies
-        run: |
-          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
-            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
 
       - name: Set up Python 3.x
         uses: actions/setup-python@v2
