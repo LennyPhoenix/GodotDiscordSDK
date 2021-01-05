@@ -85,6 +85,7 @@ if host_platform == "windows":
 
 if env["platform"] == "linux":
     env["target_name"] = "lib" + env["target_name"]
+
     if env["use_llvm"]:
         env["CC"] = "clang"
 
@@ -96,19 +97,21 @@ if env["platform"] == "linux":
     if env["bits"] == "64":
         env.Append(CCFLAGS=["-m64"])
         env.Append(LINKFLAGS=["-m64"])
-    elif env["bits"] == "32":
-        env.Append(CCFLAGS=["-m32"])
-        env.Append(LINKFLAGS=["-m32"])
+
+    env.Append(LIBS=["discord_game_sdk"])
 
 # Check our platform specifics
 elif env["platform"] == "osx":
     env["target_name"] = "lib" + env["target_name"]
+
     if env["target"] in ("debug", "d"):
         env.Append(CCFLAGS=["-g", "-O2", "-arch", "x86_64"])
         env.Append(LINKFLAGS=["-arch", "x86_64"])
     else:
         env.Append(CCFLAGS=["-g", "-O3", "-arch", "x86_64"])
         env.Append(LINKFLAGS=["-arch", "x86_64"])
+
+    env.Append(LIBS=["discord_game_sdk"])
 
 elif env["platform"] == "windows":
     env.Append(CCFLAGS=["-DWIN32", "-D_WIN32", "-D_WINDOWS", "-W3", "-GR", "-D_CRT_SECURE_NO_WARNINGS"])
@@ -117,7 +120,7 @@ elif env["platform"] == "windows":
     else:
         env.Append(CCFLAGS=["-O2", "-EHsc", "-DNDEBUG", "-MD"])
 
-arch = env["bits"]
+    env.Append(LIBS=[f"discord_game_sdk.{env['bits']}"])
 
 # Make sure our library includes the Godot headers.
 env.Append(CPPPATH=[".", godot_headers_path])
@@ -125,14 +128,13 @@ env.Append(CPPPATH=[".", godot_headers_path])
 # Make sure our library looks in the target path for any other
 # libraries it may need. The path needs to be project-relative.
 env.Append(LINKFLAGS=["-Wl,-rpath,gdnative/" + env["platform"]])
+env.Append(LIBPATH=["lib/"])
 
 # Source Files
-env.Append(LIBPATH=["lib/"])
-env.Append(LIBS=["discord_game_sdk." + arch])
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.c")
 
-folder_name = f"{env['platform']}-{arch}/"
+folder_name = f"{env['platform']}-{env['bits']}/"
 
 library = env.SharedLibrary(target=env["target_path"] + folder_name + env["target_name"], source=sources)
 Default(library)
