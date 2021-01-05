@@ -55,4 +55,5 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_core(p_handle, &lib);
     register_user(p_handle, &lib);
     register_user_manager(p_handle, &lib);
+    register_image_dimensions(p_handle, &lib);
 }

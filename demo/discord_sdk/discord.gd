@@ -2,9 +2,10 @@ class_name Discord
 
 const Core: = preload("./core.gdns")
 
+const User: = preload("./user.gdns")
 const UserManager: = preload("./user_manager.gdns")
 
-const User: = preload("./user.gdns")
+const ImageDimensions: = preload("./image_dimensions.gdns")
 
 enum Result {
 	OK = 0,

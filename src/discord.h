@@ -4,6 +4,7 @@
 #include "types.h"
 #include "core.h"
 #include "users.h"
+#include "images.h"
 
 #include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
