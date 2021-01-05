@@ -54,7 +54,7 @@ GDCALLINGCONV void user_set_username(godot_object *p_instance, struct Library *p
     int size = p_lib->api->godot_char_string_length(&char_string);
 
     memset(p_user->username, 0, sizeof(char) * 256);
-    memcpy(p_user->username, username, sizeof(char) * min(size, 255));
+    memcpy(p_user->username, username, sizeof(char) * MIN(size, 255));
 }
 
 godot_variant user_get_discriminator(godot_object *p_instance, struct Library *p_lib,
@@ -80,7 +80,7 @@ GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, struct Libra
     int size = p_lib->api->godot_char_string_length(&char_string);
 
     memset(p_user->discriminator, 0, sizeof(char) * 8);
-    memcpy(p_user->discriminator, discriminator, sizeof(char) * min(size, 7));
+    memcpy(p_user->discriminator, discriminator, sizeof(char) * MIN(size, 7));
 }
 
 godot_variant user_get_avatar(godot_object *p_instance, struct Library *p_lib,
@@ -106,7 +106,7 @@ GDCALLINGCONV void user_set_avatar(godot_object *p_instance, struct Library *p_l
     int size = p_lib->api->godot_char_string_length(&char_string);
 
     memset(p_user->avatar, 0, sizeof(char) * 128);
-    memcpy(p_user->avatar, avatar, sizeof(char) * min(size, 127));
+    memcpy(p_user->avatar, avatar, sizeof(char) * MIN(size, 127));
 }
 
 godot_variant user_get_bot(godot_object *p_instance, struct Library *p_lib,

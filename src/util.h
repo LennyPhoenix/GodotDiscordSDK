@@ -8,6 +8,9 @@
 #include <stdbool.h>
 #include <gdnative_api_struct.gen.h>
 
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
 godot_string get_script_path(godot_string *name,
                              Library *p_lib);
 
