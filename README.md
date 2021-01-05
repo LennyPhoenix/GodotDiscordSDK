@@ -6,7 +6,11 @@
 
 ## Docs
 
-For detailed documentation, head to [the wiki](https://github.com/LennyPhoenix/Godot-Discord-SDK/wiki).
+For detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/Godot-Discord-SDK/wiki).
+
+## Downloading
+
+To download precompiled binaries for every commit, head to [the actions page](https://github.com/LennyPhoenix/Godot-Discord-SDK/actions), or download [a specific release](https://github.com/LennyPhoenix/Godot-Discord-SDK/releases).
 
 ## Compiling & Installing
 
