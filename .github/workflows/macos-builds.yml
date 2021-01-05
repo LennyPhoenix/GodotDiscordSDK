@@ -1,0 +1,153 @@
+name: 🍎 MacOS
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build-64-release:
+    runs-on: "macos-latest"
+    name: Build 64-Bit Release (scons platform=osx target=release bits=64)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=osx target=release bits=64
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_64_release
+          path: demo/bin/osx-64/libgdsdk.dylib
+
+  build-64-debug:
+    runs-on: "macos-latest"
+    name: Build 64-Bit Debug (scons platform=osx target=debug bits=64)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=osx target=debug bits=64
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_64_debug
+          path: demo/bin/osx-64/libgdsdk.dylib
+
+  build-32-release:
+    runs-on: "macos-latest"
+    name: Build 32-Bit Release (scons platform=osx target=release bits=32)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=osx target=release bits=32
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_32_release
+          path: demo/bin/osx-32/libgdsdk.dylib
+
+  build-32-debug:
+    runs-on: "macos-latest"
+    name: Build 32-Bit Debug (scons platform=osx target=debug bits=32)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --remote --recursive
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Setup Discord SDK
+        run: sh ./setup.sh
+
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+      - name: Compilation
+        run: |
+          scons platform=osx target=debug bits=32
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gdsdk_32_debug
+          path: demo/bin/osx-32/libgdsdk.dylib
