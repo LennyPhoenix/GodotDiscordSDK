@@ -27,6 +27,10 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
                                     Core *p_core,
                                     int p_num_args, godot_variant **p_args);
 
+godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
+                                     Core *p_core,
+                                     int p_num_args, godot_variant **p_args);
+
 void register_core(void *p_handle, Library *p_lib);
 
 #endif

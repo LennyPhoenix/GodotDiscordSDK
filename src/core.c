@@ -113,6 +113,38 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
     return result_variant;
 }
 
+godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
+                                     Core *p_core,
+                                     int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_core->internal)
+    {
+        godot_object *manager;
+        if (!p_core->images)
+        {
+            manager = instantiate_custom_class("ImageManager", "Reference", p_lib);
+            ImageManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+            data->core = p_core;
+            data->internal = p_core->internal->get_image_manager(p_core->internal);
+            p_core->images = data;
+        }
+        else
+        {
+            manager = p_core->images;
+        }
+
+        p_lib->api->godot_variant_new_object(&result_variant, manager);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_core(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -162,6 +194,16 @@ void register_core(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_user_manager",
+                                                                        attributes, method);
+        }
+        // Get Image Manager
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = core_get_image_manager;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "get_image_manager",
                                                                         attributes, method);
         }
     }

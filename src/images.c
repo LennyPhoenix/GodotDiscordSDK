@@ -294,3 +294,36 @@ void register_image_handle(void *p_handle, Library *p_lib)
         }
     }
 }
+
+GDCALLINGCONV void *image_manager_constructor(godot_object *p_instance, Library *p_lib)
+{
+    ImageManager *image_manager = p_lib->api->godot_alloc(sizeof(ImageManager));
+
+    image_manager->object = p_instance;
+    image_manager->lib = p_lib;
+
+    return image_manager;
+}
+
+GDCALLINGCONV void image_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                            ImageManager *p_image_manager)
+{
+    p_lib->api->godot_free(p_image_manager);
+}
+
+void register_image_manager(void *p_handle, Library *p_lib)
+{
+    godot_instance_create_func constructor;
+    memset(&constructor, 0, sizeof(constructor));
+    constructor.create_func = image_manager_constructor;
+    constructor.method_data = p_lib;
+
+    godot_instance_destroy_func destructor;
+    memset(&destructor, 0, sizeof(destructor));
+    destructor.destroy_func = image_manager_destructor;
+    destructor.method_data = p_lib;
+
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
+                                                               "ImageManager", "Reference",
+                                                               constructor, destructor);
+}

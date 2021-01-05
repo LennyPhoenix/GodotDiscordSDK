@@ -7,6 +7,7 @@ const UserManager: = preload("./user_manager.gdns")
 
 const ImageDimensions: = preload("./image_dimensions.gdns")
 const ImageHandle: = preload("./image_handle.gdns")
+const ImageManager: = preload("./image_manager.gdns")
 
 enum Result {
 	OK = 0,

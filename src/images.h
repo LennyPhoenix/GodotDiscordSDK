@@ -52,4 +52,10 @@ GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, Library *p_li
 
 void register_image_handle(void *p_handle, Library *p_lib);
 
+GDCALLINGCONV void *image_manager_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void image_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                            ImageManager *p_image_manager);
+
+void register_image_manager(void *p_handle, Library *p_lib);
+
 #endif
