@@ -1,6 +1,6 @@
 #include "users.h"
 
-void *user_constructor(godot_object *p_instance, Library *p_lib)
+GDCALLINGCONV void *user_constructor(godot_object *p_instance, Library *p_lib)
 {
     struct DiscordUser *user = p_lib->api->godot_alloc(sizeof(struct DiscordUser));
     memset(user, 0, sizeof(user));
@@ -8,8 +8,8 @@ void *user_constructor(godot_object *p_instance, Library *p_lib)
     return user;
 }
 
-void user_destructor(godot_object *p_instance, Library *p_lib,
-                     struct DiscordUser *p_user)
+GDCALLINGCONV void user_destructor(godot_object *p_instance, Library *p_lib,
+                                   struct DiscordUser *p_user)
 {
     p_lib->api->godot_free(p_user);
 }
@@ -24,9 +24,9 @@ godot_variant user_get_id(godot_object *p_instance, Library *p_lib,
     return id;
 }
 
-void user_set_id(godot_object *p_instance, Library *p_lib,
-                 struct DiscordUser *p_user,
-                 godot_variant *p_id)
+GDCALLINGCONV void user_set_id(godot_object *p_instance, Library *p_lib,
+                               struct DiscordUser *p_user,
+                               godot_variant *p_id)
 {
     p_user->id = p_lib->api->godot_variant_as_int(p_id);
 }
@@ -43,9 +43,9 @@ godot_variant user_get_username(godot_object *p_instance, struct Library *p_lib,
     return username;
 }
 
-void user_set_username(godot_object *p_instance, struct Library *p_lib,
-                       struct DiscordUser *p_user,
-                       godot_variant *p_username)
+GDCALLINGCONV void user_set_username(godot_object *p_instance, struct Library *p_lib,
+                                     struct DiscordUser *p_user,
+                                     godot_variant *p_username)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_username);
     godot_char_string char_string = p_lib->api->godot_string_utf8(&string);
@@ -69,9 +69,9 @@ godot_variant user_get_discriminator(godot_object *p_instance, struct Library *p
     return discriminator;
 }
 
-void user_set_discriminator(godot_object *p_instance, struct Library *p_lib,
-                            struct DiscordUser *p_user,
-                            godot_variant *p_discriminator)
+GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, struct Library *p_lib,
+                                          struct DiscordUser *p_user,
+                                          godot_variant *p_discriminator)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_discriminator);
     godot_char_string char_string = p_lib->api->godot_string_utf8(&string);
@@ -95,9 +95,9 @@ godot_variant user_get_avatar(godot_object *p_instance, struct Library *p_lib,
     return avatar;
 }
 
-void user_set_avatar(godot_object *p_instance, struct Library *p_lib,
-                     struct DiscordUser *p_user,
-                     godot_variant *p_avatar)
+GDCALLINGCONV void user_set_avatar(godot_object *p_instance, struct Library *p_lib,
+                                   struct DiscordUser *p_user,
+                                   godot_variant *p_avatar)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_avatar);
     godot_char_string char_string = p_lib->api->godot_string_utf8(&string);
@@ -119,9 +119,9 @@ godot_variant user_get_bot(godot_object *p_instance, struct Library *p_lib,
     return bot;
 }
 
-void user_set_bot(godot_object *p_instance, struct Library *p_lib,
-                  struct DiscordUser *p_user,
-                  godot_variant *p_bot)
+GDCALLINGCONV void user_set_bot(godot_object *p_instance, struct Library *p_lib,
+                                struct DiscordUser *p_user,
+                                godot_variant *p_bot)
 {
     p_user->bot = p_lib->api->godot_variant_as_bool(p_bot);
 }
@@ -287,7 +287,7 @@ void register_user(void *p_handle, Library *p_lib)
     }
 }
 
-void *user_manager_constructor(godot_object *p_instance, Library *p_lib)
+GDCALLINGCONV void *user_manager_constructor(godot_object *p_instance, Library *p_lib)
 {
     UserManager *user_manager = p_lib->api->godot_alloc(sizeof(UserManager));
 
@@ -297,8 +297,8 @@ void *user_manager_constructor(godot_object *p_instance, Library *p_lib)
     return user_manager;
 }
 
-void user_manager_destructor(godot_object *p_instance, Library *p_lib,
-                             UserManager *p_user_manager)
+GDCALLINGCONV void user_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                           UserManager *p_user_manager)
 {
     p_lib->api->godot_free(p_user_manager);
 }
@@ -386,7 +386,7 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
 
         p_user_manager->internal->get_user(p_user_manager->internal,
                                            id,
-                                           callback_data, &get_user_callback);
+                                           callback_data, get_user_callback);
 
         p_lib->api->godot_variant_new_nil(&result_variant);
     }

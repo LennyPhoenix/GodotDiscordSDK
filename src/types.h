@@ -15,18 +15,7 @@ typedef struct Library
     const godot_object *gdnlib;
 } Library;
 
-typedef struct UserManager UserManager;
-
-typedef struct Core
-{
-    struct IDiscordCore *internal;
-    godot_object *object;
-
-    UserManager *users;
-    struct IDiscordUserEvents *user_events;
-
-    Library *lib;
-} Core;
+typedef struct Core Core;
 
 typedef struct CallbackData
 {
@@ -39,12 +28,23 @@ typedef struct CallbackData
     Core *core;
 } CallbackData;
 
-struct UserManager
+typedef struct UserManager
 {
     struct IDiscordUserManager *internal;
     godot_object *object;
 
     Core *core;
+
+    Library *lib;
+} UserManager;
+
+struct Core
+{
+    struct IDiscordCore *internal;
+    godot_object *object;
+
+    UserManager *users;
+    struct IDiscordUserEvents *user_events;
 
     Library *lib;
 };

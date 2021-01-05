@@ -1,6 +1,6 @@
 #include "core.h"
 
-void *core_constructor(godot_object *p_instance, Library *p_lib)
+GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 {
     Core *core = p_lib->api->godot_alloc(sizeof(Core));
     memset(core, 0, sizeof(Core));
@@ -11,8 +11,8 @@ void *core_constructor(godot_object *p_instance, Library *p_lib)
     return core;
 }
 
-void core_destructor(godot_object *p_instance, Library *p_lib,
-                     Core *p_core)
+GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
+                                   Core *p_core)
 {
     if (p_core->internal)
     {
@@ -41,7 +41,7 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         params.flags = create_flags;
 
         p_core->user_events = p_lib->api->godot_alloc(sizeof(p_core->user_events));
-        p_core->user_events->on_current_user_update = &on_current_user_update;
+        p_core->user_events->on_current_user_update = on_current_user_update;
         params.user_events = p_core->user_events;
 
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
