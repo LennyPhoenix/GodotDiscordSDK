@@ -28,4 +28,28 @@ GDCALLINGCONV void image_dimensions_set_height(godot_object *p_instance, Library
 
 void register_image_dimensions(void *p_handle, Library *p_lib);
 
+GDCALLINGCONV void *image_handle_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void image_handle_destructor(godot_object *p_instance, Library *p_lib,
+                                           struct DiscordImageHandle *p_handle);
+
+godot_variant image_handle_get_type(godot_object *p_instance, Library *p_lib,
+                                    struct DiscordImageHandle *p_handle);
+GDCALLINGCONV void image_handle_set_type(godot_object *p_instance, Library *p_lib,
+                                         struct DiscordImageHandle *p_handle,
+                                         godot_variant *p_type);
+
+godot_variant image_handle_get_id(godot_object *p_instance, Library *p_lib,
+                                  struct DiscordImageHandle *p_handle);
+GDCALLINGCONV void image_handle_set_id(godot_object *p_instance, Library *p_lib,
+                                       struct DiscordImageHandle *p_handle,
+                                       godot_variant *p_id);
+
+godot_variant image_handle_get_size(godot_object *p_instance, Library *p_lib,
+                                    struct DiscordImageHandle *p_handle);
+GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, Library *p_lib,
+                                         struct DiscordImageHandle *p_handle,
+                                         godot_variant *p_size);
+
+void register_image_handle(void *p_handle, Library *p_lib);
+
 #endif
