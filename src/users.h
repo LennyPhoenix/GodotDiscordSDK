@@ -10,45 +10,45 @@
 #include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
 
-void *user_constructor(godot_object *p_instance, Library *p_lib);
-void user_destructor(godot_object *p_instance, Library *p_lib,
-                     struct DiscordUser *p_user);
+GDCALLINGCONV void *user_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void user_destructor(godot_object *p_instance, Library *p_lib,
+                                   struct DiscordUser *p_user);
 
 godot_variant user_get_id(godot_object *p_instance, Library *p_lib,
                           struct DiscordUser *p_user);
-void user_set_id(godot_object *p_instance, Library *p_lib,
-                 struct DiscordUser *p_user,
-                 godot_variant *p_id);
+GDCALLINGCONV void user_set_id(godot_object *p_instance, Library *p_lib,
+                               struct DiscordUser *p_user,
+                               godot_variant *p_id);
 
 godot_variant user_get_username(godot_object *p_instance, Library *p_lib,
                                 struct DiscordUser *p_user);
-void user_set_username(godot_object *p_instance, Library *p_lib,
-                       struct DiscordUser *p_user,
-                       godot_variant *p_username);
+GDCALLINGCONV void user_set_username(godot_object *p_instance, Library *p_lib,
+                                     struct DiscordUser *p_user,
+                                     godot_variant *p_username);
 
 godot_variant user_get_discriminator(godot_object *p_instance, Library *p_lib,
                                      struct DiscordUser *p_user);
-void user_set_discriminator(godot_object *p_instance, Library *p_lib,
-                            struct DiscordUser *p_user,
-                            godot_variant *p_discriminator);
+GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, Library *p_lib,
+                                          struct DiscordUser *p_user,
+                                          godot_variant *p_discriminator);
 
 godot_variant user_get_avatar(godot_object *p_instance, Library *p_lib,
                               struct DiscordUser *p_user);
-void user_set_avatar(godot_object *p_instance, Library *p_lib,
-                     struct DiscordUser *p_user,
-                     godot_variant *p_avatar);
+GDCALLINGCONV void user_set_avatar(godot_object *p_instance, Library *p_lib,
+                                   struct DiscordUser *p_user,
+                                   godot_variant *p_avatar);
 
 godot_variant user_get_bot(godot_object *p_instance, Library *p_lib,
                            struct DiscordUser *p_user);
-void user_set_bot(godot_object *p_instance, Library *p_lib,
-                  struct DiscordUser *p_user,
-                  godot_variant *p_bot);
+GDCALLINGCONV void user_set_bot(godot_object *p_instance, Library *p_lib,
+                                struct DiscordUser *p_user,
+                                godot_variant *p_bot);
 
 void register_user(void *p_handle, Library *p_lib);
 
-void *user_manager_constructor(godot_object *p_instance, Library *p_lib);
-void user_manager_destructor(godot_object *p_instance, Library *p_lib,
-                             UserManager *p_user_manager);
+GDCALLINGCONV void *user_manager_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void user_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                           UserManager *p_user_manager);
 
 godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p_lib,
                                             UserManager *p_user_manager,

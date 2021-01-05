@@ -282,8 +282,6 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           &attributes,
                                                                           set, get);
         }
-
-        p_lib->api->godot_variant_destroy(&default_value);
     }
 }
 

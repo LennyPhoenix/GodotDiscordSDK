@@ -11,9 +11,9 @@
 #include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
 
-void *core_constructor(godot_object *p_instance, Library *p_lib);
-void core_destructor(godot_object *p_instance, Library *p_lib,
-                     Core *p_core);
+GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
+                                   Core *p_core);
 
 godot_variant core_create(godot_object *p_instance, Library *p_lib,
                           Core *p_core,
