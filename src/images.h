@@ -56,6 +56,10 @@ GDCALLINGCONV void *image_manager_constructor(godot_object *p_instance, Library 
 GDCALLINGCONV void image_manager_destructor(godot_object *p_instance, Library *p_lib,
                                             ImageManager *p_image_manager);
 
+godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
+                                  ImageManager *p_image_manager,
+                                  int p_num_args, godot_variant **p_args);
+
 void register_image_manager(void *p_handle, Library *p_lib);
 
 #endif

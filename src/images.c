@@ -311,6 +311,64 @@ GDCALLINGCONV void image_manager_destructor(godot_object *p_instance, Library *p
     p_lib->api->godot_free(p_image_manager);
 }
 
+void DISCORD_API fetch_callback(CallbackData *p_data,
+                                enum EDiscordResult p_result, struct DiscordImageHandle p_handle)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant result_variant;
+    godot_variant handle_variant;
+
+    godot_object *handle = instantiate_custom_class("ImageHandle", "Resource", lib);
+    struct DiscordImageHandle *data = lib->nativescript_api->godot_nativescript_get_userdata(handle);
+
+    memcpy(data, &p_handle, sizeof(p_handle));
+
+    lib->api->godot_variant_new_int(&result_variant, p_result);
+    lib->api->godot_variant_new_object(&handle_variant, handle);
+
+    godot_variant *args[] = {&result_variant, &handle_variant};
+
+    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+
+    free(p_data);
+}
+
+godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
+                                  ImageManager *p_image_manager,
+                                  int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 4) // Handle, Refresh, Callback Object, Callback Name
+    {
+        godot_object *handle = p_lib->api->godot_variant_as_object(p_args[0]);
+        bool refresh = p_lib->api->godot_variant_as_bool(p_args[1]);
+        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[2]);
+        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[3]);
+
+        struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
+
+        CallbackData *callback_data = calloc(1, sizeof(CallbackData));
+        callback_data->callback_object = callback_object;
+        callback_data->callback_name = callback_name;
+        callback_data->core = p_image_manager->core;
+        callback_data->lib = p_lib;
+
+        p_image_manager->internal->fetch(p_image_manager->internal,
+                                         *image_handle, refresh,
+                                         callback_data, fetch_callback);
+
+        p_lib->api->godot_variant_new_nil(&result_variant);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_image_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -326,4 +384,21 @@ void register_image_manager(void *p_handle, Library *p_lib)
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
                                                                "ImageManager", "Reference",
                                                                constructor, destructor);
+
+    // Methods
+    {
+        godot_instance_method method;
+        godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+
+        // Get Current User
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = image_manager_fetch;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ImageManager", "fetch",
+                                                                        attributes, method);
+        }
+    }
 }

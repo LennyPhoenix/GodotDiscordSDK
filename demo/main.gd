@@ -21,9 +21,16 @@ func _ready() -> void:
 	else:
 		users = _get_user_manager()
 		users.connect("current_user_update", self, "_on_current_user_update")
+
 		users.get_user(425340416531890178, self, "get_user_callback")
 
 		images = _get_image_manager()
+
+		var handle: = Discord.ImageHandle.new()
+		handle.id = 425340416531890178
+		handle.size = 128
+
+		images.fetch(handle, true, self, "fetch_callback")
 
 func _process(_delta: float) -> void:
 	if core:
@@ -88,3 +95,12 @@ func get_current_user_premium_type_callback(
 	else:
 		print("Current User Premium Type:")
 		print(enum_to_string(Discord.PremiumType, premium_type))
+
+func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
+	if result != Discord.Result.OK:
+		print(
+			"Failed to fetch image handle: ",
+			enum_to_string(Discord.Result, result)
+		)
+	else:
+		print("Fetched image handle, ", handle.id, ", ", handle.size)
