@@ -28,7 +28,7 @@ GDCALLINGCONV void image_dimensions_set_width(godot_object *p_instance, Library 
                                               struct DiscordImageDimensions *p_dimensions,
                                               godot_variant *p_width)
 {
-    p_dimensions->width = p_lib->api->godot_variant_as_uint(p_width);
+    p_dimensions->width = (uint32_t)p_lib->api->godot_variant_as_uint(p_width);
 }
 
 godot_variant image_dimensions_get_height(godot_object *p_instance, Library *p_lib,
@@ -45,7 +45,7 @@ GDCALLINGCONV void image_dimensions_set_height(godot_object *p_instance, Library
                                                struct DiscordImageDimensions *p_dimensions,
                                                godot_variant *p_height)
 {
-    p_dimensions->height = p_lib->api->godot_variant_as_uint(p_height);
+    p_dimensions->height = (uint32_t)p_lib->api->godot_variant_as_uint(p_height);
 }
 
 void register_image_dimensions(void *p_handle, Library *p_lib)
@@ -188,7 +188,7 @@ GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, Library *p_li
                                          struct DiscordImageHandle *p_handle,
                                          godot_variant *p_size)
 {
-    p_handle->size = p_lib->api->godot_variant_as_uint(p_size);
+    p_handle->size = (uint32_t)p_lib->api->godot_variant_as_uint(p_size);
 }
 
 void register_image_handle(void *p_handle, Library *p_lib)
@@ -381,7 +381,7 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
         struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
 
         godot_object *dimensions = instantiate_custom_class("ImageDimensions", "Resource", p_lib);
-        struct DiscordUser *data = p_lib->nativescript_api->godot_nativescript_get_userdata(dimensions);
+        struct DiscordImageDimensions *data = p_lib->nativescript_api->godot_nativescript_get_userdata(dimensions);
 
         enum EDiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
                                                                                *image_handle, data);
@@ -394,6 +394,51 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
         {
             p_lib->api->godot_variant_new_int(&result_variant, result);
         }
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
+godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
+                                     ImageManager *p_image_manager,
+                                     int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 1) // Handle
+    {
+        godot_object *handle = p_lib->api->godot_variant_as_object(p_args[0]);
+        struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
+
+        uint32_t size = (uint32_t)pow(image_handle->size, 2) * 4;
+        uint8_t *bytes = calloc(size, sizeof(uint8_t));
+
+        enum EDiscordResult result = p_image_manager->internal->get_data(p_image_manager->internal,
+                                                                         *image_handle,
+                                                                         bytes, size);
+
+        if (result == DiscordResult_Ok)
+        {
+            godot_pool_byte_array array;
+            p_lib->api->godot_pool_byte_array_new(&array);
+
+            for (unsigned int i = 0; i < size; i++)
+            {
+                p_lib->api->godot_pool_byte_array_append(&array, bytes[i]);
+            }
+
+            p_lib->api->godot_variant_new_pool_byte_array(&result_variant, &array);
+        }
+        else
+        {
+            p_lib->api->godot_variant_new_int(&result_variant, result);
+        }
+
+        free(bytes);
     }
     else
     {
@@ -442,6 +487,16 @@ void register_image_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "ImageManager", "get_dimensions",
+                                                                        attributes, method);
+        }
+        // Get Data
+        {
+            memset(&method, 0, sizeof(method));
+            method.method = image_manager_get_data;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ImageManager", "get_data",
                                                                         attributes, method);
         }
     }

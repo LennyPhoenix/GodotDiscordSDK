@@ -1,5 +1,7 @@
 extends Control
 
+onready var texture_rect: = $TextureRect
+
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
@@ -25,12 +27,6 @@ func _ready() -> void:
 		users.get_user(425340416531890178, self, "get_user_callback")
 
 		images = _get_image_manager()
-
-		var handle: = Discord.ImageHandle.new()
-		handle.id = 425340416531890178
-		handle.size = 128
-
-		images.fetch(handle, true, self, "fetch_callback")
 
 func _process(_delta: float) -> void:
 	if core:
@@ -76,6 +72,13 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 		print("Got Current User:")
 		print(user.username, "#", user.discriminator, "  ID: ", user.id)
 
+		var handle: = Discord.ImageHandle.new()
+		handle.id = user.id
+		handle.size = 256
+		handle.type = Discord.ImageType.USER
+
+		images.fetch(handle, true, self, "fetch_callback")
+
 func get_user_callback(result: int, user: Discord.User) -> void:
 	if result == Discord.Result.OK:
 		print("Fetched User:")
@@ -104,3 +107,23 @@ func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
 		)
 	else:
 		print("Fetched image handle, ", handle.id, ", ", handle.size)
+
+		var res = images.get_data(handle)
+		if res is int:
+			print(
+				"Failed to get image data: ",
+				enum_to_string(Discord.Result, res)
+			)
+		else:
+			var dimensions: Discord.ImageDimensions = images.get_dimensions(handle)
+			var image: = Image.new()
+			image.create_from_data(
+				dimensions.width, dimensions.height,
+				false,
+				Image.FORMAT_RGBA8,
+				res
+			)
+			image.unlock()
+			var tex: = ImageTexture.new()
+			tex.create_from_image(image)
+			texture_rect.texture = tex
