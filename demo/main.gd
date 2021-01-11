@@ -127,3 +127,4 @@ func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
 			var tex: = ImageTexture.new()
 			tex.create_from_image(image)
 			texture_rect.texture = tex
+			OS.window_size = Vector2(dimensions.width, dimensions.height)
