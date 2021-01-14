@@ -2,7 +2,6 @@
 #define CORE_H_
 
 #include "types.h"
-#include "discord.h"
 #include "users.h"
 #include "util.h"
 

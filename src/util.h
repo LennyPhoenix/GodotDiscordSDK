@@ -2,7 +2,6 @@
 #define UTIL_H_
 
 #include "types.h"
-#include "discord.h"
 
 #include <stdlib.h>
 #include <stdbool.h>
