@@ -9,6 +9,8 @@ const ImageDimensions: = preload("./image_dimensions.gdns")
 const ImageHandle: = preload("./image_handle.gdns")
 const ImageManager: = preload("./image_manager.gdns")
 
+const ActivityTimestamps: = preload("./activity_timestamps.gdns")
+
 enum Result {
 	OK = 0,
 	SERVICE_UNAVAILABLE = 1,
