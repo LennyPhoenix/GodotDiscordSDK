@@ -48,14 +48,27 @@ typedef struct ImageManager
     Library *lib;
 } ImageManager;
 
+typedef struct ActivityManager
+{
+    struct IDiscordActivityManager *internal;
+    godot_object *object;
+
+    Core *core;
+
+    Library *lib;
+} ActivityManager;
+
 struct Core
 {
     struct IDiscordCore *internal;
     godot_object *object;
 
     UserManager *users;
-    struct IDiscordUserEvents *user_events;
     ImageManager *images;
+    ActivityManager *activities;
+
+    struct IDiscordUserEvents *user_events;
+    struct IDiscordActivityEvents *activity_events;
 
     Library *lib;
 };
