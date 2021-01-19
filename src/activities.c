@@ -377,3 +377,129 @@ void register_activity_assets(void *p_handle, Library *p_lib)
         }
     }
 }
+
+GDCALLINGCONV void *party_size_constructor(godot_object *p_instance, Library *p_lib)
+{
+    struct DiscordPartySize *party_size = p_lib->api->godot_alloc(sizeof(struct DiscordPartySize));
+    memset(party_size, 0, sizeof(party_size));
+
+    return party_size;
+}
+
+GDCALLINGCONV void party_size_destructor(godot_object *p_instance, Library *p_lib,
+                                         struct DiscordPartySize *p_party_size)
+{
+    p_lib->api->godot_free(p_party_size);
+}
+
+godot_variant party_size_get_current_size(godot_object *p_instance, Library *p_lib,
+                                          struct DiscordPartySize *p_party_size)
+{
+    godot_variant current_size;
+
+    p_lib->api->godot_variant_new_int(&current_size, p_party_size->current_size);
+
+    return current_size;
+}
+
+GDCALLINGCONV void party_size_set_current_size(godot_object *p_instance, Library *p_lib,
+                                               struct DiscordPartySize *p_party_size,
+                                               godot_variant *p_current_size)
+{
+    p_party_size->current_size = (int32_t)p_lib->api->godot_variant_as_int(p_current_size);
+}
+
+godot_variant party_size_get_max_size(godot_object *p_instance, Library *p_lib,
+                                      struct DiscordPartySize *p_party_size)
+{
+    godot_variant max_size;
+
+    p_lib->api->godot_variant_new_int(&max_size, p_party_size->max_size);
+
+    return max_size;
+}
+
+GDCALLINGCONV void party_size_set_max_size(godot_object *p_instance, Library *p_lib,
+                                           struct DiscordPartySize *p_party_size,
+                                           godot_variant *p_max_size)
+{
+    p_party_size->max_size = (int32_t)p_lib->api->godot_variant_as_int(p_max_size);
+}
+
+void register_party_size(void *p_handle, Library *p_lib)
+{
+    godot_instance_create_func constructor;
+    memset(&constructor, 0, sizeof(constructor));
+    constructor.create_func = activity_assets_constructor;
+    constructor.method_data = p_lib;
+
+    godot_instance_destroy_func destructor;
+    memset(&destructor, 0, sizeof(destructor));
+    destructor.destroy_func = activity_assets_destructor;
+    destructor.method_data = p_lib;
+
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
+                                                               "PartySize", "Resource",
+                                                               constructor, destructor);
+
+    // Attributes
+    {
+        godot_property_attributes attributes;
+        godot_variant default_value;
+        godot_property_get_func get;
+        godot_property_set_func set;
+
+        // Current Size
+        {
+            memset(&attributes, 0, sizeof(attributes));
+            attributes.type = GODOT_VARIANT_TYPE_INT;
+            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
+
+            attributes.hint = GODOT_PROPERTY_HINT_NONE;
+            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+            p_lib->api->godot_variant_new_int(&default_value, 0);
+            attributes.default_value = default_value;
+
+            memset(&get, 0, sizeof(get));
+            get.get_func = party_size_get_current_size;
+            get.method_data = p_lib;
+
+            memset(&set, 0, sizeof(set));
+            set.set_func = party_size_set_current_size;
+            set.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
+                                                                          "PartySize", "current_size",
+                                                                          &attributes,
+                                                                          set, get);
+        }
+        // Max Size
+        {
+            memset(&attributes, 0, sizeof(attributes));
+            attributes.type = GODOT_VARIANT_TYPE_INT;
+            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
+
+            attributes.hint = GODOT_PROPERTY_HINT_NONE;
+            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+            p_lib->api->godot_variant_new_int(&default_value, 0);
+            attributes.default_value = default_value;
+
+            memset(&get, 0, sizeof(get));
+            get.get_func = party_size_get_max_size;
+            get.method_data = p_lib;
+
+            memset(&set, 0, sizeof(set));
+            set.set_func = party_size_set_max_size;
+            set.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
+                                                                          "PartySize", "max_size",
+                                                                          &attributes,
+                                                                          set, get);
+        }
+    }
+}

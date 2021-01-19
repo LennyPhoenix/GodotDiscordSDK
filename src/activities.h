@@ -57,4 +57,22 @@ GDCALLINGCONV void activity_assets_set_small_text(godot_object *p_instance, Libr
 
 void register_activity_assets(void *p_handle, Library *p_lib);
 
+GDCALLINGCONV void *party_size_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void party_size_destructor(godot_object *p_instance, Library *p_lib,
+                                         struct DiscordPartySize *p_party_size);
+
+godot_variant party_size_get_current_size(godot_object *p_instance, Library *p_lib,
+                                          struct DiscordPartySize *p_party_size);
+GDCALLINGCONV void party_size_set_current_size(godot_object *p_instance, Library *p_lib,
+                                               struct DiscordPartySize *p_party_size,
+                                               godot_variant *p_current_size);
+
+godot_variant party_size_get_max_size(godot_object *p_instance, Library *p_lib,
+                                      struct DiscordPartySize *p_party_size);
+GDCALLINGCONV void party_size_set_max_size(godot_object *p_instance, Library *p_lib,
+                                           struct DiscordPartySize *p_party_size,
+                                           godot_variant *p_max_size);
+
+void register_party_size(void *p_handle, Library *p_lib);
+
 #endif
