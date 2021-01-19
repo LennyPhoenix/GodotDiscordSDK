@@ -10,6 +10,7 @@ const ImageHandle: = preload("./image_handle.gdns")
 const ImageManager: = preload("./image_manager.gdns")
 
 const ActivityTimestamps: = preload("./activity_timestamps.gdns")
+const ActivityAssets: = preload("./activity_assets.gdns")
 
 enum Result {
 	OK = 0,

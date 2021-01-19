@@ -27,4 +27,34 @@ GDCALLINGCONV void activity_timestamps_set_end(godot_object *p_instance, Library
 
 void register_activity_timestamps(void *p_handle, Library *p_lib);
 
+GDCALLINGCONV void *activity_assets_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void activity_assets_destructor(godot_object *p_instance, Library *p_lib,
+                                              struct DiscordActivityAssets *p_assets);
+
+godot_variant activity_assets_get_large_image(godot_object *p_instance, Library *p_lib,
+                                              struct DiscordActivityAssets *p_timestamps);
+GDCALLINGCONV void activity_assets_set_large_image(godot_object *p_instance, Library *p_lib,
+                                                   struct DiscordActivityAssets *p_timestamps,
+                                                   godot_variant *p_large_image);
+
+godot_variant activity_assets_get_large_text(godot_object *p_instance, Library *p_lib,
+                                             struct DiscordActivityAssets *p_timestamps);
+GDCALLINGCONV void activity_assets_set_large_text(godot_object *p_instance, Library *p_lib,
+                                                  struct DiscordActivityAssets *p_timestamps,
+                                                  godot_variant *p_large_text);
+
+godot_variant activity_assets_get_small_image(godot_object *p_instance, Library *p_lib,
+                                              struct DiscordActivityAssets *p_timestamps);
+GDCALLINGCONV void activity_assets_set_small_image(godot_object *p_instance, Library *p_lib,
+                                                   struct DiscordActivityAssets *p_timestamps,
+                                                   godot_variant *p_small_image);
+
+godot_variant activity_assets_get_small_text(godot_object *p_instance, Library *p_lib,
+                                             struct DiscordActivityAssets *p_timestamps);
+GDCALLINGCONV void activity_assets_set_small_text(godot_object *p_instance, Library *p_lib,
+                                                  struct DiscordActivityAssets *p_timestamps,
+                                                  godot_variant *p_small_text);
+
+void register_activity_assets(void *p_handle, Library *p_lib);
+
 #endif

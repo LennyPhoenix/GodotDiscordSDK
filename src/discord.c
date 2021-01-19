@@ -59,4 +59,5 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_image_handle(p_handle, &lib);
     register_image_manager(p_handle, &lib);
     register_activity_timestamps(p_handle, &lib);
+    register_activity_assets(p_handle, &lib);
 }
