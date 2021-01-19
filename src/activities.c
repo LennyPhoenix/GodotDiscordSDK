@@ -430,12 +430,12 @@ void register_party_size(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
     memset(&constructor, 0, sizeof(constructor));
-    constructor.create_func = activity_assets_constructor;
+    constructor.create_func = party_size_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
     memset(&destructor, 0, sizeof(destructor));
-    destructor.destroy_func = activity_assets_destructor;
+    destructor.destroy_func = party_size_destructor;
     destructor.method_data = p_lib;
 
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,

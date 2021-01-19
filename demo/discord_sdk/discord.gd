@@ -11,7 +11,7 @@ const ImageManager: = preload("./image_manager.gdns")
 
 const ActivityTimestamps: = preload("./activity_timestamps.gdns")
 const ActivityAssets: = preload("./activity_assets.gdns")
-const PartySize: = preload("./part_size.gdns")
+const PartySize: = preload("./party_size.gdns")
 
 enum Result {
 	OK = 0,
