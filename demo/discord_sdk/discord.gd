@@ -58,6 +58,7 @@ enum Result {
 	INVALID_GIFT_CODE = 41,
 	PURCHASE_ERROR = 42,
 	TRANSACTION_ABORTED = 43,
+	DRAWING_INIT_FAILED = 44,
 }
 
 enum CreateFlags {
@@ -82,12 +83,17 @@ enum UserFlag {
 
 enum PremiumType {
 	NONE = 0,
-	TIER_1 = 0,
-	TIER_2 = 0,
+	TIER_1 = 1,
+	TIER_2 = 2,
 }
 
 enum ImageType {
 	USER,
+}
+
+enum ActivityPartyPrivacy {
+	PRIVATE = 0,
+	PUBLIC = 1,
 }
 
 enum ActivityType {
@@ -100,6 +106,12 @@ enum ActivityType {
 enum ActivityActionType {
 	JOIN = 1,
 	SPECTATE,
+}
+
+enum ActivitySupportedPlatformFlags {
+	DESKTOP = 1,
+	ANDROID = 2,
+	IOS = 4,
 }
 
 enum ActivityJoinRequestReply {
@@ -150,6 +162,18 @@ enum LobbySearchDistance {
 	GLOBAL,
 }
 
+enum KeyVariant {
+	NORMAL,
+	RIGHT,
+	LEFT,
+}
+
+enum MouseButton {
+	LEFT,
+	MIDDLE,
+	RIGHT,
+}
+
 enum EntitlementType {
 	PURCHASE = 1,
 	PREMIUM_SUBSCRIPTION,
@@ -161,7 +185,7 @@ enum EntitlementType {
 }
 
 enum SkuType {
-	APPLICATOIN = 1,
+	APPLICATION = 1,
 	DLC,
 	CONSUMABLE,
 	BUNDLE,
@@ -170,4 +194,4 @@ enum SkuType {
 enum InputModeType {
 	VOICE_ACTIVITY = 0,
 	PUSH_TO_TALK,
-};
+}
