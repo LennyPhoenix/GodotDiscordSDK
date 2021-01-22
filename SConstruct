@@ -114,7 +114,7 @@ elif env["platform"] == "osx":
     env.Append(LIBS=["discord_game_sdk"])
 
 elif env["platform"] == "windows":
-    env.Append(CCFLAGS=["-DWIN32", "-D_WIN32", "-D_WINDOWS", "-W3", "-GR", "-D_CRT_SECURE_NO_WARNINGS"])
+    env.Append(CCFLAGS=["-DWIN32", "-D_WIN32", "-D_WINDOWS", "-W3", "-GR"])
     if env["target"] in ("debug", "d"):
         env.Append(CCFLAGS=["-EHsc", "-D_DEBUG", "-MDd"])
     else:
