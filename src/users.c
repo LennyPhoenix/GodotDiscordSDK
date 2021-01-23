@@ -3,7 +3,7 @@
 GDCALLINGCONV void *user_constructor(godot_object *p_instance, Library *p_lib)
 {
     struct DiscordUser *user = p_lib->api->godot_alloc(sizeof(struct DiscordUser));
-    memset(user, 0, sizeof(user));
+    memset(user, 0, sizeof(struct DiscordUser));
 
     return user;
 }
@@ -129,12 +129,12 @@ GDCALLINGCONV void user_set_bot(godot_object *p_instance, struct Library *p_lib,
 void register_user(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = user_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = user_destructor;
     destructor.method_data = p_lib;
 
@@ -151,7 +151,7 @@ void register_user(void *p_handle, Library *p_lib)
 
         // ID
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -162,11 +162,11 @@ void register_user(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_id;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = user_set_id;
             set.method_data = p_lib;
 
@@ -177,7 +177,7 @@ void register_user(void *p_handle, Library *p_lib)
         }
         // Username
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -189,11 +189,11 @@ void register_user(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_username;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = user_set_username;
             set.method_data = p_lib;
 
@@ -204,7 +204,7 @@ void register_user(void *p_handle, Library *p_lib)
         }
         // Discriminator
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -216,11 +216,11 @@ void register_user(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_discriminator;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = user_set_discriminator;
             set.method_data = p_lib;
 
@@ -231,7 +231,7 @@ void register_user(void *p_handle, Library *p_lib)
         }
         // Avatar
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -243,11 +243,11 @@ void register_user(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_avatar;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = user_set_avatar;
             set.method_data = p_lib;
 
@@ -258,7 +258,7 @@ void register_user(void *p_handle, Library *p_lib)
         }
         // Bot
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_BOOL;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -269,11 +269,11 @@ void register_user(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_bool(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_bot;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = user_set_bot;
             set.method_data = p_lib;
 
@@ -467,12 +467,12 @@ godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Libra
 void register_user_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = user_manager_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = user_manager_destructor;
     destructor.method_data = p_lib;
 
@@ -487,7 +487,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
         // Get Current User
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = user_manager_get_current_user;
             method.method_data = p_lib;
 
@@ -497,7 +497,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
         }
         // Get User
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = user_manager_get_user;
             method.method_data = p_lib;
 
@@ -507,7 +507,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
         }
         // Get Current User Premium Type
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = user_manager_get_current_user_premium_type;
             method.method_data = p_lib;
 
@@ -517,7 +517,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
         }
         // Current User Has Flag
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = user_manager_current_user_has_flag;
             method.method_data = p_lib;
 
@@ -533,7 +533,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
         // Current User Update
         {
-            memset(&signal, 0, sizeof(signal));
+            memset(&signal, 0, sizeof(godot_signal));
             signal.name = p_lib->api->godot_string_chars_to_utf8("current_user_update");
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,

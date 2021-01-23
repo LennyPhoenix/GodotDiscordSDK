@@ -51,12 +51,12 @@ GDCALLINGCONV void image_dimensions_set_height(godot_object *p_instance, Library
 void register_image_dimensions(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = image_dimensions_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = image_dimensions_destructor;
     destructor.method_data = p_lib;
 
@@ -73,7 +73,7 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
 
         // Width
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -84,11 +84,11 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_uint(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_dimensions_get_width;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = image_dimensions_set_width;
             set.method_data = p_lib;
 
@@ -99,7 +99,7 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
         }
         // Height
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -110,11 +110,11 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_uint(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_dimensions_get_height;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = image_dimensions_set_height;
             set.method_data = p_lib;
 
@@ -194,12 +194,12 @@ GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, Library *p_li
 void register_image_handle(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = image_handle_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = image_handle_destructor;
     destructor.method_data = p_lib;
 
@@ -216,7 +216,7 @@ void register_image_handle(void *p_handle, Library *p_lib)
 
         // Type
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -227,11 +227,11 @@ void register_image_handle(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, DiscordImageType_User);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_type;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = image_handle_set_type;
             set.method_data = p_lib;
 
@@ -242,7 +242,7 @@ void register_image_handle(void *p_handle, Library *p_lib)
         }
         // ID
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -253,11 +253,11 @@ void register_image_handle(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_id;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = image_handle_set_id;
             set.method_data = p_lib;
 
@@ -268,7 +268,7 @@ void register_image_handle(void *p_handle, Library *p_lib)
         }
         // Size
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -279,11 +279,11 @@ void register_image_handle(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_uint(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_size;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = image_handle_set_size;
             set.method_data = p_lib;
 
@@ -322,7 +322,7 @@ void DISCORD_API fetch_callback(CallbackData *p_data,
     godot_object *handle_object = instantiate_custom_class("ImageHandle", "Resource", lib);
     ImageHandle *handle = lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-    memcpy(handle->internal, &p_handle, sizeof(p_handle));
+    memcpy(handle->internal, &p_handle, sizeof(struct DiscordImageHandle));
 
     lib->api->godot_variant_new_int(&result_variant, p_result);
     lib->api->godot_variant_new_object(&handle_variant, handle_object);
@@ -451,12 +451,12 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
 void register_image_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = image_manager_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = image_manager_destructor;
     destructor.method_data = p_lib;
 
@@ -471,7 +471,7 @@ void register_image_manager(void *p_handle, Library *p_lib)
 
         // Fetch
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = image_manager_fetch;
             method.method_data = p_lib;
 
@@ -481,7 +481,7 @@ void register_image_manager(void *p_handle, Library *p_lib)
         }
         // Get Dimensions
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = image_manager_get_dimensions;
             method.method_data = p_lib;
 
@@ -491,7 +491,7 @@ void register_image_manager(void *p_handle, Library *p_lib)
         }
         // Get Data
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = image_manager_get_data;
             method.method_data = p_lib;
 

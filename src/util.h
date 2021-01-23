@@ -12,10 +12,10 @@
 
 #define INIT_OBJECT(Name, Class, InternalClass, Lib, Instance)     \
     Class *Name = Lib->api->godot_alloc(sizeof(Class));            \
-    memset(Name, 0, sizeof(Name));                                 \
+    memset(Name, 0, sizeof(Class));                                \
                                                                    \
     Name->internal = Lib->api->godot_alloc(sizeof(InternalClass)); \
-    memset(Name->internal, 0, sizeof(Name->internal));             \
+    memset(Name->internal, 0, sizeof(InternalClass));              \
                                                                    \
     Name->object = Instance;
 
