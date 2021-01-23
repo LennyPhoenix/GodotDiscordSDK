@@ -2,50 +2,50 @@
 
 GDCALLINGCONV void *image_dimensions_constructor(godot_object *p_instance, Library *p_lib)
 {
-    struct DiscordImageDimensions *dimensions = p_lib->api->godot_alloc(sizeof(struct DiscordImageDimensions));
-    memset(dimensions, 0, sizeof(dimensions));
+    INIT_OBJECT(dimensions, ImageDimensions, struct DiscordImageDimensions, p_lib, p_instance)
 
     return dimensions;
 }
 
 GDCALLINGCONV void image_dimensions_destructor(godot_object *p_instance, Library *p_lib,
-                                               struct DiscordImageDimensions *p_dimensions)
+                                               ImageDimensions *p_dimensions)
 {
+    p_lib->api->godot_free(p_dimensions->internal);
     p_lib->api->godot_free(p_dimensions);
 }
 
 godot_variant image_dimensions_get_width(godot_object *p_instance, Library *p_lib,
-                                         struct DiscordImageDimensions *p_dimensions)
+                                         ImageDimensions *p_dimensions)
 {
     godot_variant width;
 
-    p_lib->api->godot_variant_new_uint(&width, p_dimensions->width);
+    p_lib->api->godot_variant_new_uint(&width, p_dimensions->internal->width);
 
     return width;
 }
 
 GDCALLINGCONV void image_dimensions_set_width(godot_object *p_instance, Library *p_lib,
-                                              struct DiscordImageDimensions *p_dimensions,
+                                              ImageDimensions *p_dimensions,
                                               godot_variant *p_width)
 {
-    p_dimensions->width = (uint32_t)p_lib->api->godot_variant_as_uint(p_width);
+    p_dimensions->internal->width = (uint32_t)p_lib->api->godot_variant_as_uint(p_width);
 }
 
 godot_variant image_dimensions_get_height(godot_object *p_instance, Library *p_lib,
-                                          struct DiscordImageDimensions *p_dimensions)
+                                          ImageDimensions *p_dimensions)
 {
     godot_variant height;
 
-    p_lib->api->godot_variant_new_uint(&height, p_dimensions->height);
+    p_lib->api->godot_variant_new_uint(&height, p_dimensions->internal->height);
 
     return height;
 }
 
 GDCALLINGCONV void image_dimensions_set_height(godot_object *p_instance, Library *p_lib,
-                                               struct DiscordImageDimensions *p_dimensions,
+                                               ImageDimensions *p_dimensions,
                                                godot_variant *p_height)
 {
-    p_dimensions->height = (uint32_t)p_lib->api->godot_variant_as_uint(p_height);
+    p_dimensions->internal->height = (uint32_t)p_lib->api->godot_variant_as_uint(p_height);
 }
 
 void register_image_dimensions(void *p_handle, Library *p_lib)
@@ -128,67 +128,67 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
 
 GDCALLINGCONV void *image_handle_constructor(godot_object *p_instance, Library *p_lib)
 {
-    struct DiscordImageHandle *handle = p_lib->api->godot_alloc(sizeof(struct DiscordImageHandle));
-    memset(handle, 0, sizeof(handle));
+    INIT_OBJECT(handle, ImageHandle, struct DiscordImageHandle, p_lib, p_instance);
 
     return handle;
 }
 
 GDCALLINGCONV void image_handle_destructor(godot_object *p_instance, Library *p_lib,
-                                           struct DiscordImageHandle *p_handle)
+                                           ImageHandle *p_handle)
 {
+    p_lib->api->godot_free(p_handle->internal);
     p_lib->api->godot_free(p_handle);
 }
 
 godot_variant image_handle_get_type(godot_object *p_instance, Library *p_lib,
-                                    struct DiscordImageHandle *p_handle)
+                                    ImageHandle *p_handle)
 {
     godot_variant type;
 
-    p_lib->api->godot_variant_new_int(&type, p_handle->type);
+    p_lib->api->godot_variant_new_int(&type, p_handle->internal->type);
 
     return type;
 }
 
 GDCALLINGCONV void image_handle_set_type(godot_object *p_instance, Library *p_lib,
-                                         struct DiscordImageHandle *p_handle,
+                                         ImageHandle *p_handle,
                                          godot_variant *p_type)
 {
-    p_handle->type = p_lib->api->godot_variant_as_int(p_type);
+    p_handle->internal->type = p_lib->api->godot_variant_as_int(p_type);
 }
 
 godot_variant image_handle_get_id(godot_object *p_instance, Library *p_lib,
-                                  struct DiscordImageHandle *p_handle)
+                                  ImageHandle *p_handle)
 {
     godot_variant id;
 
-    p_lib->api->godot_variant_new_int(&id, p_handle->id);
+    p_lib->api->godot_variant_new_int(&id, p_handle->internal->id);
 
     return id;
 }
 
 GDCALLINGCONV void image_handle_set_id(godot_object *p_instance, Library *p_lib,
-                                       struct DiscordImageHandle *p_handle,
+                                       ImageHandle *p_handle,
                                        godot_variant *p_id)
 {
-    p_handle->id = p_lib->api->godot_variant_as_int(p_id);
+    p_handle->internal->id = p_lib->api->godot_variant_as_int(p_id);
 }
 
 godot_variant image_handle_get_size(godot_object *p_instance, Library *p_lib,
-                                    struct DiscordImageHandle *p_handle)
+                                    ImageHandle *p_handle)
 {
     godot_variant size;
 
-    p_lib->api->godot_variant_new_uint(&size, p_handle->size);
+    p_lib->api->godot_variant_new_uint(&size, p_handle->internal->size);
 
     return size;
 }
 
 GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, Library *p_lib,
-                                         struct DiscordImageHandle *p_handle,
+                                         ImageHandle *p_handle,
                                          godot_variant *p_size)
 {
-    p_handle->size = (uint32_t)p_lib->api->godot_variant_as_uint(p_size);
+    p_handle->internal->size = (uint32_t)p_lib->api->godot_variant_as_uint(p_size);
 }
 
 void register_image_handle(void *p_handle, Library *p_lib)
@@ -319,13 +319,13 @@ void DISCORD_API fetch_callback(CallbackData *p_data,
     godot_variant result_variant;
     godot_variant handle_variant;
 
-    godot_object *handle = instantiate_custom_class("ImageHandle", "Resource", lib);
-    struct DiscordImageHandle *data = lib->nativescript_api->godot_nativescript_get_userdata(handle);
+    godot_object *handle_object = instantiate_custom_class("ImageHandle", "Resource", lib);
+    ImageHandle *handle = lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-    memcpy(data, &p_handle, sizeof(p_handle));
+    memcpy(handle->internal, &p_handle, sizeof(p_handle));
 
     lib->api->godot_variant_new_int(&result_variant, p_result);
-    lib->api->godot_variant_new_object(&handle_variant, handle);
+    lib->api->godot_variant_new_object(&handle_variant, handle_object);
 
     godot_variant *args[] = {&result_variant, &handle_variant};
 
@@ -342,12 +342,12 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
 
     if (p_num_args == 4) // Handle, Refresh, Callback Object, Callback Name
     {
-        godot_object *handle = p_lib->api->godot_variant_as_object(p_args[0]);
+        godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
         bool refresh = p_lib->api->godot_variant_as_bool(p_args[1]);
         godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[2]);
         godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[3]);
 
-        struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
+        ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
         CallbackData *callback_data = calloc(1, sizeof(CallbackData));
         callback_data->callback_object = callback_object;
@@ -356,7 +356,7 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
         callback_data->lib = p_lib;
 
         p_image_manager->internal->fetch(p_image_manager->internal,
-                                         *image_handle, refresh,
+                                         *handle->internal, refresh,
                                          callback_data, fetch_callback);
 
         p_lib->api->godot_variant_new_nil(&result_variant);
@@ -377,18 +377,18 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
 
     if (p_num_args == 1) // Handle
     {
-        godot_object *handle = p_lib->api->godot_variant_as_object(p_args[0]);
-        struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
+        godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
+        ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-        godot_object *dimensions = instantiate_custom_class("ImageDimensions", "Resource", p_lib);
-        struct DiscordImageDimensions *data = p_lib->nativescript_api->godot_nativescript_get_userdata(dimensions);
+        godot_object *dimensions_object = instantiate_custom_class("ImageDimensions", "Resource", p_lib);
+        ImageDimensions *dimensions = p_lib->nativescript_api->godot_nativescript_get_userdata(dimensions_object);
 
         enum EDiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
-                                                                               *image_handle, data);
+                                                                               *handle->internal, dimensions->internal);
 
         if (result == DiscordResult_Ok)
         {
-            p_lib->api->godot_variant_new_object(&result_variant, dimensions);
+            p_lib->api->godot_variant_new_object(&result_variant, dimensions_object);
         }
         else
         {
@@ -411,14 +411,14 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
 
     if (p_num_args == 1) // Handle
     {
-        godot_object *handle = p_lib->api->godot_variant_as_object(p_args[0]);
-        struct DiscordImageHandle *image_handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle);
+        godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
+        ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-        uint32_t size = (uint32_t)pow(image_handle->size, 2) * 4;
+        uint32_t size = (uint32_t)pow(handle->internal->size, 2) * 4;
         uint8_t *bytes = calloc(size, sizeof(uint8_t));
 
         enum EDiscordResult result = p_image_manager->internal->get_data(p_image_manager->internal,
-                                                                         *image_handle,
+                                                                         *handle->internal,
                                                                          bytes, size);
 
         if (result == DiscordResult_Ok)
