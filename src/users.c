@@ -350,7 +350,7 @@ void DISCORD_API get_user_callback(CallbackData *p_data,
     godot_object *user_object = instantiate_custom_class("User", "Resource", lib);
     User *user = lib->nativescript_api->godot_nativescript_get_userdata(user_object);
 
-    memcpy(user->internal, p_user, sizeof(p_user));
+    memcpy(user->internal, p_user, sizeof(struct DiscordUser));
 
     lib->api->godot_variant_new_int(&result_variant, p_result);
     lib->api->godot_variant_new_object(&user_variant, user_object);
