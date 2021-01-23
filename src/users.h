@@ -45,6 +45,16 @@ GDCALLINGCONV void user_set_bot(godot_object *p_instance, Library *p_lib,
 
 void register_user(void *p_handle, Library *p_lib);
 
+struct UserManager
+{
+    struct IDiscordUserManager *internal;
+    godot_object *object;
+
+    Core *core;
+
+    Library *lib;
+};
+
 GDCALLINGCONV void *user_manager_constructor(godot_object *p_instance, Library *p_lib);
 GDCALLINGCONV void user_manager_destructor(godot_object *p_instance, Library *p_lib,
                                            UserManager *p_user_manager);
