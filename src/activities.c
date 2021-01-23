@@ -2,61 +2,63 @@
 
 GDCALLINGCONV void *activity_timestamps_constructor(godot_object *p_instance, Library *p_lib)
 {
-    struct DiscordActivityTimestamps *timestamps = p_lib->api->godot_alloc(sizeof(struct DiscordActivityTimestamps));
-    memset(timestamps, 0, sizeof(timestamps));
+    INIT_OBJECT(timestamps,
+                ActivityTimestamps, struct DiscordActivityTimestamps,
+                p_lib, p_instance);
 
     return timestamps;
 }
 
 GDCALLINGCONV void activity_timestamps_destructor(godot_object *p_instance, Library *p_lib,
-                                                  struct DiscordActivityTimestamps *p_timestamps)
+                                                  ActivityTimestamps *p_timestamps)
 {
+    p_lib->api->godot_free(p_timestamps->internal);
     p_lib->api->godot_free(p_timestamps);
 }
 
 godot_variant activity_timestamps_get_start(godot_object *p_instance, Library *p_lib,
-                                            struct DiscordActivityTimestamps *p_timestamps)
+                                            ActivityTimestamps *p_timestamps)
 {
     godot_variant start;
 
-    p_lib->api->godot_variant_new_int(&start, p_timestamps->start);
+    p_lib->api->godot_variant_new_int(&start, p_timestamps->internal->start);
 
     return start;
 }
 
 GDCALLINGCONV void activity_timestamps_set_start(godot_object *p_instance, Library *p_lib,
-                                                 struct DiscordActivityTimestamps *p_timestamps,
+                                                 ActivityTimestamps *p_timestamps,
                                                  godot_variant *p_start)
 {
-    p_timestamps->start = p_lib->api->godot_variant_as_int(p_start);
+    p_timestamps->internal->start = p_lib->api->godot_variant_as_int(p_start);
 }
 
 godot_variant activity_timestamps_get_end(godot_object *p_instance, Library *p_lib,
-                                          struct DiscordActivityTimestamps *p_timestamps)
+                                          ActivityTimestamps *p_timestamps)
 {
     godot_variant end;
 
-    p_lib->api->godot_variant_new_int(&end, p_timestamps->end);
+    p_lib->api->godot_variant_new_int(&end, p_timestamps->internal->end);
 
     return end;
 }
 
 GDCALLINGCONV void activity_timestamps_set_end(godot_object *p_instance, Library *p_lib,
-                                               struct DiscordActivityTimestamps *p_timestamps,
+                                               ActivityTimestamps *p_timestamps,
                                                godot_variant *p_end)
 {
-    p_timestamps->end = p_lib->api->godot_variant_as_int(p_end);
+    p_timestamps->internal->end = p_lib->api->godot_variant_as_int(p_end);
 }
 
 void register_activity_timestamps(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = activity_timestamps_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = activity_timestamps_destructor;
     destructor.method_data = p_lib;
 
@@ -73,7 +75,7 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
 
         // Start
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -84,11 +86,11 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_timestamps_get_start;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_timestamps_set_start;
             set.method_data = p_lib;
 
@@ -99,7 +101,7 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
         }
         // End
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -110,11 +112,11 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_timestamps_get_end;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_timestamps_set_end;
             set.method_data = p_lib;
 
@@ -128,24 +130,26 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
 
 GDCALLINGCONV void *activity_assets_constructor(godot_object *p_instance, Library *p_lib)
 {
-    struct DiscordActivityAssets *assets = p_lib->api->godot_alloc(sizeof(struct DiscordActivityAssets));
-    memset(assets, 0, sizeof(assets));
+    INIT_OBJECT(assets,
+                ActivityAssets, struct DiscordActivityAssets,
+                p_lib, p_instance);
 
     return assets;
 }
 
 GDCALLINGCONV void activity_assets_destructor(godot_object *p_instance, Library *p_lib,
-                                              struct DiscordActivityAssets *p_assets)
+                                              ActivityAssets *p_assets)
 {
+    p_lib->api->godot_free(p_assets->internal);
     p_lib->api->godot_free(p_assets);
 }
 
 godot_variant activity_assets_get_large_image(godot_object *p_instance, Library *p_lib,
-                                              struct DiscordActivityAssets *p_timestamps)
+                                              ActivityAssets *p_assets)
 {
     godot_variant large_image;
 
-    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_timestamps->large_image);
+    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_assets->internal->large_image);
     p_lib->api->godot_variant_new_string(&large_image, &string);
     p_lib->api->godot_string_destroy(&string);
 
@@ -153,7 +157,7 @@ godot_variant activity_assets_get_large_image(godot_object *p_instance, Library 
 }
 
 GDCALLINGCONV void activity_assets_set_large_image(godot_object *p_instance, Library *p_lib,
-                                                   struct DiscordActivityAssets *p_timestamps,
+                                                   ActivityAssets *p_assets,
                                                    godot_variant *p_large_image)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_large_image);
@@ -162,16 +166,16 @@ GDCALLINGCONV void activity_assets_set_large_image(godot_object *p_instance, Lib
 
     int size = p_lib->api->godot_char_string_length(&char_string);
 
-    memset(p_timestamps->large_image, 0, sizeof(char) * 128);
-    memcpy(p_timestamps->large_image, large_image, sizeof(char) * MIN(size, 127));
+    memset(p_assets->internal->large_image, 0, sizeof(char) * 128);
+    memcpy(p_assets->internal->large_image, large_image, sizeof(char) * MIN(size, 127));
 }
 
 godot_variant activity_assets_get_large_text(godot_object *p_instance, Library *p_lib,
-                                             struct DiscordActivityAssets *p_timestamps)
+                                             ActivityAssets *p_assets)
 {
     godot_variant large_text;
 
-    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_timestamps->large_text);
+    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_assets->internal->large_text);
     p_lib->api->godot_variant_new_string(&large_text, &string);
     p_lib->api->godot_string_destroy(&string);
 
@@ -179,7 +183,7 @@ godot_variant activity_assets_get_large_text(godot_object *p_instance, Library *
 }
 
 GDCALLINGCONV void activity_assets_set_large_text(godot_object *p_instance, Library *p_lib,
-                                                  struct DiscordActivityAssets *p_timestamps,
+                                                  ActivityAssets *p_assets,
                                                   godot_variant *p_large_text)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_large_text);
@@ -188,16 +192,16 @@ GDCALLINGCONV void activity_assets_set_large_text(godot_object *p_instance, Libr
 
     int size = p_lib->api->godot_char_string_length(&char_string);
 
-    memset(p_timestamps->large_text, 0, sizeof(char) * 128);
-    memcpy(p_timestamps->large_text, large_text, sizeof(char) * MIN(size, 127));
+    memset(p_assets->internal->large_text, 0, sizeof(char) * 128);
+    memcpy(p_assets->internal->large_text, large_text, sizeof(char) * MIN(size, 127));
 }
 
 godot_variant activity_assets_get_small_image(godot_object *p_instance, Library *p_lib,
-                                              struct DiscordActivityAssets *p_timestamps)
+                                              ActivityAssets *p_assets)
 {
     godot_variant small_image;
 
-    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_timestamps->small_image);
+    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_assets->internal->small_image);
     p_lib->api->godot_variant_new_string(&small_image, &string);
     p_lib->api->godot_string_destroy(&string);
 
@@ -205,7 +209,7 @@ godot_variant activity_assets_get_small_image(godot_object *p_instance, Library 
 }
 
 GDCALLINGCONV void activity_assets_set_small_image(godot_object *p_instance, Library *p_lib,
-                                                   struct DiscordActivityAssets *p_timestamps,
+                                                   ActivityAssets *p_assets,
                                                    godot_variant *p_small_image)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_small_image);
@@ -214,16 +218,16 @@ GDCALLINGCONV void activity_assets_set_small_image(godot_object *p_instance, Lib
 
     int size = p_lib->api->godot_char_string_length(&char_string);
 
-    memset(p_timestamps->small_image, 0, sizeof(char) * 128);
-    memcpy(p_timestamps->small_image, small_image, sizeof(char) * MIN(size, 127));
+    memset(p_assets->internal->small_image, 0, sizeof(char) * 128);
+    memcpy(p_assets->internal->small_image, small_image, sizeof(char) * MIN(size, 127));
 }
 
 godot_variant activity_assets_get_small_text(godot_object *p_instance, Library *p_lib,
-                                             struct DiscordActivityAssets *p_timestamps)
+                                             ActivityAssets *p_assets)
 {
     godot_variant small_text;
 
-    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_timestamps->small_text);
+    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_assets->internal->small_text);
     p_lib->api->godot_variant_new_string(&small_text, &string);
     p_lib->api->godot_string_destroy(&string);
 
@@ -231,7 +235,7 @@ godot_variant activity_assets_get_small_text(godot_object *p_instance, Library *
 }
 
 GDCALLINGCONV void activity_assets_set_small_text(godot_object *p_instance, Library *p_lib,
-                                                  struct DiscordActivityAssets *p_timestamps,
+                                                  ActivityAssets *p_assets,
                                                   godot_variant *p_small_text)
 {
     godot_string string = p_lib->api->godot_variant_as_string(p_small_text);
@@ -240,19 +244,19 @@ GDCALLINGCONV void activity_assets_set_small_text(godot_object *p_instance, Libr
 
     int size = p_lib->api->godot_char_string_length(&char_string);
 
-    memset(p_timestamps->small_text, 0, sizeof(char) * 128);
-    memcpy(p_timestamps->small_text, small_text, sizeof(char) * MIN(size, 127));
+    memset(p_assets->internal->small_text, 0, sizeof(char) * 128);
+    memcpy(p_assets->internal->small_text, small_text, sizeof(char) * MIN(size, 127));
 }
 
 void register_activity_assets(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = activity_assets_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = activity_assets_destructor;
     destructor.method_data = p_lib;
 
@@ -269,7 +273,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
         // Large Image
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -281,11 +285,11 @@ void register_activity_assets(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_large_image;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_assets_set_large_image;
             set.method_data = p_lib;
 
@@ -296,7 +300,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
         }
         // Large Text
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -308,11 +312,11 @@ void register_activity_assets(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_large_text;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_assets_set_large_text;
             set.method_data = p_lib;
 
@@ -323,7 +327,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
         }
         // Small Image
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -335,11 +339,11 @@ void register_activity_assets(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_small_image;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_assets_set_small_image;
             set.method_data = p_lib;
 
@@ -350,7 +354,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
         }
         // Small Text
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -362,11 +366,11 @@ void register_activity_assets(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_string(&default_value, &string);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_small_text;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = activity_assets_set_small_text;
             set.method_data = p_lib;
 
@@ -380,61 +384,63 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
 GDCALLINGCONV void *party_size_constructor(godot_object *p_instance, Library *p_lib)
 {
-    struct DiscordPartySize *party_size = p_lib->api->godot_alloc(sizeof(struct DiscordPartySize));
-    memset(party_size, 0, sizeof(party_size));
+    INIT_OBJECT(party_size,
+                PartySize, struct DiscordPartySize,
+                p_lib, p_instance);
 
     return party_size;
 }
 
 GDCALLINGCONV void party_size_destructor(godot_object *p_instance, Library *p_lib,
-                                         struct DiscordPartySize *p_party_size)
+                                         PartySize *p_party_size)
 {
+    p_lib->api->godot_free(p_party_size->internal);
     p_lib->api->godot_free(p_party_size);
 }
 
 godot_variant party_size_get_current_size(godot_object *p_instance, Library *p_lib,
-                                          struct DiscordPartySize *p_party_size)
+                                          PartySize *p_party_size)
 {
     godot_variant current_size;
 
-    p_lib->api->godot_variant_new_int(&current_size, p_party_size->current_size);
+    p_lib->api->godot_variant_new_int(&current_size, p_party_size->internal->current_size);
 
     return current_size;
 }
 
 GDCALLINGCONV void party_size_set_current_size(godot_object *p_instance, Library *p_lib,
-                                               struct DiscordPartySize *p_party_size,
+                                               PartySize *p_party_size,
                                                godot_variant *p_current_size)
 {
-    p_party_size->current_size = (int32_t)p_lib->api->godot_variant_as_int(p_current_size);
+    p_party_size->internal->current_size = (int32_t)p_lib->api->godot_variant_as_int(p_current_size);
 }
 
 godot_variant party_size_get_max_size(godot_object *p_instance, Library *p_lib,
-                                      struct DiscordPartySize *p_party_size)
+                                      PartySize *p_party_size)
 {
     godot_variant max_size;
 
-    p_lib->api->godot_variant_new_int(&max_size, p_party_size->max_size);
+    p_lib->api->godot_variant_new_int(&max_size, p_party_size->internal->max_size);
 
     return max_size;
 }
 
 GDCALLINGCONV void party_size_set_max_size(godot_object *p_instance, Library *p_lib,
-                                           struct DiscordPartySize *p_party_size,
+                                           PartySize *p_party_size,
                                            godot_variant *p_max_size)
 {
-    p_party_size->max_size = (int32_t)p_lib->api->godot_variant_as_int(p_max_size);
+    p_party_size->internal->max_size = (int32_t)p_lib->api->godot_variant_as_int(p_max_size);
 }
 
 void register_party_size(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = party_size_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = party_size_destructor;
     destructor.method_data = p_lib;
 
@@ -451,7 +457,7 @@ void register_party_size(void *p_handle, Library *p_lib)
 
         // Current Size
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -462,11 +468,11 @@ void register_party_size(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = party_size_get_current_size;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = party_size_set_current_size;
             set.method_data = p_lib;
 
@@ -477,7 +483,7 @@ void register_party_size(void *p_handle, Library *p_lib)
         }
         // Max Size
         {
-            memset(&attributes, 0, sizeof(attributes));
+            memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
@@ -488,11 +494,11 @@ void register_party_size(void *p_handle, Library *p_lib)
             p_lib->api->godot_variant_new_int(&default_value, 0);
             attributes.default_value = default_value;
 
-            memset(&get, 0, sizeof(get));
+            memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = party_size_get_max_size;
             get.method_data = p_lib;
 
-            memset(&set, 0, sizeof(set));
+            memset(&set, 0, sizeof(godot_property_set_func));
             set.set_func = party_size_set_max_size;
             set.method_data = p_lib;
 
