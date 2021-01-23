@@ -2,7 +2,6 @@
 #define UTIL_H_
 
 #include "types.h"
-#include "discord.h"
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,6 +9,15 @@
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
+#define INIT_OBJECT(Name, Class, InternalClass, Lib, Instance)     \
+    Class *Name = Lib->api->godot_alloc(sizeof(Class));            \
+    memset(Name, 0, sizeof(Class));                                \
+                                                                   \
+    Name->internal = Lib->api->godot_alloc(sizeof(InternalClass)); \
+    memset(Name->internal, 0, sizeof(InternalClass));              \
+                                                                   \
+    Name->object = Instance;
 
 godot_string get_script_path(godot_string *name,
                              Library *p_lib);

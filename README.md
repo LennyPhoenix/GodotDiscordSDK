@@ -6,19 +6,19 @@
 
 ## Docs
 
-For detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/Godot-Discord-SDK/wiki).
+For detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/GodotDiscordSDK/wiki).
 
 ## Downloading
 
-To download precompiled binaries for every commit, head to [the actions page](https://github.com/LennyPhoenix/Godot-Discord-SDK/actions), or download [a specific release](https://github.com/LennyPhoenix/Godot-Discord-SDK/releases).
+To download precompiled binaries for every commit, head to [the actions page](https://github.com/LennyPhoenix/GodotDiscordSDK/actions), or download [a specific release](https://github.com/LennyPhoenix/GodotDiscordSDK/releases).
 
 ## Compiling & Installing
 
-- Clone the repository: `git clone https://github.com/LennyPhoenix/Godot-Discord-SDK.git`
+- Clone the repository: `git clone https://github.com/LennyPhoenix/GodotDiscordSDK.git`
   - Update submodules:
   
   ```cmd
-  cd Godot-Discord-SDK
+  cd GodotDiscordSDK
   git submodule update --init --recursive --remote
   ```
 

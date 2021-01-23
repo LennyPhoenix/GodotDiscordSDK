@@ -16,6 +16,8 @@ typedef struct Library
 } Library;
 
 typedef struct Core Core;
+typedef struct UserManager UserManager;
+typedef struct ImageManager ImageManager;
 
 typedef struct CallbackData
 {
@@ -27,50 +29,5 @@ typedef struct CallbackData
     Library *lib;
     Core *core;
 } CallbackData;
-
-typedef struct UserManager
-{
-    struct IDiscordUserManager *internal;
-    godot_object *object;
-
-    Core *core;
-
-    Library *lib;
-} UserManager;
-
-typedef struct ImageManager
-{
-    struct IDiscordImageManager *internal;
-    godot_object *object;
-
-    Core *core;
-
-    Library *lib;
-} ImageManager;
-
-typedef struct ActivityManager
-{
-    struct IDiscordActivityManager *internal;
-    godot_object *object;
-
-    Core *core;
-
-    Library *lib;
-} ActivityManager;
-
-struct Core
-{
-    struct IDiscordCore *internal;
-    godot_object *object;
-
-    UserManager *users;
-    ImageManager *images;
-    ActivityManager *activities;
-
-    struct IDiscordUserEvents *user_events;
-    struct IDiscordActivityEvents *activity_events;
-
-    Library *lib;
-};
 
 #endif

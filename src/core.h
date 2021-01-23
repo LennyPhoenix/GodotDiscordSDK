@@ -2,14 +2,26 @@
 #define CORE_H_
 
 #include "types.h"
-#include "discord.h"
 #include "users.h"
+#include "images.h"
 #include "util.h"
 
 #include "discord_game_sdk.h"
 
 #include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
+
+struct Core
+{
+    struct IDiscordCore *internal;
+    godot_object *object;
+
+    UserManager *users;
+    struct IDiscordUserEvents *user_events;
+    ImageManager *images;
+
+    Library *lib;
+};
 
 GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib);
 GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,

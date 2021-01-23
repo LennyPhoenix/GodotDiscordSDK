@@ -34,13 +34,13 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         uint64_t create_flags = p_lib->api->godot_variant_as_uint(p_args[1]);
 
         struct DiscordCreateParams params;
-        memset(&params, 0, sizeof(params));
+        memset(&params, 0, sizeof(struct DiscordCreateParams));
         DiscordCreateParamsSetDefault(&params);
         params.client_id = id;
         params.event_data = p_core;
         params.flags = create_flags;
 
-        p_core->user_events = p_lib->api->godot_alloc(sizeof(p_core->user_events));
+        p_core->user_events = p_lib->api->godot_alloc(sizeof(struct IDiscordUserEvents));
         p_core->user_events->on_current_user_update = on_current_user_update;
         params.user_events = p_core->user_events;
 
@@ -148,12 +148,12 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
 void register_core(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
-    memset(&constructor, 0, sizeof(constructor));
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
     constructor.create_func = core_constructor;
     constructor.method_data = p_lib;
 
     godot_instance_destroy_func destructor;
-    memset(&destructor, 0, sizeof(destructor));
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = core_destructor;
     destructor.method_data = p_lib;
 
@@ -168,7 +168,7 @@ void register_core(void *p_handle, Library *p_lib)
 
         // Create
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = core_create;
             method.method_data = p_lib;
 
@@ -178,7 +178,7 @@ void register_core(void *p_handle, Library *p_lib)
         }
         // Run Callbacks
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = core_run_callbacks;
             method.method_data = p_lib;
 
@@ -188,7 +188,7 @@ void register_core(void *p_handle, Library *p_lib)
         }
         // Get User Manager
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = core_get_user_manager;
             method.method_data = p_lib;
 
@@ -198,7 +198,7 @@ void register_core(void *p_handle, Library *p_lib)
         }
         // Get Image Manager
         {
-            memset(&method, 0, sizeof(method));
+            memset(&method, 0, sizeof(godot_instance_method));
             method.method = core_get_image_manager;
             method.method_data = p_lib;
 
