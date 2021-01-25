@@ -22,3 +22,7 @@ _global_script_class_icons={
 
 config/name="DiscordSDK Demo Project"
 run/main_scene="res://main.tscn"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "gut" )
