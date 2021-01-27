@@ -2,9 +2,9 @@
 #define CORE_H_
 
 #include "types.h"
+#include "util.h"
 #include "users.h"
 #include "images.h"
-#include "util.h"
 
 #include "discord_game_sdk.h"
 
