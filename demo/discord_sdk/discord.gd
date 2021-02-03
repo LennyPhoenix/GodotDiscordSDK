@@ -2,17 +2,21 @@ class_name Discord
 
 const Core: = preload("./core.gdns")
 
+# Users
 const User: = preload("./user.gdns")
 const UserManager: = preload("./user_manager.gdns")
 
+# Images
 const ImageDimensions: = preload("./image_dimensions.gdns")
 const ImageHandle: = preload("./image_handle.gdns")
 const ImageManager: = preload("./image_manager.gdns")
 
+# Activities
 const ActivityTimestamps: = preload("./activity_timestamps.gdns")
 const ActivityAssets: = preload("./activity_assets.gdns")
 const PartySize: = preload("./party_size.gdns")
 const ActivityParty: = preload("./activity_party.gdns")
+const ActivitySecrets: = preload("./activity_secrets.gdns")
 
 enum Result {
 	OK = 0,

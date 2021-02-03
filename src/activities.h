@@ -107,26 +107,56 @@ typedef struct ActivityParty
 
 GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library *p_lib);
 GDCALLINGCONV void activity_party_destructor(godot_object *p_instance, Library *p_lib,
-                                             ActivityParty *p_activity_party);
+                                             ActivityParty *p_party);
 
 godot_variant activity_party_get_id(godot_object *p_instance, Library *p_lib,
-                                    ActivityParty *p_activity_party);
+                                    ActivityParty *p_party);
 GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_lib,
-                                         ActivityParty *p_activity_party,
+                                         ActivityParty *p_party,
                                          godot_variant *p_id);
 
 godot_variant activity_party_get_privacy(godot_object *p_instance, Library *p_lib,
-                                         ActivityParty *p_activity_party);
+                                         ActivityParty *p_party);
 GDCALLINGCONV void activity_party_set_privacy(godot_object *p_instance, Library *p_lib,
-                                              ActivityParty *p_activity_party,
+                                              ActivityParty *p_party,
                                               godot_variant *p_privacy);
 
 godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
-                                      ActivityParty *p_activity_party);
+                                      ActivityParty *p_party);
 GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_lib,
-                                           ActivityParty *p_activity_party,
+                                           ActivityParty *p_party,
                                            godot_variant *p_size);
 
 void register_activity_party(void *p_handle, Library *p_lib);
+
+typedef struct ActivitySecrets
+{
+    struct DiscordActivitySecrets *internal;
+    godot_object *object;
+} ActivitySecrets;
+
+GDCALLINGCONV void *activity_secrets_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void activity_secrets_destructor(godot_object *p_instance, Library *p_lib,
+                                               ActivitySecrets *p_secrets);
+
+godot_variant activity_secrets_get_match(godot_object *p_instance, Library *p_lib,
+                                         ActivitySecrets *p_secrets);
+GDCALLINGCONV void activity_secrets_set_match(godot_object *p_instance, Library *p_lib,
+                                              ActivitySecrets *p_secrets,
+                                              godot_variant *p_match);
+
+godot_variant activity_secrets_get_join(godot_object *p_instance, Library *p_lib,
+                                        ActivitySecrets *p_secrets);
+GDCALLINGCONV void activity_secrets_set_join(godot_object *p_instance, Library *p_lib,
+                                             ActivitySecrets *p_secrets,
+                                             godot_variant *p_join);
+
+godot_variant activity_secrets_get_spectate(godot_object *p_instance, Library *p_lib,
+                                            ActivitySecrets *p_secrets);
+GDCALLINGCONV void activity_secrets_set_spectate(godot_object *p_instance, Library *p_lib,
+                                                 ActivitySecrets *p_secrets,
+                                                 godot_variant *p_spectate);
+
+void register_activity_secrets(void *p_handle, Library *p_lib);
 
 #endif
