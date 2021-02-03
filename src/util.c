@@ -164,3 +164,23 @@ godot_variant_call_error object_call(godot_object *p_object,
 
     return error;
 }
+
+void godot_reference(godot_object *p_object, Library *p_lib)
+{
+    static godot_method_bind *bind = NULL;
+    if (bind == NULL)
+        bind = p_lib->api->godot_method_bind_get_method("Reference", "reference");
+    godot_bool ret;
+    p_lib->api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret);
+}
+
+void godot_unreference(godot_object *p_object, Library *p_lib)
+{
+    static godot_method_bind *bind = NULL;
+    if (bind == NULL)
+        bind = p_lib->api->godot_method_bind_get_method("Reference", "unreference");
+    godot_bool ret;
+    p_lib->api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret); // this returns `true` if the reference count is now at zero...
+    if (ret)
+        p_lib->api->godot_object_destroy(p_object); // ...in which case, delete the object
+}
