@@ -21,6 +21,8 @@ func _ready() -> void:
 	if result != Discord.Result.OK:
 		core = null
 	else:
+		core.set_log_hook(Discord.LogLevel.DEBUG, self, "log_hook")
+
 		users = _get_user_manager()
 		users.connect("current_user_update", self, "_on_current_user_update")
 
@@ -60,6 +62,13 @@ func _on_current_user_update() -> void:
 	users.get_current_user(self, "get_current_user_callback")
 	users.get_current_user_premium_type(
 		self, "get_current_user_premium_type_callback"
+	)
+
+func log_hook(level: int, message: String) -> void:
+	print(
+		"[Discord SDK] ",
+		enum_to_string(Discord.LogLevel, level),
+		": ", message
 	)
 
 func get_current_user_callback(result: int, user: Discord.User) -> void:

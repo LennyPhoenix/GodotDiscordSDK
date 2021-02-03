@@ -2,9 +2,9 @@
 #define CORE_H_
 
 #include "types.h"
+#include "util.h"
 #include "users.h"
 #include "images.h"
-#include "util.h"
 
 #include "discord_game_sdk.h"
 
@@ -15,6 +15,8 @@ struct Core
 {
     struct IDiscordCore *internal;
     godot_object *object;
+
+    CallbackData *hook_data;
 
     UserManager *users;
     struct IDiscordUserEvents *user_events;
@@ -30,6 +32,10 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
 godot_variant core_create(godot_object *p_instance, Library *p_lib,
                           Core *p_core,
                           int p_num_args, godot_variant **p_args);
+
+godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
+                                Core *p_core,
+                                int p_num_args, godot_variant **p_args);
 
 godot_variant core_run_callbacks(godot_object *p_instance, Library *p_lib,
                                  Core *p_core,

@@ -2,6 +2,7 @@
 #define IMAGES_H_
 
 #include "types.h"
+#include "util.h"
 #include "core.h"
 
 #include "discord_game_sdk.h"

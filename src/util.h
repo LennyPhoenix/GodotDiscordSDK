@@ -35,4 +35,7 @@ godot_variant_call_error object_call(godot_object *p_object,
                                      int p_num_args, godot_variant **p_args,
                                      Library *p_lib);
 
+void godot_reference(godot_object *p_object, Library *p_lib);
+void godot_unreference(godot_object *p_object, Library *p_lib);
+
 #endif

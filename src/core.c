@@ -19,6 +19,10 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         p_core->internal->destroy(p_core->internal);
         p_lib->api->godot_free(p_core->user_events);
     }
+    if (p_core->hook_data)
+    {
+        p_lib->api->godot_free(p_core->hook_data);
+    }
     p_lib->api->godot_free(p_core);
 }
 
@@ -52,6 +56,59 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         }
 
         p_lib->api->godot_variant_new_int(&result_variant, result);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
+void DISCORD_API log_hook(CallbackData *p_data,
+                          enum EDiscordLogLevel p_level, const char *p_message)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant level_variant;
+    godot_variant message_variant;
+
+    lib->api->godot_variant_new_int(&level_variant, p_level);
+
+    godot_string message_string = p_data->lib->api->godot_string_chars_to_utf8(p_message);
+    lib->api->godot_variant_new_string(&message_variant, &message_string);
+
+    godot_variant *args[] = {&level_variant, &message_variant};
+
+    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+}
+
+godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
+                                Core *p_core,
+                                int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_core->internal && p_num_args == 3) // Min Level, Hook Object, Hook Method
+    {
+        int64_t min_level = p_lib->api->godot_variant_as_int(p_args[0]);
+        godot_object *hook_object = p_lib->api->godot_variant_as_object(p_args[1]);
+        godot_string hook_method = p_lib->api->godot_variant_as_string(p_args[2]);
+
+        if (!p_core->hook_data)
+        {
+            p_core->hook_data = p_lib->api->godot_alloc(sizeof(CallbackData));
+        }
+
+        memset(p_core->hook_data, 0, sizeof(CallbackData));
+        p_core->hook_data->callback_name = hook_method;
+        p_core->hook_data->callback_object = hook_object;
+        p_core->hook_data->core = p_core;
+        p_core->hook_data->lib = p_lib;
+
+        p_core->internal->set_log_hook(p_core->internal, min_level, p_core->hook_data, log_hook);
+
+        p_lib->api->godot_variant_new_nil(&result_variant);
     }
     else
     {
@@ -97,6 +154,8 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
             data->core = p_core;
             data->internal = p_core->internal->get_user_manager(p_core->internal);
             p_core->users = data;
+
+            godot_reference(manager, p_lib);
         }
         else
         {
@@ -129,6 +188,8 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
             data->core = p_core;
             data->internal = p_core->internal->get_image_manager(p_core->internal);
             p_core->images = data;
+
+            godot_reference(manager, p_lib);
         }
         else
         {
@@ -174,6 +235,16 @@ void register_core(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "create",
+                                                                        attributes, method);
+        }
+        // Set Log Hook
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = core_set_log_hook;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "set_log_hook",
                                                                         attributes, method);
         }
         // Run Callbacks
