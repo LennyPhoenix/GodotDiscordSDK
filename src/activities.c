@@ -509,3 +509,196 @@ void register_party_size(void *p_handle, Library *p_lib)
         }
     }
 }
+
+GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library *p_lib)
+{
+    INIT_OBJECT(party,
+                ActivityParty, struct DiscordActivityParty,
+                p_lib, p_instance);
+
+    party->size = instantiate_custom_class("PartySize", "Resource", p_lib);
+    godot_reference(party->size, p_lib);
+
+    return party;
+}
+
+GDCALLINGCONV void activity_party_destructor(godot_object *p_instance, Library *p_lib,
+                                             ActivityParty *p_activity_party)
+{
+    if (p_activity_party->size)
+        godot_unreference(p_activity_party->size, p_lib);
+
+    p_lib->api->godot_free(p_activity_party->internal);
+    p_lib->api->godot_free(p_activity_party);
+}
+
+godot_variant activity_party_get_id(godot_object *p_instance, Library *p_lib,
+                                    ActivityParty *p_activity_party)
+{
+    godot_variant id;
+
+    godot_string string = p_lib->api->godot_string_chars_to_utf8(p_activity_party->internal->id);
+    p_lib->api->godot_variant_new_string(&id, &string);
+    p_lib->api->godot_string_destroy(&string);
+
+    return id;
+}
+
+GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_lib,
+                                         ActivityParty *p_activity_party,
+                                         godot_variant *p_id)
+{
+    godot_string string = p_lib->api->godot_variant_as_string(p_id);
+    godot_char_string char_string = p_lib->api->godot_string_utf8(&string);
+    const char *id = p_lib->api->godot_char_string_get_data(&char_string);
+
+    int size = p_lib->api->godot_char_string_length(&char_string);
+
+    memset(p_activity_party->internal->id, 0, sizeof(char) * 128);
+    memcpy(p_activity_party->internal->id, id, sizeof(char) * MIN(size, 127));
+}
+
+godot_variant activity_party_get_privacy(godot_object *p_instance, Library *p_lib,
+                                         ActivityParty *p_activity_party)
+{
+    godot_variant privacy;
+
+    p_lib->api->godot_variant_new_int(&privacy, p_activity_party->internal->privacy);
+
+    return privacy;
+}
+
+GDCALLINGCONV void activity_party_set_privacy(godot_object *p_instance, Library *p_lib,
+                                              ActivityParty *p_activity_party,
+                                              godot_variant *p_privacy)
+{
+    p_activity_party->internal->privacy = p_lib->api->godot_variant_as_int(p_privacy);
+}
+
+godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
+                                      ActivityParty *p_activity_party)
+{
+    godot_variant size;
+
+    p_lib->api->godot_variant_new_object(&size, p_activity_party->size);
+
+    return size;
+}
+
+GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_lib,
+                                           ActivityParty *p_activity_party,
+                                           godot_variant *p_size)
+{
+    if (!p_activity_party->size)
+        godot_unreference(p_activity_party->size, p_lib);
+
+    p_activity_party->size = p_lib->api->godot_variant_as_object(p_size);
+
+    if (p_activity_party->size)
+        godot_reference(p_activity_party->size, p_lib);
+}
+
+void register_activity_party(void *p_handle, Library *p_lib)
+{
+    godot_instance_create_func constructor;
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
+    constructor.create_func = activity_party_constructor;
+    constructor.method_data = p_lib;
+
+    godot_instance_destroy_func destructor;
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
+    destructor.destroy_func = activity_party_destructor;
+    destructor.method_data = p_lib;
+
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
+                                                               "ActivityParty", "Resource",
+                                                               constructor, destructor);
+
+    // Attributes
+    {
+        godot_property_attributes attributes;
+        godot_variant default_value;
+        godot_property_get_func get;
+        godot_property_set_func set;
+
+        // ID
+        {
+            memset(&attributes, 0, sizeof(godot_property_attributes));
+            attributes.type = GODOT_VARIANT_TYPE_STRING;
+            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
+
+            attributes.hint = GODOT_PROPERTY_HINT_NONE;
+            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+            godot_string string = p_lib->api->godot_string_chars_to_utf8("");
+            p_lib->api->godot_variant_new_string(&default_value, &string);
+            attributes.default_value = default_value;
+
+            memset(&get, 0, sizeof(godot_property_get_func));
+            get.get_func = activity_party_get_id;
+            get.method_data = p_lib;
+
+            memset(&set, 0, sizeof(godot_property_set_func));
+            set.set_func = activity_party_set_id;
+            set.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
+                                                                          "ActivityParty", "id",
+                                                                          &attributes,
+                                                                          set, get);
+        }
+        // Privacy
+        {
+            memset(&attributes, 0, sizeof(godot_property_attributes));
+            attributes.type = GODOT_VARIANT_TYPE_INT;
+            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
+
+            attributes.hint = GODOT_PROPERTY_HINT_ENUM;
+            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("Private,Public");
+
+            p_lib->api->godot_variant_new_int(&default_value, DiscordActivityPartyPrivacy_Private);
+            attributes.default_value = default_value;
+
+            memset(&get, 0, sizeof(godot_property_get_func));
+            get.get_func = activity_party_get_privacy;
+            get.method_data = p_lib;
+
+            memset(&set, 0, sizeof(godot_property_set_func));
+            set.set_func = activity_party_set_privacy;
+            set.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
+                                                                          "ActivityParty", "privacy",
+                                                                          &attributes,
+                                                                          set, get);
+        }
+        // Size
+        {
+            memset(&attributes, 0, sizeof(godot_property_attributes));
+            attributes.type = GODOT_VARIANT_TYPE_OBJECT;
+            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
+
+            attributes.hint = GODOT_PROPERTY_HINT_NONE;
+            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+            p_lib->api->godot_variant_new_nil(&default_value);
+            attributes.default_value = default_value;
+
+            memset(&get, 0, sizeof(godot_property_get_func));
+            get.get_func = activity_party_get_size;
+            get.method_data = p_lib;
+
+            memset(&set, 0, sizeof(godot_property_set_func));
+            set.set_func = activity_party_set_size;
+            set.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
+                                                                          "ActivityParty", "size",
+                                                                          &attributes,
+                                                                          set, get);
+        }
+    }
+}

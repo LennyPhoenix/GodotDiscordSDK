@@ -6,6 +6,7 @@
 
 #include "discord_game_sdk.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
 
@@ -92,5 +93,37 @@ GDCALLINGCONV void party_size_set_max_size(godot_object *p_instance, Library *p_
                                            godot_variant *p_max_size);
 
 void register_party_size(void *p_handle, Library *p_lib);
+
+typedef struct ActivityParty
+{
+    struct DiscordActivityParty *internal;
+    godot_object *object;
+
+    godot_object *size;
+} ActivityParty;
+
+GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void activity_party_destructor(godot_object *p_instance, Library *p_lib,
+                                             ActivityParty *p_activity_party);
+
+godot_variant activity_party_get_id(godot_object *p_instance, Library *p_lib,
+                                    ActivityParty *p_activity_party);
+GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_lib,
+                                         ActivityParty *p_activity_party,
+                                         godot_variant *p_id);
+
+godot_variant activity_party_get_privacy(godot_object *p_instance, Library *p_lib,
+                                         ActivityParty *p_activity_party);
+GDCALLINGCONV void activity_party_set_privacy(godot_object *p_instance, Library *p_lib,
+                                              ActivityParty *p_activity_party,
+                                              godot_variant *p_privacy);
+
+godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
+                                      ActivityParty *p_activity_party);
+GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_lib,
+                                           ActivityParty *p_activity_party,
+                                           godot_variant *p_size);
+
+void register_activity_party(void *p_handle, Library *p_lib);
 
 #endif

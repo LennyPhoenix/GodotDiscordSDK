@@ -61,4 +61,5 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_activity_timestamps(p_handle, &lib);
     register_activity_assets(p_handle, &lib);
     register_party_size(p_handle, &lib);
+    register_activity_party(p_handle, &lib);
 }

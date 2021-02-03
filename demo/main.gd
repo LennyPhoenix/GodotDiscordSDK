@@ -1,15 +1,18 @@
 extends Control
 
+
 onready var texture_rect: = $TextureRect
 
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
 
+
 func enum_to_string(the_enum: Dictionary, value: int) -> String:
 	var index: = the_enum.values().find(value)
 	var string: String = the_enum.keys()[index]
 	return string
+
 
 func _ready() -> void:
 	core = Discord.Core.new()
@@ -30,11 +33,13 @@ func _ready() -> void:
 
 		images = _get_image_manager()
 
+
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
 		if result != Discord.Result.OK:
 			print("Callbacks failed: ", enum_to_string(Discord.Result, result))
+
 
 func _get_user_manager() -> Discord.UserManager:
 	var result = core.get_user_manager()
@@ -47,6 +52,7 @@ func _get_user_manager() -> Discord.UserManager:
 	else:
 		return result
 
+
 func _get_image_manager() -> Discord.ImageManager:
 	var result = core.get_image_manager()
 	if result is int:
@@ -58,11 +64,13 @@ func _get_image_manager() -> Discord.ImageManager:
 	else:
 		return result
 
+
 func _on_current_user_update() -> void:
 	users.get_current_user(self, "get_current_user_callback")
 	users.get_current_user_premium_type(
 		self, "get_current_user_premium_type_callback"
 	)
+
 
 func log_hook(level: int, message: String) -> void:
 	print(
@@ -70,6 +78,7 @@ func log_hook(level: int, message: String) -> void:
 		enum_to_string(Discord.LogLevel, level),
 		": ", message
 	)
+
 
 func get_current_user_callback(result: int, user: Discord.User) -> void:
 	if result != Discord.Result.OK:
@@ -88,12 +97,14 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 
 		images.fetch(handle, true, self, "fetch_callback")
 
+
 func get_user_callback(result: int, user: Discord.User) -> void:
 	if result == Discord.Result.OK:
 		print("Fetched User:")
 		print(user.username, "#", user.discriminator, "  ID: ", user.id)
 	else:
 		print("Failed to fetch user: ", enum_to_string(Discord.Result, result))
+
 
 func get_current_user_premium_type_callback(
 	result: int,
@@ -107,6 +118,7 @@ func get_current_user_premium_type_callback(
 	else:
 		print("Current User Premium Type:")
 		print(enum_to_string(Discord.PremiumType, premium_type))
+
 
 func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
 	if result != Discord.Result.OK:
