@@ -94,11 +94,13 @@ godot_object *instantiate_custom_class(const char *p_class_name, const char *p_b
 
     // Add the script
     {
-        godot_method_bind *mb_set_script = p_lib->api->godot_method_bind_get_method("Object", "set_script");
+        static godot_method_bind *bind = NULL;
+        if (bind == NULL)
+            bind = p_lib->api->godot_method_bind_get_method("Object", "set_script");
 
         const void *args[] = {script};
 
-        p_lib->api->godot_method_bind_ptrcall(mb_set_script, object, args, NULL);
+        p_lib->api->godot_method_bind_ptrcall(bind, object, args, NULL);
     }
 
     return object;
