@@ -359,7 +359,7 @@ void DISCORD_API get_user_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
 
-    free(p_data);
+    lib->api->godot_free(p_data);
 }
 
 godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
@@ -376,7 +376,7 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
 
         godot_object *user_object = instantiate_custom_class("User", "Resource", p_lib);
 
-        CallbackData *callback_data = calloc(1, sizeof(CallbackData));
+        CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
         callback_data->callback_object = callback_object;
         callback_data->callback_name = callback_name;
         callback_data->core = p_user_manager->core;
