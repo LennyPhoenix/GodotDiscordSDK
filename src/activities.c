@@ -519,12 +519,6 @@ GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library
     party->size = instantiate_custom_class("PartySize", "Resource", p_lib);
     godot_reference(party->size, p_lib);
 
-    PartySize *size_data = p_lib->nativescript_api->godot_nativescript_get_userdata(party->size);
-    p_lib->api->godot_free(size_data->internal);
-
-    size_data->internal = &party->internal->size;
-    size_data->bound = true;
-
     return party;
 }
 
@@ -532,15 +526,7 @@ GDCALLINGCONV void activity_party_destructor(godot_object *p_instance, Library *
                                              ActivityParty *p_party)
 {
     if (p_party->size)
-    {
-        PartySize *size_data = p_lib->nativescript_api->godot_nativescript_get_userdata(p_party->size);
-        size_data->internal = p_lib->api->godot_alloc(sizeof(struct DiscordPartySize));
-        memcpy(size_data->internal, &p_party->internal->size, sizeof(struct DiscordPartySize));
-
-        size_data->bound = false;
-
         godot_unreference(p_party->size, p_lib);
-    }
 
     p_lib->api->godot_free(p_party->internal);
     p_lib->api->godot_free(p_party);
@@ -603,32 +589,7 @@ GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_
                                            ActivityParty *p_party,
                                            godot_variant *p_size)
 {
-    if (p_party->size)
-    {
-        godot_unreference(p_party->size, p_lib);
-
-        PartySize *size_data = p_lib->nativescript_api->godot_nativescript_get_userdata(p_party->size);
-        size_data->internal = p_lib->api->godot_alloc(sizeof(struct DiscordPartySize));
-        memcpy(size_data->internal, &p_party->internal->size, sizeof(struct DiscordPartySize));
-
-        size_data->bound = false;
-    }
-
     p_party->size = p_lib->api->godot_variant_as_object(p_size);
-
-    if (p_party->size)
-    {
-        godot_reference(p_party->size, p_lib);
-
-        PartySize *size_data = p_lib->nativescript_api->godot_nativescript_get_userdata(p_party->size);
-        memcpy(&p_party->internal->size, size_data->internal, sizeof(struct DiscordPartySize));
-
-        if (!size_data->bound)
-            p_lib->api->godot_free(size_data->internal);
-        size_data->internal = &p_party->internal->size;
-
-        size_data->bound = true;
-    }
 }
 
 void register_activity_party(void *p_handle, Library *p_lib)

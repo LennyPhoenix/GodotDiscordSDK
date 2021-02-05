@@ -75,8 +75,6 @@ typedef struct PartySize
 {
     struct DiscordPartySize *internal;
     godot_object *object;
-
-    bool bound;
 } PartySize;
 
 GDCALLINGCONV void *party_size_constructor(godot_object *p_instance, Library *p_lib);
