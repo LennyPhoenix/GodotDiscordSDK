@@ -414,7 +414,18 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
         godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-        uint32_t size = (uint32_t)pow(handle->internal->size, 2) * 4;
+        struct DiscordImageDimensions dimensions;
+        {
+            enum DiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
+                                                                                  *handle->internal, &dimensions);
+            if (result != DiscordResult_Ok)
+            {
+                p_lib->api->godot_variant_new_int(&result_variant, result);
+                return result_variant;
+            }
+        }
+
+        uint32_t size = dimensions.width * dimensions.height * 4;
         uint8_t *bytes = p_lib->api->godot_alloc(sizeof(uint8_t) * size);
 
         enum EDiscordResult result = p_image_manager->internal->get_data(p_image_manager->internal,
