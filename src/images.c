@@ -416,8 +416,8 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
 
         struct DiscordImageDimensions dimensions;
         {
-            enum DiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
-                                                                                  *handle->internal, &dimensions);
+            enum EDiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
+                                                                                   *handle->internal, &dimensions);
             if (result != DiscordResult_Ok)
             {
                 p_lib->api->godot_variant_new_int(&result_variant, result);
