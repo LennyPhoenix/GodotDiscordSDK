@@ -125,6 +125,8 @@ GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_
                                            ActivityParty *p_party,
                                            godot_variant *p_size);
 
+void activity_party_collapse(godot_object *p_instance, Library *p_lib);
+
 void register_activity_party(void *p_handle, Library *p_lib);
 
 typedef struct ActivitySecrets
@@ -226,6 +228,8 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
                                          Activity *p_activity,
                                          godot_variant *p_is_instance);
 
+void activity_collapse(godot_object *p_instance, Library *p_lib);
+
 void register_activity(void *p_handle, Library *p_lib);
 
 struct ActivityManager
@@ -241,6 +245,14 @@ struct ActivityManager
 GDCALLINGCONV void *activity_manager_constructor(godot_object *p_instance, Library *p_lib);
 GDCALLINGCONV void activity_manager_destructor(godot_object *p_instance, Library *p_lib,
                                                ActivityManager *p_activity_manager);
+
+godot_variant activity_manager_register_command(godot_object *p_instance, Library *p_lib,
+                                                ActivityManager *p_activity_manager,
+                                                int p_num_args, godot_variant **p_args);
+
+godot_variant activity_manager_update_activity(godot_object *p_instance, Library *p_lib,
+                                               ActivityManager *p_activity_manager,
+                                               int p_num_args, godot_variant **p_args);
 
 void register_activity_manager(void *p_handle, Library *p_lib);
 
