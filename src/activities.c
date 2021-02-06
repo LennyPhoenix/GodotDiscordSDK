@@ -1462,7 +1462,7 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
 
     return result_variant;
 }
-godot_variant activity_manager_register_command(godot_object *p_instance, Library *p_lib,
+godot_variant activity_manager_register_steam(godot_object *p_instance, Library *p_lib,
                                                 ActivityManager *p_activity_manager,
                                                 int p_num_args, godot_variant **p_args)
 {
@@ -1471,7 +1471,7 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
     if (p_num_args == 1) // Command
     {
         godot_string command_int = p_lib->api->godot_variant_as_int(p_args[0]);
-        godot_char_int command_char_int = p_lib->api->godot_string_utf8(&command_int);
+        godot_char_int command_char_int = p_lib->api->godot_string_to_int(&command_int);
 
         const int *command = p_lib->api->godot_int_get_data(&command_char_int);
 
