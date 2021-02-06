@@ -598,6 +598,14 @@ GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_
         godot_reference(p_party->size, p_lib);
 }
 
+void activity_party_collapse(godot_object *p_instance, Library *p_lib)
+{
+    ActivityParty *party = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
+    PartySize *size = p_lib->nativescript_api->godot_nativescript_get_userdata(party->size);
+
+    memcpy(&party->internal->size, size->internal, sizeof(struct DiscordPartySize));
+}
+
 void register_activity_party(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -1134,6 +1142,23 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
     p_activity->internal->instance = p_lib->api->godot_variant_as_bool(p_is_instance);
 }
 
+void activity_collapse(godot_object *p_instance, Library *p_lib)
+{
+    Activity *activity = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
+
+    ActivityTimestamps *timestamps = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->timestamps);
+    ActivityAssets *assets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->assets);
+    ActivityParty *party = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->party);
+    ActivitySecrets *secrets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->secrets);
+
+    activity_party_collapse(activity->party, p_lib);
+
+    memcpy(&activity->internal->timestamps, timestamps->internal, sizeof(struct DiscordActivityTimestamps));
+    memcpy(&activity->internal->assets, assets->internal, sizeof(struct DiscordActivityAssets));
+    memcpy(&activity->internal->party, party->internal, sizeof(struct DiscordActivityParty));
+    memcpy(&activity->internal->secrets, secrets->internal, sizeof(struct DiscordActivitySecrets));
+}
+
 void register_activity(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -1438,6 +1463,55 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
     return result_variant;
 }
 
+void DISCORD_API update_activity_callback(CallbackData *p_data,
+                                          enum EDiscordResult p_result)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant result_variant;
+
+    lib->api->godot_variant_new_int(&result_variant, p_result);
+
+    godot_variant *args[] = {&result_variant};
+
+    object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
+
+    lib->api->godot_free(p_data);
+}
+
+godot_variant activity_manager_update_activity(godot_object *p_instance, Library *p_lib,
+                                               ActivityManager *p_activity_manager,
+                                               int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 3) // Activity, Callback Object, Callback Name
+    {
+        godot_object *activity_object = p_lib->api->godot_variant_as_object(p_args[0]);
+        Activity *activity = p_lib->nativescript_api->godot_nativescript_get_userdata(activity_object);
+        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[1]);
+        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[2]);
+
+        activity_collapse(activity_object, p_lib);
+
+        CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
+        callback_data->callback_object = callback_object;
+        callback_data->callback_name = callback_name;
+        callback_data->core = p_activity_manager->core;
+        callback_data->lib = p_lib;
+
+        p_activity_manager->internal->update_activity(p_activity_manager->internal,
+                                                      activity->internal,
+                                                      callback_data, update_activity_callback);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_activity_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -1453,4 +1527,31 @@ void register_activity_manager(void *p_handle, Library *p_lib)
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
                                                                "ActivityManager", "Reference",
                                                                constructor, destructor);
+
+    // Methods
+    {
+        godot_instance_method method;
+        godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+
+        // Register Command
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = activity_manager_register_command;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ActivityManager", "register_command",
+                                                                        attributes, method);
+        }
+        // Update Activity
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = activity_manager_update_activity;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ActivityManager", "update_activity",
+                                                                        attributes, method);
+        }
+    }
 }
