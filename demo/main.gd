@@ -39,14 +39,13 @@ func _ready() -> void:
 		activity.details = "Hello from the GodotDiscordSDK!"
 		activity.state = "Testing..."
 
-		activity.assets.large_image = "blurpgodot"
+		activity.assets.large_image = "icon"
 		activity.assets.large_text = "Godot Discord Game SDK"
-		activity.assets.small_image = "blurpgodot"
-		activity.assets.small_text = "Mini Godot"
 
 		activity.timestamps.start = OS.get_unix_time()
 
 		activities.update_activity(activity, self, "update_activity_callback")
+		activities.register_command(OS.get_executable_path())
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
