@@ -157,4 +157,75 @@ GDCALLINGCONV void activity_secrets_set_spectate(godot_object *p_instance, Libra
 
 void register_activity_secrets(void *p_handle, Library *p_lib);
 
+typedef struct Activity
+{
+    struct DiscordActivity *internal;
+    godot_object *object;
+
+    godot_object *timestamps;
+    godot_object *assets;
+    godot_object *party;
+    godot_object *secrets;
+} Activity;
+
+GDCALLINGCONV void *activity_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void activity_destructor(godot_object *p_instance, Library *p_lib,
+                                       Activity *p_activity);
+
+godot_variant activity_get_application_id(godot_object *p_instance, Library *p_lib,
+                                          Activity *p_activity);
+GDCALLINGCONV void activity_set_application_id(godot_object *p_instance, Library *p_lib,
+                                               Activity *p_activity,
+                                               godot_variant *p_application_id);
+
+godot_variant activity_get_name(godot_object *p_instance, Library *p_lib,
+                                Activity *p_activity);
+GDCALLINGCONV void activity_set_name(godot_object *p_instance, Library *p_lib,
+                                     Activity *p_activity,
+                                     godot_variant *p_name);
+
+godot_variant activity_get_state(godot_object *p_instance, Library *p_lib,
+                                 Activity *p_activity);
+GDCALLINGCONV void activity_set_state(godot_object *p_instance, Library *p_lib,
+                                      Activity *p_activity,
+                                      godot_variant *p_state);
+
+godot_variant activity_get_details(godot_object *p_instance, Library *p_lib,
+                                   Activity *p_activity);
+GDCALLINGCONV void activity_set_details(godot_object *p_instance, Library *p_lib,
+                                        Activity *p_activity,
+                                        godot_variant *p_details);
+
+godot_variant activity_get_timestamps(godot_object *p_instance, Library *p_lib,
+                                      Activity *p_activity);
+GDCALLINGCONV void activity_set_timestamps(godot_object *p_instance, Library *p_lib,
+                                           Activity *p_activity,
+                                           godot_variant *p_timestamps);
+
+godot_variant activity_get_assets(godot_object *p_instance, Library *p_lib,
+                                  Activity *p_activity);
+GDCALLINGCONV void activity_set_assets(godot_object *p_instance, Library *p_lib,
+                                       Activity *p_activity,
+                                       godot_variant *p_assets);
+
+godot_variant activity_get_party(godot_object *p_instance, Library *p_lib,
+                                 Activity *p_activity);
+GDCALLINGCONV void activity_set_party(godot_object *p_instance, Library *p_lib,
+                                      Activity *p_activity,
+                                      godot_variant *p_party);
+
+godot_variant activity_get_secrets(godot_object *p_instance, Library *p_lib,
+                                   Activity *p_activity);
+GDCALLINGCONV void activity_set_secrets(godot_object *p_instance, Library *p_lib,
+                                        Activity *p_activity,
+                                        godot_variant *p_secrets);
+
+godot_variant activity_get_instance(godot_object *p_instance, Library *p_lib,
+                                    Activity *p_activity);
+GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_lib,
+                                         Activity *p_activity,
+                                         godot_variant *p_is_instance);
+
+void register_activity(void *p_handle, Library *p_lib);
+
 #endif

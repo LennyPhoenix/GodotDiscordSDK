@@ -33,7 +33,6 @@ func _ready() -> void:
 
 		images = _get_image_manager()
 
-
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()

@@ -17,6 +17,7 @@ const ActivityAssets: = preload("./activity_assets.gdns")
 const PartySize: = preload("./party_size.gdns")
 const ActivityParty: = preload("./activity_party.gdns")
 const ActivitySecrets: = preload("./activity_secrets.gdns")
+const Activity: = preload("./activity.gdns")
 
 enum Result {
 	OK = 0,
