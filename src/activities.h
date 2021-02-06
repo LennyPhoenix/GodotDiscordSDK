@@ -228,4 +228,20 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
 
 void register_activity(void *p_handle, Library *p_lib);
 
+struct ActivityManager
+{
+    struct IDiscordActivityManager *internal;
+    godot_object *object;
+
+    Core *core;
+
+    Library *lib;
+};
+
+GDCALLINGCONV void *activity_manager_constructor(godot_object *p_instance, Library *p_lib);
+GDCALLINGCONV void activity_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                               ActivityManager *p_activity_manager);
+
+void register_activity_manager(void *p_handle, Library *p_lib);
+
 #endif

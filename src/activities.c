@@ -1390,3 +1390,36 @@ void register_activity(void *p_handle, Library *p_lib)
         }
     }
 }
+
+GDCALLINGCONV void *activity_manager_constructor(godot_object *p_instance, Library *p_lib)
+{
+    ActivityManager *activity_manager = p_lib->api->godot_alloc(sizeof(ActivityManager));
+
+    activity_manager->object = p_instance;
+    activity_manager->lib = p_lib;
+
+    return activity_manager;
+}
+
+GDCALLINGCONV void activity_manager_destructor(godot_object *p_instance, Library *p_lib,
+                                               ActivityManager *p_activity_manager)
+{
+    p_lib->api->godot_free(p_activity_manager);
+}
+
+void register_activity_manager(void *p_handle, Library *p_lib)
+{
+    godot_instance_create_func constructor;
+    memset(&constructor, 0, sizeof(godot_instance_create_func));
+    constructor.create_func = activity_manager_constructor;
+    constructor.method_data = p_lib;
+
+    godot_instance_destroy_func destructor;
+    memset(&destructor, 0, sizeof(godot_instance_destroy_func));
+    destructor.destroy_func = activity_manager_destructor;
+    destructor.method_data = p_lib;
+
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
+                                                               "ActivityManager", "Reference",
+                                                               constructor, destructor);
+}

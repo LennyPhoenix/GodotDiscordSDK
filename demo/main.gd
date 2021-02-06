@@ -6,6 +6,7 @@ onready var texture_rect: = $TextureRect
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
+var activities: Discord.ActivityManager
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:
@@ -27,11 +28,12 @@ func _ready() -> void:
 		core.set_log_hook(Discord.LogLevel.DEBUG, self, "log_hook")
 
 		users = _get_user_manager()
+		images = _get_image_manager()
+		activities = _get_activity_manager()
+
 		users.connect("current_user_update", self, "_on_current_user_update")
 
 		users.get_user(425340416531890178, self, "get_user_callback")
-
-		images = _get_image_manager()
 
 func _process(_delta: float) -> void:
 	if core:
@@ -57,6 +59,18 @@ func _get_image_manager() -> Discord.ImageManager:
 	if result is int:
 		print(
 			"Failed to get image manager: ",
+			enum_to_string(Discord.Result, result)
+		)
+		return null
+	else:
+		return result
+
+
+func _get_activity_manager() -> Discord.ActivityManager:
+	var result = core.get_activity_manager()
+	if result is int:
+		print(
+			"Failed to get activity manager: ",
 			enum_to_string(Discord.Result, result)
 		)
 		return null

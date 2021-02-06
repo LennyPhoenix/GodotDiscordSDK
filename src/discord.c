@@ -70,4 +70,5 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_activity_party(p_handle, &lib);
     register_activity_secrets(p_handle, &lib);
     register_activity(p_handle, &lib);
+    register_activity_manager(p_handle, &lib);
 }

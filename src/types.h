@@ -18,6 +18,7 @@ typedef struct Library
 typedef struct Core Core;
 typedef struct UserManager UserManager;
 typedef struct ImageManager ImageManager;
+typedef struct ActivityManager ActivityManager;
 
 typedef struct CallbackData
 {
