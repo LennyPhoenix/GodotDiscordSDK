@@ -18,7 +18,7 @@ func enum_to_string(the_enum: Dictionary, value: int) -> String:
 func _ready() -> void:
 	core = Discord.Core.new()
 	var result: int = core.create(
-		793449535632441374,
+		729429191489093702,
 		Discord.CreateFlags.DEFAULT
 	)
 	print("Created Discord Core: ", enum_to_string(Discord.Result, result))
@@ -34,7 +34,7 @@ func _ready() -> void:
 		users.connect("current_user_update", self, "_on_current_user_update")
 
 		users.get_user(425340416531890178, self, "get_user_callback")
-
+		activities.register_command(OS.get_executable_path())
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
