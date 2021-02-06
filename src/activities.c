@@ -1413,6 +1413,31 @@ GDCALLINGCONV void activity_manager_destructor(godot_object *p_instance, Library
     p_lib->api->godot_free(p_activity_manager);
 }
 
+godot_variant activity_manager_register_command(godot_object *p_instance, Library *p_lib,
+                                                ActivityManager *p_activity_manager,
+                                                int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 1) // Command
+    {
+        godot_string command_string = p_lib->api->godot_variant_as_string(p_args[0]);
+        godot_char_string command_char_string = p_lib->api->godot_string_utf8(&command_string);
+
+        const char *command = p_lib->api->godot_char_string_get_data(&command_char_string);
+
+        enum EDiscordResult result = p_activity_manager->internal->register_command(p_activity_manager->internal, command);
+
+        p_lib->api->godot_variant_new_int(&result_variant, result);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_activity_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
