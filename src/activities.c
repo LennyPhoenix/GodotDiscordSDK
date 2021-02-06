@@ -919,6 +919,9 @@ GDCALLINGCONV void *activity_constructor(godot_object *p_instance, Library *p_li
     activity->party = instantiate_custom_class("ActivityParty", "Resource", p_lib);
     godot_reference(activity->party, p_lib);
 
+    activity->secrets = instantiate_custom_class("ActivitySecrets", "Resource", p_lib);
+    godot_reference(activity->secrets, p_lib);
+
     return activity;
 }
 
@@ -933,6 +936,9 @@ GDCALLINGCONV void activity_destructor(godot_object *p_instance, Library *p_lib,
 
     if (p_activity->party)
         godot_unreference(p_activity->party, p_lib);
+
+    if (p_activity->secrets)
+        godot_unreference(p_activity->secrets, p_lib);
 
     p_lib->api->godot_free(p_activity->internal);
     p_lib->api->godot_free(p_activity);
