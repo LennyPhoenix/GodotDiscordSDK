@@ -1470,12 +1470,12 @@ godot_variant activity_manager_register_steam(godot_object *p_instance, Library 
 
     if (p_num_args == 1) // Command
     {
-        godot_string command_int = p_lib->api->godot_variant_as_int(p_args[0]);
+        godot_int command_int = p_lib->api->godot_variant_as_int(p_args[0]);
         godot_char_int command_char_int = p_lib->api->godot_string_to_int(&command_int);
 
-        const int *command = p_lib->api->godot_int_get_data(&command_char_int);
+        const int *steamid = p_lib->api->godot_char_string_get_data(&command_char_int);
 
-        enum EDiscordResult result = p_activity_manager->internal->register_steam(p_activity_manager->internal, command);
+        enum EDiscordResult result = p_activity_manager->internal->register_steam(p_activity_manager->internal, steamid);
 
         p_lib->api->godot_variant_new_int(&result_variant, result);
     }
