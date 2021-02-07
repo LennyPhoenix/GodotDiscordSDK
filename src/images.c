@@ -331,7 +331,7 @@ void DISCORD_API fetch_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
 
-    free(p_data);
+    lib->api->godot_free(p_data);
 }
 
 godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
@@ -349,7 +349,7 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
 
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-        CallbackData *callback_data = calloc(1, sizeof(CallbackData));
+        CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
         callback_data->callback_object = callback_object;
         callback_data->callback_name = callback_name;
         callback_data->core = p_image_manager->core;
@@ -414,8 +414,19 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
         godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
-        uint32_t size = (uint32_t)pow(handle->internal->size, 2) * 4;
-        uint8_t *bytes = calloc(size, sizeof(uint8_t));
+        struct DiscordImageDimensions dimensions;
+        {
+            enum EDiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
+                                                                                   *handle->internal, &dimensions);
+            if (result != DiscordResult_Ok)
+            {
+                p_lib->api->godot_variant_new_int(&result_variant, result);
+                return result_variant;
+            }
+        }
+
+        uint32_t size = dimensions.width * dimensions.height * 4;
+        uint8_t *bytes = p_lib->api->godot_alloc(sizeof(uint8_t) * size);
 
         enum EDiscordResult result = p_image_manager->internal->get_data(p_image_manager->internal,
                                                                          *handle->internal,
@@ -438,7 +449,7 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
             p_lib->api->godot_variant_new_int(&result_variant, result);
         }
 
-        free(bytes);
+        p_lib->api->godot_free(bytes);
     }
     else
     {

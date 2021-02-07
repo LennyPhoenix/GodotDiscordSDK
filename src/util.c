@@ -41,14 +41,15 @@ godot_string get_script_path(godot_string *p_class_name,
     }
 
     // Join the strings together
-    char *script_path = calloc(last_slash_char + script_name_size + 6, sizeof(char));
+    char *script_path = p_lib->api->godot_alloc(sizeof(char) * (last_slash_char + script_name_size + 6));
+    memset(script_path, 0, sizeof(char) * (last_slash_char + script_name_size + 6));
     memcpy(script_path, gdnlib_path, last_slash_char * sizeof(char));
     memcpy(script_path + last_slash_char, script_name, script_name_size * sizeof(char));
     memcpy(script_path + last_slash_char + script_name_size, ".gdns", 5 * sizeof(char));
 
     godot_string script_path_string = p_lib->api->godot_string_chars_to_utf8(script_path);
 
-    free(script_path);
+    p_lib->api->godot_free(script_path);
 
     return script_path_string;
 }
@@ -116,7 +117,7 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
 
     godot_string method_name = p_lib->api->godot_string_chars_to_utf8("emit_signal");
 
-    godot_variant **args = calloc(p_num_args + 1, sizeof(godot_variant *));
+    godot_variant **args = p_lib->api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 1));
 
     godot_variant variant_signal_name;
     p_lib->api->godot_variant_new_string(&variant_signal_name, p_signal_name);
@@ -131,7 +132,7 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
     godot_variant_call_error error;
     p_lib->api->godot_variant_call(&variant, &method_name, args, p_num_args + 1, &error);
 
-    free(args);
+    p_lib->api->godot_free(args);
 
     return error;
 }
@@ -144,7 +145,7 @@ godot_variant_call_error object_call(godot_object *p_object,
     godot_variant variant;
     p_lib->api->godot_variant_new_object(&variant, p_object);
 
-    godot_variant **args = calloc(p_num_args + 1, sizeof(godot_variant *));
+    godot_variant **args = p_lib->api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 1));
 
     godot_variant variant_method_name;
     p_lib->api->godot_variant_new_string(&variant_method_name, p_method_name);
@@ -160,7 +161,7 @@ godot_variant_call_error object_call(godot_object *p_object,
     godot_variant_call_error error;
     p_lib->api->godot_variant_call(&variant, &method_name, args, p_num_args + 1, &error);
 
-    free(args);
+    p_lib->api->godot_free(args);
 
     return error;
 }
