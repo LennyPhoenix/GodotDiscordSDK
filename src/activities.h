@@ -249,6 +249,9 @@ GDCALLINGCONV void activity_manager_destructor(godot_object *p_instance, Library
 godot_variant activity_manager_register_command(godot_object *p_instance, Library *p_lib,
                                                 ActivityManager *p_activity_manager,
                                                 int p_num_args, godot_variant **p_args);
+godot_variant activity_manager_register_steam(godot_object *p_instance, Library *p_lib,
+                                                ActivityManager *p_activity_manager,
+                                                int p_num_args, godot_variant **p_args);
 
 godot_variant activity_manager_update_activity(godot_object *p_instance, Library *p_lib,
                                                ActivityManager *p_activity_manager,

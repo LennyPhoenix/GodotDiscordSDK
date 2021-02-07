@@ -42,8 +42,8 @@ func _ready() -> void:
 
 		activity.assets.large_image = "blurpgodot"
 		activity.assets.large_text = "Godot Discord Game SDK"
-		activity.assets.small_image = "blurpgodot"
 		activity.assets.small_text = "Mini Godot"
+		activity.assets.small_image = "blurpgodot"
 
 		activity.timestamps.start = OS.get_unix_time()
 

@@ -1462,7 +1462,30 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
 
     return result_variant;
 }
+godot_variant activity_manager_register_steam(godot_object *p_instance, Library *p_lib,
+                                                ActivityManager *p_activity_manager,
+                                                int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
 
+    if (p_num_args == 1) // Command
+    {
+        godot_int command_int = p_lib->api->godot_variant_as_int(p_args[0]);
+        godot_char_int command_char_int = p_lib->api->godot_string_to_int(&command_int);
+
+        const int *steamid = p_lib->api->godot_char_string_get_data(&command_char_int);
+
+        enum EDiscordResult result = p_activity_manager->internal->register_steam(p_activity_manager->internal, steamid);
+
+        p_lib->api->godot_variant_new_int(&result_variant, result);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
 void DISCORD_API update_activity_callback(CallbackData *p_data,
                                           enum EDiscordResult p_result)
 {
@@ -1541,6 +1564,16 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "ActivityManager", "register_command",
+                                                                        attributes, method);
+        }
+        // Register Steam
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = activity_manager_register_steam;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ActivityManager", "register_steam",
                                                                         attributes, method);
         }
         // Update Activity
