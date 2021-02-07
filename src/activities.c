@@ -1520,7 +1520,7 @@ godot_variant activity_manager_register_steam(godot_object *p_instance, Library 
 
     if (p_num_args == 1) // Steam ID
     {
-        int32_t steam_id = (int32_t)p_lib->api->godot_variant_as_int(p_args[0]);
+        uint32_t steam_id = (uint32_t)p_lib->api->godot_variant_as_uint(p_args[0]);
 
         enum EDiscordResult result = p_activity_manager->internal->register_steam(p_activity_manager->internal, steam_id);
 
