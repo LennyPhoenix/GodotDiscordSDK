@@ -228,6 +228,12 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
                                          Activity *p_activity,
                                          godot_variant *p_is_instance);
 
+godot_variant activity_get_supported_platforms(godot_object *p_instance, Library *p_lib,
+                                               Activity *p_activity);
+GDCALLINGCONV void activity_set_supported_platforms(godot_object *p_instance, Library *p_lib,
+                                                    Activity *p_activity,
+                                                    godot_variant *p_supported_platforms);
+
 void activity_collapse(godot_object *p_instance, Library *p_lib);
 
 void register_activity(void *p_handle, Library *p_lib);
@@ -250,8 +256,8 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
                                                 ActivityManager *p_activity_manager,
                                                 int p_num_args, godot_variant **p_args);
 godot_variant activity_manager_register_steam(godot_object *p_instance, Library *p_lib,
-                                                ActivityManager *p_activity_manager,
-                                                int p_num_args, godot_variant **p_args);
+                                              ActivityManager *p_activity_manager,
+                                              int p_num_args, godot_variant **p_args);
 
 godot_variant activity_manager_update_activity(godot_object *p_instance, Library *p_lib,
                                                ActivityManager *p_activity_manager,
