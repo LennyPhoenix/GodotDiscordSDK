@@ -119,6 +119,7 @@ enum ActivitySupportedPlatformFlags {
 	DESKTOP = 1,
 	ANDROID = 2,
 	IOS = 4,
+	DEFAULT = 7,
 }
 
 enum ActivityJoinRequestReply {
