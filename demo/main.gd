@@ -49,6 +49,12 @@ func _ready() -> void:
 
 		activities.update_activity(activity, self, "update_activity_callback")
 
+		yield(get_tree().create_timer(10), "timeout")
+
+		print(activity.supported_platforms)
+
+		activities.clear_activity(self, "clear_activity_callback")
+
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
@@ -180,9 +186,19 @@ func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
 
 func update_activity_callback(result: int):
 	if result == Discord.Result.OK:
-		print("Updated Activity Successfully")
+		print("Updated activity successfully!")
 	else:
 		print(
 			"Failed to update activity: ",
+			enum_to_string(Discord.Result, result)
+		)
+
+
+func clear_activity_callback(result: int):
+	if result == Discord.Result.OK:
+		print("Cleared activity successfully!")
+	else:
+		print(
+			"Failed to clear activity: ",
 			enum_to_string(Discord.Result, result)
 		)
