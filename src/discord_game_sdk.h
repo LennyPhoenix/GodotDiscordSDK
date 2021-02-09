@@ -75,6 +75,7 @@ enum EDiscordResult {
     DiscordResult_InvalidGiftCode = 41,
     DiscordResult_PurchaseError = 42,
     DiscordResult_TransactionAborted = 43,
+    DiscordResult_DrawingInitFailed = 44,
 };
 
 enum EDiscordCreateFlags {
@@ -105,6 +106,11 @@ enum EDiscordPremiumType {
 
 enum EDiscordImageType {
     DiscordImageType_User,
+};
+
+enum EDiscordActivityPartyPrivacy {
+    DiscordActivityPartyPrivacy_Private = 0,
+    DiscordActivityPartyPrivacy_Public = 1,
 };
 
 enum EDiscordActivityType {
@@ -165,6 +171,18 @@ enum EDiscordLobbySearchDistance {
     DiscordLobbySearchDistance_Default,
     DiscordLobbySearchDistance_Extended,
     DiscordLobbySearchDistance_Global,
+};
+
+enum EDiscordKeyVariant {
+    DiscordKeyVariant_Normal,
+    DiscordKeyVariant_Right,
+    DiscordKeyVariant_Left,
+};
+
+enum EDiscordMouseButton {
+    DiscordMouseButton_Left,
+    DiscordMouseButton_Middle,
+    DiscordMouseButton_Right,
 };
 
 enum EDiscordEntitlementType {
@@ -262,6 +280,7 @@ struct DiscordPartySize {
 struct DiscordActivityParty {
     char id[128];
     struct DiscordPartySize size;
+    enum EDiscordActivityPartyPrivacy privacy;
 };
 
 struct DiscordActivitySecrets {
@@ -301,6 +320,21 @@ struct DiscordLobby {
     DiscordLobbySecret secret;
     uint32_t capacity;
     bool locked;
+};
+
+struct DiscordImeUnderline {
+    int32_t from;
+    int32_t to;
+    uint32_t color;
+    uint32_t background_color;
+    bool thick;
+};
+
+struct DiscordRect {
+    int32_t left;
+    int32_t top;
+    int32_t right;
+    int32_t bottom;
 };
 
 struct DiscordFileStat {
@@ -516,6 +550,19 @@ struct IDiscordOverlayManager {
     void (*open_activity_invite)(struct IDiscordOverlayManager* manager, enum EDiscordActivityActionType type, void* callback_data, void (*callback)(void* callback_data, enum EDiscordResult result));
     void (*open_guild_invite)(struct IDiscordOverlayManager* manager, const char* code, void* callback_data, void (*callback)(void* callback_data, enum EDiscordResult result));
     void (*open_voice_settings)(struct IDiscordOverlayManager* manager, void* callback_data, void (*callback)(void* callback_data, enum EDiscordResult result));
+    enum EDiscordResult (*init_drawing_dxgi)(struct IDiscordOverlayManager* manager, IDXGISwapChain* swapchain, bool use_message_forwarding);
+    void (*on_present)(struct IDiscordOverlayManager* manager);
+    void (*forward_message)(struct IDiscordOverlayManager* manager, MSG* message);
+    void (*key_event)(struct IDiscordOverlayManager* manager, bool down, const char* key_code, enum EDiscordKeyVariant variant);
+    void (*char_event)(struct IDiscordOverlayManager* manager, const char* character);
+    void (*mouse_button_event)(struct IDiscordOverlayManager* manager, uint8_t down, int32_t click_count, enum EDiscordMouseButton which, int32_t x, int32_t y);
+    void (*mouse_motion_event)(struct IDiscordOverlayManager* manager, int32_t x, int32_t y);
+    void (*ime_commit_text)(struct IDiscordOverlayManager* manager, const char* text);
+    void (*ime_set_composition)(struct IDiscordOverlayManager* manager, const char* text, struct DiscordImeUnderline* underlines, uint32_t underlines_length, int32_t from, int32_t to);
+    void (*ime_cancel_composition)(struct IDiscordOverlayManager* manager);
+    void (*set_ime_composition_range_callback)(struct IDiscordOverlayManager* manager, void* on_ime_composition_range_changed_data, void (*on_ime_composition_range_changed)(void* on_ime_composition_range_changed_data, int32_t from, int32_t to, struct DiscordRect* bounds, uint32_t bounds_length));
+    void (*set_ime_selection_bounds_callback)(struct IDiscordOverlayManager* manager, void* on_ime_selection_bounds_changed_data, void (*on_ime_selection_bounds_changed)(void* on_ime_selection_bounds_changed_data, struct DiscordRect anchor, struct DiscordRect focus, bool is_anchor_first));
+    bool (*is_point_inside_click_zone)(struct IDiscordOverlayManager* manager, int32_t x, int32_t y);
 };
 
 typedef void* IDiscordStorageEvents;
