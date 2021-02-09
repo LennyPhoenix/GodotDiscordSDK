@@ -27,6 +27,8 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         godot_unreference(p_core->users, p_lib);
     if (p_core->images)
         godot_unreference(p_core->images, p_lib);
+    if (p_core->activities)
+        godot_unreference(p_core->activities, p_lib);
 
     p_lib->api->godot_free(p_core);
 }
