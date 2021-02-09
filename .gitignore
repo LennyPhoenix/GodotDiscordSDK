@@ -132,3 +132,7 @@ platform/windows/godot_res.res
 *.exe
 *.out
 *.app
+
+# Debug Symbol Files
+*.idb
+*.pdb
