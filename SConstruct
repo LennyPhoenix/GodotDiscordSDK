@@ -64,9 +64,6 @@ opts.Add(PathVariable(
 godot_headers_path = "godot_headers/"
 
 opts.Update(env)
-Help(opts.GenerateHelpText(env))
-
-env["STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME"] = 1
 
 if host_platform == "windows":
     env.Append(ENV=os.environ)
