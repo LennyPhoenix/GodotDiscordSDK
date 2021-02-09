@@ -1533,6 +1533,53 @@ godot_variant activity_manager_clear_activity(godot_object *p_instance, Library 
     return result_variant;
 }
 
+void send_request_reply_callback(CallbackData *p_data,
+                                 enum EDiscordResult p_result)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant result_variant;
+
+    lib->api->godot_variant_new_int(&result_variant, p_result);
+
+    godot_variant *args[] = {&result_variant};
+
+    object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
+
+    lib->api->godot_free(p_data);
+}
+
+godot_variant activity_manager_send_request_reply(godot_object *p_instance, Library *p_lib,
+                                                  ActivityManager *p_activity_manager,
+                                                  int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 4) // User ID, Reply, Callback Object, Callback Name
+    {
+        int64_t user_id = p_lib->api->godot_variant_as_int(p_args[0]);
+        enum EDiscordActivityJoinRequestReply reply = p_lib->api->godot_variant_as_int(p_args[1]);
+        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[2]);
+        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[3]);
+
+        CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
+        callback_data->callback_object = callback_object;
+        callback_data->callback_name = callback_name;
+        callback_data->core = p_activity_manager->core;
+        callback_data->lib = p_lib;
+
+        p_activity_manager->internal->send_request_reply(p_activity_manager->internal,
+                                                         user_id, reply,
+                                                         callback_data, send_request_reply_callback);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_activity_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -1592,6 +1639,16 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "ActivityManager", "clear_activity",
+                                                                        attributes, method);
+        }
+        // Send Request Reply
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = activity_manager_send_request_reply;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "ActivityManager", "send_request_reply",
                                                                         attributes, method);
         }
     }
