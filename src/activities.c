@@ -1440,8 +1440,8 @@ godot_variant activity_manager_register_steam(godot_object *p_instance, Library 
 
     return result_variant;
 }
-void DISCORD_API update_activity_callback(CallbackData *p_data,
-                                          enum EDiscordResult p_result)
+void update_activity_callback(CallbackData *p_data,
+                              enum EDiscordResult p_result)
 {
     Library *lib = p_data->lib;
 
@@ -1489,8 +1489,8 @@ godot_variant activity_manager_update_activity(godot_object *p_instance, Library
     return result_variant;
 }
 
-void DISCORD_API clear_activity_callback(CallbackData *p_data,
-                                         enum EDiscordResult p_result)
+void clear_activity_callback(CallbackData *p_data,
+                             enum EDiscordResult p_result)
 {
     Library *lib = p_data->lib;
 

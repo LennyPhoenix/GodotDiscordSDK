@@ -84,6 +84,6 @@ godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Libra
 
 void register_user_manager(void *p_handle, Library *p_lib);
 
-void DISCORD_API on_current_user_update(Core *p_core);
+void on_current_user_update(Core *p_core);
 
 #endif

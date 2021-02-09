@@ -65,8 +65,8 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
     return result_variant;
 }
 
-void DISCORD_API log_hook(CallbackData *p_data,
-                          enum EDiscordLogLevel p_level, const char *p_message)
+void log_hook(CallbackData *p_data,
+              enum EDiscordLogLevel p_level, const char *p_message)
 {
     Library *lib = p_data->lib;
 
