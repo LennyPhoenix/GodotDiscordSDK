@@ -49,12 +49,6 @@ func _ready() -> void:
 
 		activities.update_activity(activity, self, "update_activity_callback")
 
-		yield(get_tree().create_timer(10), "timeout")
-
-		print(activity.supported_platforms)
-
-		activities.clear_activity(self, "clear_activity_callback")
-
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()

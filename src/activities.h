@@ -113,12 +113,6 @@ GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_li
                                          ActivityParty *p_party,
                                          godot_variant *p_id);
 
-godot_variant activity_party_get_privacy(godot_object *p_instance, Library *p_lib,
-                                         ActivityParty *p_party);
-GDCALLINGCONV void activity_party_set_privacy(godot_object *p_instance, Library *p_lib,
-                                              ActivityParty *p_party,
-                                              godot_variant *p_privacy);
-
 godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
                                       ActivityParty *p_party);
 GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_lib,
@@ -227,12 +221,6 @@ godot_variant activity_get_instance(godot_object *p_instance, Library *p_lib,
 GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_lib,
                                          Activity *p_activity,
                                          godot_variant *p_is_instance);
-
-godot_variant activity_get_supported_platforms(godot_object *p_instance, Library *p_lib,
-                                               Activity *p_activity);
-GDCALLINGCONV void activity_set_supported_platforms(godot_object *p_instance, Library *p_lib,
-                                                    Activity *p_activity,
-                                                    godot_variant *p_supported_platforms);
 
 void activity_collapse(godot_object *p_instance, Library *p_lib);
 

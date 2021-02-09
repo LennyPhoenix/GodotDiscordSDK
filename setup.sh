@@ -1,4 +1,4 @@
-wget https://dl-game-sdk.discordapp.net/3.2.0/discord_game_sdk.zip
+wget https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip
 unzip discord_game_sdk -d dsdk
 
 mkdir demo/bin/linux-32

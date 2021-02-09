@@ -558,23 +558,6 @@ GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_li
     memcpy(p_party->internal->id, id, sizeof(char) * MIN(size, 127));
 }
 
-godot_variant activity_party_get_privacy(godot_object *p_instance, Library *p_lib,
-                                         ActivityParty *p_party)
-{
-    godot_variant privacy;
-
-    p_lib->api->godot_variant_new_int(&privacy, p_party->internal->privacy);
-
-    return privacy;
-}
-
-GDCALLINGCONV void activity_party_set_privacy(godot_object *p_instance, Library *p_lib,
-                                              ActivityParty *p_party,
-                                              godot_variant *p_privacy)
-{
-    p_party->internal->privacy = p_lib->api->godot_variant_as_int(p_privacy);
-}
-
 godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
                                       ActivityParty *p_activity_party)
 {
@@ -653,32 +636,6 @@ void register_activity_party(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
                                                                           "ActivityParty", "id",
-                                                                          &attributes,
-                                                                          set, get);
-        }
-        // Privacy
-        {
-            memset(&attributes, 0, sizeof(godot_property_attributes));
-            attributes.type = GODOT_VARIANT_TYPE_INT;
-            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_ENUM;
-            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("Private,Public");
-
-            p_lib->api->godot_variant_new_int(&default_value, DiscordActivityPartyPrivacy_Private);
-            attributes.default_value = default_value;
-
-            memset(&get, 0, sizeof(godot_property_get_func));
-            get.get_func = activity_party_get_privacy;
-            get.method_data = p_lib;
-
-            memset(&set, 0, sizeof(godot_property_set_func));
-            set.set_func = activity_party_set_privacy;
-            set.method_data = p_lib;
-
-            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
-                                                                          "ActivityParty", "privacy",
                                                                           &attributes,
                                                                           set, get);
         }
@@ -918,10 +875,6 @@ GDCALLINGCONV void *activity_constructor(godot_object *p_instance, Library *p_li
                 Activity, struct DiscordActivity,
                 p_lib, p_instance);
 
-    activity->internal->supported_platforms = DiscordActivitySupportedPlatformFlags_Desktop |
-                                              DiscordActivitySupportedPlatformFlags_Android |
-                                              DiscordActivitySupportedPlatformFlags_iOS;
-
     activity->timestamps = instantiate_custom_class("ActivityTimestamps", "Resource", p_lib);
     godot_reference(activity->timestamps, p_lib);
 
@@ -1144,23 +1097,6 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
                                          godot_variant *p_is_instance)
 {
     p_activity->internal->instance = p_lib->api->godot_variant_as_bool(p_is_instance);
-}
-
-godot_variant activity_get_supported_platforms(godot_object *p_instance, Library *p_lib,
-                                               Activity *p_activity)
-{
-    godot_variant supported_platforms;
-
-    p_lib->api->godot_variant_new_uint(&supported_platforms, p_activity->internal->supported_platforms);
-
-    return supported_platforms;
-}
-
-GDCALLINGCONV void activity_set_supported_platforms(godot_object *p_instance, Library *p_lib,
-                                                    Activity *p_activity,
-                                                    godot_variant *p_supported_platforms)
-{
-    p_activity->internal->supported_platforms = (uint32_t)p_lib->api->godot_variant_as_uint(p_supported_platforms);
 }
 
 void activity_collapse(godot_object *p_instance, Library *p_lib)
@@ -1437,35 +1373,6 @@ void register_activity(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
                                                                           "Activity", "instance",
-                                                                          &attributes,
-                                                                          set, get);
-        }
-        // Supported Platforms
-        {
-            memset(&get, 0, sizeof(godot_property_get_func));
-            attributes.type = GODOT_VARIANT_TYPE_INT;
-            attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->api->godot_string_chars_to_utf8("");
-
-            p_lib->api->godot_variant_new_int(&default_value,
-                                              DiscordActivitySupportedPlatformFlags_Desktop |
-                                                  DiscordActivitySupportedPlatformFlags_Android |
-                                                  DiscordActivitySupportedPlatformFlags_iOS);
-            attributes.default_value = default_value;
-
-            memset(&get, 0, sizeof(godot_property_get_func));
-            get.get_func = activity_get_supported_platforms;
-            get.method_data = p_lib;
-
-            memset(&set, 0, sizeof(godot_property_set_func));
-            set.set_func = activity_set_supported_platforms;
-            set.method_data = p_lib;
-
-            p_lib->nativescript_api->godot_nativescript_register_property(p_handle,
-                                                                          "Activity", "supported_platforms",
                                                                           &attributes,
                                                                           set, get);
         }
