@@ -41,12 +41,6 @@ opts.Add(EnumVariable(
     "64" if is64 else "32",
     ("32", "64")
 ))
-opts.Add(BoolVariable(
-    "use_llvm",
-    "Use the LLVM compiler - only effective when targeting Linux",
-    False
-))
-# Must be the same setting as used for cpp_bindings
 opts.Add(EnumVariable(
     "target",
     "Compilation target",
@@ -70,9 +64,6 @@ opts.Add(PathVariable(
 godot_headers_path = "godot_headers/"
 
 opts.Update(env)
-Help(opts.GenerateHelpText(env))
-
-env["STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME"] = 1
 
 if host_platform == "windows":
     env.Append(ENV=os.environ)
@@ -86,17 +77,13 @@ if host_platform == "windows":
 if env["platform"] == "linux":
     env["target_name"] = "lib" + env["target_name"]
 
-    if env["use_llvm"]:
-        env["CC"] = "clang"
-
-    if env["target"] in ("debug", "d"):
-        env.Append(CCFLAGS=["-fPIC", "-g3", "-Og"])
+    if env['target'] == 'debug':
+        env.Append(CCFLAGS=['-fPIC', '-g3', '-Og'])
+        env.Append(CXXFLAGS=['-std=c++17'])
     else:
-        env.Append(CCFLAGS=["-fPIC", "-g", "-O3"])
-
-    if env["bits"] == "64":
-        env.Append(CCFLAGS=["-m64"])
-        env.Append(LINKFLAGS=["-m64"])
+        env.Append(CCFLAGS=['-fPIC', '-O3'])
+        env.Append(CXXFLAGS=['-std=c++17'])
+        env.Append(LINKFLAGS=['-s'])
 
     env.Append(LIBS=["discord_game_sdk"])
 
@@ -104,30 +91,31 @@ if env["platform"] == "linux":
 elif env["platform"] == "osx":
     env["target_name"] = "lib" + env["target_name"]
 
-    if env["target"] in ("debug", "d"):
-        env.Append(CCFLAGS=["-g", "-O2", "-arch", "x86_64"])
-        env.Append(LINKFLAGS=["-arch", "x86_64"])
+    if env['target'] == 'debug':
+        env.Append(CCFLAGS=['-g', '-O2', '-arch', 'x86_64'])
+        env.Append(LINKFLAGS=['-arch', 'x86_64'])
     else:
-        env.Append(CCFLAGS=["-g", "-O3", "-arch", "x86_64"])
-        env.Append(LINKFLAGS=["-arch", "x86_64"])
+        env.Append(CCFLAGS=['-g', '-O3', '-arch', 'x86_64'])
+        env.Append(LINKFLAGS=['-arch', 'x86_64'])
 
     env.Append(LIBS=["discord_game_sdk"])
 
 elif env["platform"] == "windows":
-    env.Append(CCFLAGS=["-DWIN32", "-D_WIN32", "-D_WINDOWS", "-W3", "-GR"])
-    if env["target"] in ("debug", "d"):
-        env.Append(CCFLAGS=["-EHsc", "-D_DEBUG", "-MDd"])
+    env.Append(CPPDEFINES=['WIN32', '_WIN32', '_WINDOWS', '_CRT_SECURE_NO_WARNINGS'])
+    env.Append(CCFLAGS=['-W3', '-GR'])
+    if env['target'] == 'debug':
+        env.Append(CPPDEFINES=['_DEBUG'])
+        env.Append(CCFLAGS=['-EHsc', '-MDd', '-ZI'])
+        env.Append(LINKFLAGS=['-DEBUG'])
     else:
-        env.Append(CCFLAGS=["-O2", "-EHsc", "-DNDEBUG", "-MD"])
+        env.Append(CPPDEFINES=['NDEBUG'])
+        env.Append(CCFLAGS=['-O2', '-EHsc', '-MD'])
 
     env.Append(LIBS=[f"discord_game_sdk.{env['bits']}"])
 
 # Make sure our library includes the Godot headers.
 env.Append(CPPPATH=[".", godot_headers_path])
 
-# Make sure our library looks in the target path for any other
-# libraries it may need. The path needs to be project-relative.
-env.Append(LINKFLAGS=["-Wl,-rpath,gdnative/" + env["platform"]])
 env.Append(LIBPATH=["lib/"])
 
 # Source Files
