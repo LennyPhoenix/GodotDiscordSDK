@@ -67,6 +67,10 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         p_core->user_events->on_current_user_update = on_current_user_update;
         params.user_events = p_core->user_events;
 
+        p_core->activity_events = p_lib->api->godot_alloc(sizeof(struct IDiscordActivityEvents));
+        p_core->activity_events->on_activity_join = on_activity_join;
+        params.activity_events = p_core->activity_events;
+
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
 
         if (result != DiscordResult_Ok)

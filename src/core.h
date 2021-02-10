@@ -24,6 +24,7 @@ struct Core
     struct IDiscordUserEvents *user_events;
     ImageManager *images;
     ActivityManager *activities;
+    struct IDiscordActivityEvents *activity_events;
 
     Library *lib;
 };

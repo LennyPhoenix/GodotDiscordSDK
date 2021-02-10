@@ -49,6 +49,7 @@ func _ready() -> void:
 
 		activities.update_activity(activity, self, "update_activity_callback")
 
+
 func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()

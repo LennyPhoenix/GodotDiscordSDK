@@ -1769,4 +1769,59 @@ void register_activity_manager(void *p_handle, Library *p_lib)
                                                                         attributes, method);
         }
     }
+
+    // Signals
+    {
+        godot_signal signal;
+
+        // Activity Join
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("activity_join");
+
+            godot_signal_argument join_secret;
+            {
+                memset(&join_secret, 0, sizeof(godot_signal_argument));
+                join_secret.name = p_lib->api->godot_string_chars_to_utf8("join_secret");
+
+                join_secret.type = GODOT_VARIANT_TYPE_STRING;
+                join_secret.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+
+                join_secret.hint = GODOT_PROPERTY_HINT_NONE;
+                join_secret.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+                godot_variant default_value;
+                godot_string default_string = p_lib->api->godot_string_chars_to_utf8("");
+                p_lib->api->godot_variant_new_string(&default_value, &default_string);
+                join_secret.default_value = default_value;
+            }
+
+            godot_signal_argument args[] = {join_secret};
+            signal.args = args;
+            signal.num_args = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ActivityManager", &signal);
+        }
+    }
+}
+
+void on_activity_join(Core *p_core, const char *p_join_secret)
+{
+    Library *lib = p_core->lib;
+
+    godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_join");
+
+    godot_string join_secret_string = lib->api->godot_string_chars_to_utf8(p_join_secret);
+    godot_variant join_secret_variant;
+    lib->api->godot_variant_new_string(&join_secret_variant, &join_secret_string);
+
+    godot_variant *args[] = {&join_secret_variant};
+
+    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+
+    {
+        godot_string output = lib->api->godot_string_chars_to_utf8("Signal Internal!");
+        lib->api->godot_print(&output);
+    }
 }
