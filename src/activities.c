@@ -1819,9 +1819,4 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
     godot_variant *args[] = {&join_secret_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
-
-    {
-        godot_string output = lib->api->godot_string_chars_to_utf8("Signal Internal!");
-        lib->api->godot_print(&output);
-    }
 }
