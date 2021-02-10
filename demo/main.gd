@@ -186,13 +186,3 @@ func update_activity_callback(result: int):
 			"Failed to update activity: ",
 			enum_to_string(Discord.Result, result)
 		)
-
-
-func clear_activity_callback(result: int):
-	if result == Discord.Result.OK:
-		print("Cleared activity successfully!")
-	else:
-		print(
-			"Failed to clear activity: ",
-			enum_to_string(Discord.Result, result)
-		)
