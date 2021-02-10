@@ -37,10 +37,22 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_num_args == 2)
+    if (p_num_args == 2 || p_num_args == 3)
     {
         uint64_t id = p_lib->api->godot_variant_as_uint(p_args[0]);
         uint64_t create_flags = p_lib->api->godot_variant_as_uint(p_args[1]);
+        if (p_num_args == 3)
+        {
+            uint64_t instance_id = p_lib->api->godot_variant_as_uint(p_args[2]);
+            char instance[128];
+            memset(instance, 0, sizeof(char) * 128);
+            sprintf(instance, "%Iu", instance_id);
+#ifdef _WIN32
+            _putenv_s("DISCORD_INSTANCE_ID", instance);
+#else
+            setenv("DISCORD_INSTANCE_ID", instance, true);
+#endif
+        }
 
         struct DiscordCreateParams params;
         memset(&params, 0, sizeof(struct DiscordCreateParams));
