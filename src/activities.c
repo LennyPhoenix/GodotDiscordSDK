@@ -1785,15 +1785,6 @@ void register_activity_manager(void *p_handle, Library *p_lib)
                 join_secret.name = p_lib->api->godot_string_chars_to_utf8("join_secret");
 
                 join_secret.type = GODOT_VARIANT_TYPE_STRING;
-                join_secret.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-
-                join_secret.hint = GODOT_PROPERTY_HINT_NONE;
-                join_secret.hint_string = p_lib->api->godot_string_chars_to_utf8("");
-
-                godot_variant default_value;
-                godot_string default_string = p_lib->api->godot_string_chars_to_utf8("");
-                p_lib->api->godot_variant_new_string(&default_value, &default_string);
-                join_secret.default_value = default_value;
             }
 
             godot_signal_argument args[] = {join_secret};
@@ -1814,15 +1805,6 @@ void register_activity_manager(void *p_handle, Library *p_lib)
                 spectate_secret.name = p_lib->api->godot_string_chars_to_utf8("spectate_secret");
 
                 spectate_secret.type = GODOT_VARIANT_TYPE_STRING;
-                spectate_secret.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-
-                spectate_secret.hint = GODOT_PROPERTY_HINT_NONE;
-                spectate_secret.hint_string = p_lib->api->godot_string_chars_to_utf8("");
-
-                godot_variant default_value;
-                godot_string default_string = p_lib->api->godot_string_chars_to_utf8("");
-                p_lib->api->godot_variant_new_string(&default_value, &default_string);
-                spectate_secret.default_value = default_value;
             }
 
             godot_signal_argument args[] = {spectate_secret};
@@ -1843,19 +1825,45 @@ void register_activity_manager(void *p_handle, Library *p_lib)
                 user.name = p_lib->api->godot_string_chars_to_utf8("user");
 
                 user.type = GODOT_VARIANT_TYPE_OBJECT;
-                user.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-
-                user.hint = GODOT_PROPERTY_HINT_NONE;
-                user.hint_string = p_lib->api->godot_string_chars_to_utf8("");
-
-                godot_variant default_value;
-                p_lib->api->godot_variant_new_nil(&default_value);
-                user.default_value = default_value;
             }
 
             godot_signal_argument args[] = {user};
             signal.args = args;
             signal.num_args = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ActivityManager", &signal);
+        }
+        // Activity Invite
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("activity_invite");
+
+            godot_signal_argument type;
+            {
+                memset(&type, 0, sizeof(godot_signal_argument));
+                type.name = p_lib->api->godot_string_chars_to_utf8("type");
+
+                type.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument user;
+            {
+                memset(&user, 0, sizeof(godot_signal_argument));
+                user.name = p_lib->api->godot_string_chars_to_utf8("user");
+
+                user.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+            godot_signal_argument activity;
+            {
+                memset(&activity, 0, sizeof(godot_signal_argument));
+                activity.name = p_lib->api->godot_string_chars_to_utf8("activity");
+
+                activity.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+
+            godot_signal_argument args[] = {type, user, activity};
+            signal.args = args;
+            signal.num_args = 3;
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
@@ -1869,8 +1877,9 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 
     godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_join");
 
-    godot_string join_secret_string = lib->api->godot_string_chars_to_utf8(p_join_secret);
     godot_variant join_secret_variant;
+
+    godot_string join_secret_string = lib->api->godot_string_chars_to_utf8(p_join_secret);
     lib->api->godot_variant_new_string(&join_secret_variant, &join_secret_string);
 
     godot_variant *args[] = {&join_secret_variant};
@@ -1884,8 +1893,9 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 
     godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_spectate");
 
-    godot_string spectate_secret_string = lib->api->godot_string_chars_to_utf8(p_spectate_secret);
     godot_variant spectate_secret_variant;
+
+    godot_string spectate_secret_string = lib->api->godot_string_chars_to_utf8(p_spectate_secret);
     lib->api->godot_variant_new_string(&spectate_secret_variant, &spectate_secret_string);
 
     godot_variant *args[] = {&spectate_secret_variant};
@@ -1899,15 +1909,55 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
 
     godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_join_request");
 
+    godot_variant user_variant;
+
     godot_object *user_object = instantiate_custom_class("User", "Resource", lib);
     User *user = lib->nativescript_api->godot_nativescript_get_userdata(user_object);
-
     memcpy(user->internal, p_user, sizeof(struct DiscordUser));
 
-    godot_variant user_variant;
     lib->api->godot_variant_new_object(&user_variant, user_object);
 
     godot_variant *args[] = {&user_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+}
+
+void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
+                        struct DiscordUser *p_user, struct DiscordActivity *p_activity)
+{
+    Library *lib = p_core->lib;
+
+    godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_invite");
+
+    godot_variant type_variant;
+    godot_variant user_variant;
+    godot_variant activity_variant;
+
+    lib->api->godot_variant_new_int(&type_variant, p_type);
+
+    godot_object *user_object = instantiate_custom_class("User", "Resource", lib);
+    User *user = lib->nativescript_api->godot_nativescript_get_userdata(user_object);
+    memcpy(user->internal, p_user, sizeof(struct DiscordUser));
+
+    lib->api->godot_variant_new_object(&user_variant, user_object);
+
+    godot_object *activity_object = instantiate_custom_class("Activity", "Resource", lib);
+    Activity *activity = lib->nativescript_api->godot_nativescript_get_userdata(activity_object);
+    memcpy(activity->internal, p_activity, sizeof(struct DiscordActivity));
+    ActivityTimestamps *activity_timestamps = lib->nativescript_api->godot_nativescript_get_userdata(activity->timestamps);
+    memcpy(activity_timestamps->internal, &p_activity->timestamps, sizeof(struct DiscordActivityTimestamps));
+    ActivityAssets *activity_assets = lib->nativescript_api->godot_nativescript_get_userdata(activity->assets);
+    memcpy(activity_assets->internal, &p_activity->assets, sizeof(struct DiscordActivityAssets));
+    ActivityParty *activity_party = lib->nativescript_api->godot_nativescript_get_userdata(activity->party);
+    memcpy(activity_party->internal, &p_activity->party, sizeof(struct DiscordActivityParty));
+    PartySize *party_size = lib->nativescript_api->godot_nativescript_get_userdata(activity_party->size);
+    memcpy(party_size->internal, &p_activity->party.size, sizeof(struct DiscordPartySize));
+    ActivitySecrets *activity_secrets = lib->nativescript_api->godot_nativescript_get_userdata(activity->secrets);
+    memcpy(activity_secrets->internal, &p_activity->secrets, sizeof(struct DiscordActivitySecrets));
+
+    lib->api->godot_variant_new_object(&activity_variant, activity_object);
+
+    godot_variant *args[] = {&type_variant, &user_variant, &activity_variant};
+
+    object_emit_signal(p_core->activities->object, &signal, 3, args, p_core->lib);
 }
