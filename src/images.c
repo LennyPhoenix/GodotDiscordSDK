@@ -311,8 +311,8 @@ GDCALLINGCONV void image_manager_destructor(godot_object *p_instance, Library *p
     p_lib->api->godot_free(p_image_manager);
 }
 
-void DISCORD_API fetch_callback(CallbackData *p_data,
-                                enum EDiscordResult p_result, struct DiscordImageHandle p_handle)
+void fetch_callback(CallbackData *p_data,
+                    enum EDiscordResult p_result, struct DiscordImageHandle p_handle)
 {
     Library *lib = p_data->lib;
 

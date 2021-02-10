@@ -2,12 +2,23 @@ class_name Discord
 
 const Core: = preload("./core.gdns")
 
+# Users
 const User: = preload("./user.gdns")
 const UserManager: = preload("./user_manager.gdns")
 
+# Images
 const ImageDimensions: = preload("./image_dimensions.gdns")
 const ImageHandle: = preload("./image_handle.gdns")
 const ImageManager: = preload("./image_manager.gdns")
+
+# Activities
+const ActivityTimestamps: = preload("./activity_timestamps.gdns")
+const ActivityAssets: = preload("./activity_assets.gdns")
+const PartySize: = preload("./party_size.gdns")
+const ActivityParty: = preload("./activity_party.gdns")
+const ActivitySecrets: = preload("./activity_secrets.gdns")
+const Activity: = preload("./activity.gdns")
+const ActivityManager: = preload("./activity_manager.gdns")
 
 enum Result {
 	OK = 0,
@@ -78,8 +89,8 @@ enum UserFlag {
 
 enum PremiumType {
 	NONE = 0,
-	TIER_1 = 0,
-	TIER_2 = 0,
+	TIER_1 = 1,
+	TIER_2 = 2,
 }
 
 enum ImageType {
@@ -157,7 +168,7 @@ enum EntitlementType {
 }
 
 enum SkuType {
-	APPLICATOIN = 1,
+	APPLICATION = 1,
 	DLC,
 	CONSUMABLE,
 	BUNDLE,
@@ -166,4 +177,4 @@ enum SkuType {
 enum InputModeType {
 	VOICE_ACTIVITY = 0,
 	PUSH_TO_TALK,
-};
+}

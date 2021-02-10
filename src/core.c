@@ -14,19 +14,21 @@ GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
                                    Core *p_core)
 {
+    if (p_core->users)
+        godot_unreference(p_core->users, p_lib);
+    if (p_core->images)
+        godot_unreference(p_core->images, p_lib);
+    if (p_core->activities)
+        godot_unreference(p_core->activities, p_lib);
+
+    if (p_core->hook_data)
+        p_lib->api->godot_free(p_core->hook_data);
+
     if (p_core->internal)
     {
         p_core->internal->destroy(p_core->internal);
         p_lib->api->godot_free(p_core->user_events);
     }
-
-    if (p_core->hook_data)
-        p_lib->api->godot_free(p_core->hook_data);
-
-    if (p_core->users)
-        godot_unreference(p_core->users, p_lib);
-    if (p_core->images)
-        godot_unreference(p_core->images, p_lib);
 
     p_lib->api->godot_free(p_core);
 }
@@ -65,6 +67,13 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         p_core->user_events->on_current_user_update = on_current_user_update;
         params.user_events = p_core->user_events;
 
+        p_core->activity_events = p_lib->api->godot_alloc(sizeof(struct IDiscordActivityEvents));
+        p_core->activity_events->on_activity_join = on_activity_join;
+        p_core->activity_events->on_activity_spectate = on_activity_spectate;
+        p_core->activity_events->on_activity_join_request = on_activity_join_request;
+        p_core->activity_events->on_activity_invite = on_activity_invite;
+        params.activity_events = p_core->activity_events;
+
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
 
         if (result != DiscordResult_Ok)
@@ -82,8 +91,8 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
     return result_variant;
 }
 
-void DISCORD_API log_hook(CallbackData *p_data,
-                          enum EDiscordLogLevel p_level, const char *p_message)
+void log_hook(CallbackData *p_data,
+              enum EDiscordLogLevel p_level, const char *p_message)
 {
     Library *lib = p_data->lib;
 
@@ -223,6 +232,40 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
     return result_variant;
 }
 
+godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib,
+                                        Core *p_core,
+                                        int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_core->internal)
+    {
+        godot_object *manager;
+        if (!p_core->activities)
+        {
+            manager = instantiate_custom_class("ActivityManager", "Reference", p_lib);
+            ActivityManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+            data->core = p_core;
+            data->internal = p_core->internal->get_activity_manager(p_core->internal);
+            p_core->activities = data;
+
+            godot_reference(manager, p_lib);
+        }
+        else
+        {
+            manager = p_core->activities;
+        }
+
+        p_lib->api->godot_variant_new_object(&result_variant, manager);
+    }
+    else
+    {
+        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+    }
+
+    return result_variant;
+}
+
 void register_core(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -292,6 +335,16 @@ void register_core(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_image_manager",
+                                                                        attributes, method);
+        }
+        // Get Activity Manager
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = core_get_activity_manager;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "get_activity_manager",
                                                                         attributes, method);
         }
     }

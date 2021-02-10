@@ -1,5 +1,5 @@
 @echo off
-curl.exe --output discord_game_sdk.zip --url https://dl-game-sdk.discordapp.net/3.2.0/discord_game_sdk.zip
+curl.exe --output discord_game_sdk.zip --url https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip
 powershell.exe "Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('discord_game_sdk.zip', 'dsdk');"
 
 mkdir demo\bin\windows-32

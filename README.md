@@ -30,7 +30,7 @@ To download precompiled binaries for every commit, head to [the actions page](ht
 
   - Or manually setup:
   
-    - Download the [Discord Game SDK (3.2.0)](https://dl-game-sdk.discordapp.net/3.2.0/discord_game_sdk.zip).
+    - Download the [Discord Game SDK (2.5.6)](https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip).
 
     - Place the `discord_game_sdk.dll.lib` file from the `lib/x86` folder of the SDK in [the lib folder](lib/) of the repo and rename it to `discord_game_sdk.32.lib`.
 

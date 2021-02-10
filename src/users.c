@@ -339,8 +339,8 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
     return result_variant;
 }
 
-void DISCORD_API get_user_callback(CallbackData *p_data,
-                                   enum EDiscordResult p_result, struct DiscordUser *p_user)
+void get_user_callback(CallbackData *p_data,
+                       enum EDiscordResult p_result, struct DiscordUser *p_user)
 {
     Library *lib = p_data->lib;
 
@@ -542,7 +542,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
     }
 }
 
-void DISCORD_API on_current_user_update(Core *p_core)
+void on_current_user_update(Core *p_core)
 {
     godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("current_user_update");
     object_emit_signal(p_core->users->object, &signal, 0, NULL, p_core->lib);

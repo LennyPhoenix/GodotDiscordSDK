@@ -5,6 +5,7 @@
 #include "util.h"
 #include "users.h"
 #include "images.h"
+#include "activities.h"
 
 #include "discord_game_sdk.h"
 
@@ -22,6 +23,8 @@ struct Core
     UserManager *users;
     struct IDiscordUserEvents *user_events;
     ImageManager *images;
+    ActivityManager *activities;
+    struct IDiscordActivityEvents *activity_events;
 
     Library *lib;
 };
@@ -49,6 +52,10 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
 godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
                                      Core *p_core,
                                      int p_num_args, godot_variant **p_args);
+
+godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib,
+                                        Core *p_core,
+                                        int p_num_args, godot_variant **p_args);
 
 void register_core(void *p_handle, Library *p_lib);
 
