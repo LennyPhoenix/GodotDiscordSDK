@@ -1832,6 +1832,34 @@ void register_activity_manager(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
         }
+        // Activity Join Request
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("activity_join_request");
+
+            godot_signal_argument user;
+            {
+                memset(&user, 0, sizeof(godot_signal_argument));
+                user.name = p_lib->api->godot_string_chars_to_utf8("user");
+
+                user.type = GODOT_VARIANT_TYPE_OBJECT;
+                user.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+
+                user.hint = GODOT_PROPERTY_HINT_NONE;
+                user.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+                godot_variant default_value;
+                p_lib->api->godot_variant_new_nil(&default_value);
+                user.default_value = default_value;
+            }
+
+            godot_signal_argument args[] = {user};
+            signal.args = args;
+            signal.num_args = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ActivityManager", &signal);
+        }
     }
 }
 
@@ -1861,6 +1889,25 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
     lib->api->godot_variant_new_string(&spectate_secret_variant, &spectate_secret_string);
 
     godot_variant *args[] = {&spectate_secret_variant};
+
+    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+}
+
+void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
+{
+    Library *lib = p_core->lib;
+
+    godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_join_request");
+
+    godot_object *user_object = instantiate_custom_class("User", "Resource", lib);
+    User *user = lib->nativescript_api->godot_nativescript_get_userdata(user_object);
+
+    memcpy(user->internal, p_user, sizeof(struct DiscordUser));
+
+    godot_variant user_variant;
+    lib->api->godot_variant_new_object(&user_variant, user_object);
+
+    godot_variant *args[] = {&user_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
 }
