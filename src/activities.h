@@ -263,6 +263,10 @@ godot_variant activity_manager_send_invite(godot_object *p_instance, Library *p_
                                            ActivityManager *p_activity_manager,
                                            int p_num_args, godot_variant **p_args);
 
+godot_variant activity_manager_accept_invite(godot_object *p_instance, Library *p_lib,
+                                             ActivityManager *p_activity_manager,
+                                             int p_num_args, godot_variant **p_args);
+
 void register_activity_manager(void *p_handle, Library *p_lib);
 
 #endif
