@@ -270,7 +270,7 @@ godot_variant activity_manager_accept_invite(godot_object *p_instance, Library *
 void register_activity_manager(void *p_handle, Library *p_lib);
 
 void on_activity_join(Core *p_core, const char *p_join_secret);
-void on_activity_spectate(Core *p_core);
+void on_activity_spectate(Core *p_core, const char *p_spectate_secret);
 void on_activity_join_request(Core *p_core);
 void on_activity_invite(Core *p_core);
 

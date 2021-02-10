@@ -1803,6 +1803,35 @@ void register_activity_manager(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
         }
+        // Spectate Join
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("activity_spectate");
+
+            godot_signal_argument spectate_secret;
+            {
+                memset(&spectate_secret, 0, sizeof(godot_signal_argument));
+                spectate_secret.name = p_lib->api->godot_string_chars_to_utf8("spectate_secret");
+
+                spectate_secret.type = GODOT_VARIANT_TYPE_STRING;
+                spectate_secret.usage = GODOT_PROPERTY_USAGE_DEFAULT;
+
+                spectate_secret.hint = GODOT_PROPERTY_HINT_NONE;
+                spectate_secret.hint_string = p_lib->api->godot_string_chars_to_utf8("");
+
+                godot_variant default_value;
+                godot_string default_string = p_lib->api->godot_string_chars_to_utf8("");
+                p_lib->api->godot_variant_new_string(&default_value, &default_string);
+                spectate_secret.default_value = default_value;
+            }
+
+            godot_signal_argument args[] = {spectate_secret};
+            signal.args = args;
+            signal.num_args = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ActivityManager", &signal);
+        }
     }
 }
 
@@ -1817,6 +1846,21 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
     lib->api->godot_variant_new_string(&join_secret_variant, &join_secret_string);
 
     godot_variant *args[] = {&join_secret_variant};
+
+    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+}
+
+void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
+{
+    Library *lib = p_core->lib;
+
+    godot_string signal = p_core->lib->api->godot_string_chars_to_utf8("activity_spectate");
+
+    godot_string spectate_secret_string = lib->api->godot_string_chars_to_utf8(p_spectate_secret);
+    godot_variant spectate_secret_variant;
+    lib->api->godot_variant_new_string(&spectate_secret_variant, &spectate_secret_string);
+
+    godot_variant *args[] = {&spectate_secret_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
 }
