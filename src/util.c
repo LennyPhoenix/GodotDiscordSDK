@@ -115,6 +115,36 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
     godot_variant variant;
     p_lib->api->godot_variant_new_object(&variant, p_object);
 
+    godot_string method_name = p_lib->api->godot_string_chars_to_utf8("emit_signal");
+
+    godot_variant **args = p_lib->api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 1));
+
+    godot_variant variant_signal_name;
+    p_lib->api->godot_variant_new_string(&variant_signal_name, p_signal_name);
+
+    args[0] = &variant_signal_name;
+
+    for (int i = 0; i < p_num_args; i++)
+    {
+        args[i + 1] = p_args[i];
+    }
+
+    godot_variant_call_error error;
+    p_lib->api->godot_variant_call(&variant, &method_name, args, p_num_args + 1, &error);
+
+    p_lib->api->godot_free(args);
+
+    return error;
+}
+
+godot_variant_call_error object_emit_signal_deferred(godot_object *p_object,
+                                                     godot_string *p_signal_name,
+                                                     int p_num_args, godot_variant **p_args,
+                                                     Library *p_lib)
+{
+    godot_variant variant;
+    p_lib->api->godot_variant_new_object(&variant, p_object);
+
     godot_string method = p_lib->api->godot_string_chars_to_utf8("call_deferred");
 
     godot_variant **args = p_lib->api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 2));
