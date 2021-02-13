@@ -42,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_64_release
-          path: demo/bin/windows-64/gdsdk.dll
+          path: demo/bin/windows-64/*
 
   build-64-debug:
     runs-on: "windows-latest"
@@ -78,7 +78,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_64_debug
-          path: demo/bin/windows-64/gdsdk.dll
+          path: demo/bin/windows-64/*
 
   build-32-release:
     runs-on: "windows-latest"
@@ -114,7 +114,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_32_release
-          path: demo/bin/windows-32/gdsdk.dll
+          path: demo/bin/windows-32/*
 
   build-32-debug:
     runs-on: "windows-latest"
@@ -150,4 +150,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_32_debug
-          path: demo/bin/windows-32/gdsdk.dll
+          path: demo/bin/windows-32/*
