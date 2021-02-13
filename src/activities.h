@@ -119,7 +119,8 @@ GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_
                                            ActivityParty *p_party,
                                            godot_variant *p_size);
 
-void activity_party_collapse(godot_object *p_instance, Library *p_lib);
+struct DiscordActivityParty *activity_party_collapse(godot_object *p_instance, Library *p_lib);
+void activity_party_reconstruct(godot_object *p_instance, struct DiscordActivityParty *p_party, Library *p_lib);
 
 void register_activity_party(void *p_handle, Library *p_lib);
 
@@ -222,7 +223,8 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
                                          Activity *p_activity,
                                          godot_variant *p_is_instance);
 
-void activity_collapse(godot_object *p_instance, Library *p_lib);
+struct DiscordActivity *activity_collapse(godot_object *p_instance, Library *p_lib);
+void activity_reconstruct(godot_object *p_instance, struct DiscordActivity *p_activity, Library *p_lib);
 
 void register_activity(void *p_handle, Library *p_lib);
 
