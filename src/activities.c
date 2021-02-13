@@ -1099,7 +1099,7 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
     p_activity->internal->instance = p_lib->api->godot_variant_as_bool(p_is_instance);
 }
 
-void activity_collapse(godot_object *p_instance, Library *p_lib)
+struct DiscordActivity *activity_collapse(godot_object *p_instance, Library *p_lib)
 {
     Activity *activity = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
 
@@ -1114,6 +1114,24 @@ void activity_collapse(godot_object *p_instance, Library *p_lib)
     memcpy(&activity->internal->assets, assets->internal, sizeof(struct DiscordActivityAssets));
     memcpy(&activity->internal->party, party->internal, sizeof(struct DiscordActivityParty));
     memcpy(&activity->internal->secrets, secrets->internal, sizeof(struct DiscordActivitySecrets));
+
+    return activity->internal;
+}
+
+void activity_reconstruct(godot_object *p_instance, struct DiscordActivity *p_activity, Library *p_lib)
+{
+    Activity *activity = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
+    memcpy(activity->internal, p_activity, sizeof(struct DiscordActivity));
+    ActivityTimestamps *activity_timestamps = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->timestamps);
+    memcpy(activity_timestamps->internal, &p_activity->timestamps, sizeof(struct DiscordActivityTimestamps));
+    ActivityAssets *activity_assets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->assets);
+    memcpy(activity_assets->internal, &p_activity->assets, sizeof(struct DiscordActivityAssets));
+    ActivityParty *activity_party = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->party);
+    memcpy(activity_party->internal, &p_activity->party, sizeof(struct DiscordActivityParty));
+    PartySize *party_size = p_lib->nativescript_api->godot_nativescript_get_userdata(activity_party->size);
+    memcpy(party_size->internal, &p_activity->party.size, sizeof(struct DiscordPartySize));
+    ActivitySecrets *activity_secrets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->secrets);
+    memcpy(activity_secrets->internal, &p_activity->secrets, sizeof(struct DiscordActivitySecrets));
 }
 
 void register_activity(void *p_handle, Library *p_lib)
@@ -1942,18 +1960,7 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
     lib->api->godot_variant_new_object(&user_variant, user_object);
 
     godot_object *activity_object = instantiate_custom_class("Activity", "Resource", lib);
-    Activity *activity = lib->nativescript_api->godot_nativescript_get_userdata(activity_object);
-    memcpy(activity->internal, p_activity, sizeof(struct DiscordActivity));
-    ActivityTimestamps *activity_timestamps = lib->nativescript_api->godot_nativescript_get_userdata(activity->timestamps);
-    memcpy(activity_timestamps->internal, &p_activity->timestamps, sizeof(struct DiscordActivityTimestamps));
-    ActivityAssets *activity_assets = lib->nativescript_api->godot_nativescript_get_userdata(activity->assets);
-    memcpy(activity_assets->internal, &p_activity->assets, sizeof(struct DiscordActivityAssets));
-    ActivityParty *activity_party = lib->nativescript_api->godot_nativescript_get_userdata(activity->party);
-    memcpy(activity_party->internal, &p_activity->party, sizeof(struct DiscordActivityParty));
-    PartySize *party_size = lib->nativescript_api->godot_nativescript_get_userdata(activity_party->size);
-    memcpy(party_size->internal, &p_activity->party.size, sizeof(struct DiscordPartySize));
-    ActivitySecrets *activity_secrets = lib->nativescript_api->godot_nativescript_get_userdata(activity->secrets);
-    memcpy(activity_secrets->internal, &p_activity->secrets, sizeof(struct DiscordActivitySecrets));
+    activity_reconstruct(activity_object, p_activity, lib);
 
     lib->api->godot_variant_new_object(&activity_variant, activity_object);
 

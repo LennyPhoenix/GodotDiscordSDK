@@ -222,7 +222,8 @@ GDCALLINGCONV void activity_set_instance(godot_object *p_instance, Library *p_li
                                          Activity *p_activity,
                                          godot_variant *p_is_instance);
 
-void activity_collapse(godot_object *p_instance, Library *p_lib);
+struct DiscordActivity *activity_collapse(godot_object *p_instance, Library *p_lib);
+void activity_reconstruct(godot_object *p_instance, struct DiscordActivity *p_activity, Library *p_lib);
 
 void register_activity(void *p_handle, Library *p_lib);
 
