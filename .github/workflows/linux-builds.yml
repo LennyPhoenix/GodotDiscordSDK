@@ -41,7 +41,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_64_release
-          path: demo/bin/linux-64/libgdsdk.so
+          path: demo/bin/linux-64/*
 
   build-64-debug:
     runs-on: "ubuntu-20.04"
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_64_debug
-          path: demo/bin/linux-64/libgdsdk.so
+          path: demo/bin/linux-64/*
 
   build-32-release:
     runs-on: "ubuntu-20.04"
@@ -111,7 +111,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_32_release
-          path: demo/bin/linux-32/libgdsdk.so
+          path: demo/bin/linux-32/*
 
   build-32-debug:
     runs-on: "ubuntu-20.04"
@@ -146,4 +146,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_32_debug
-          path: demo/bin/linux-32/libgdsdk.so
+          path: demo/bin/linux-32/*
