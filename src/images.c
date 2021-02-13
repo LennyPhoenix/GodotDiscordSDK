@@ -329,7 +329,11 @@ void fetch_callback(CallbackData *p_data,
 
     godot_variant *args[] = {&result_variant, &handle_variant};
 
-    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+    if (p_data->callback_object)
+        object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+
+    godot_string signal_name = lib->api->godot_string_chars_to_utf8("fetch_callback");
+    object_emit_signal(p_data->core->images->object, &signal_name, 2, args, p_data->lib);
 
     lib->api->godot_free(p_data);
 }
@@ -340,20 +344,24 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_num_args == 4) // Handle, Refresh, Callback Object, Callback Name
+    if (p_num_args == 2 || p_num_args == 4) // Handle, Refresh, [Callback Object, Callback Name]
     {
         godot_object *handle_object = p_lib->api->godot_variant_as_object(p_args[0]);
         bool refresh = p_lib->api->godot_variant_as_bool(p_args[1]);
-        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[2]);
-        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[3]);
 
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
         CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
-        callback_data->callback_object = callback_object;
-        callback_data->callback_name = callback_name;
         callback_data->core = p_image_manager->core;
         callback_data->lib = p_lib;
+
+        if (p_num_args == 4)
+        {
+            godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[2]);
+            godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[3]);
+            callback_data->callback_object = callback_object;
+            callback_data->callback_name = callback_name;
+        }
 
         p_image_manager->internal->fetch(p_image_manager->internal,
                                          *handle->internal, refresh,
@@ -509,6 +517,39 @@ void register_image_manager(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "ImageManager", "get_data",
                                                                         attributes, method);
+        }
+    }
+
+    // Signals
+    {
+        godot_signal signal;
+
+        // Fetch Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("fetch_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument handle;
+            {
+                memset(&handle, 0, sizeof(godot_signal_argument));
+                handle.name = p_lib->api->godot_string_chars_to_utf8("handle");
+
+                handle.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+
+            godot_signal_argument args[] = {result, handle};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ImageManager", &signal);
         }
     }
 }

@@ -115,16 +115,51 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 			"Failed to get user: ",
 			enum_to_string(Discord.Result, result)
 		)
-	else:
-		print("Got Current User:")
-		print(user.username, "#", user.discriminator, "  ID: ", user.id)
+		return
 
-		var handle: = Discord.ImageHandle.new()
-		handle.id = user.id
-		handle.size = 256
-		handle.type = Discord.ImageType.USER
+	print("Got Current User:")
+	print(user.username, "#", user.discriminator, "  ID: ", user.id)
 
-		images.fetch(handle, true, self, "fetch_callback")
+	var handle: = Discord.ImageHandle.new()
+	handle.id = user.id
+	handle.size = 256
+	handle.type = Discord.ImageType.USER
+
+	images.fetch(handle, true, self, "fetch_callback")
+	var ret: Array = yield(images, "fetch_callback")
+	result = ret[0]
+	handle = ret[1]
+
+	if result != Discord.Result.OK:
+		print(
+			"Failed to fetch image handle: ",
+			enum_to_string(Discord.Result, result)
+		)
+		return
+
+	print("Fetched image handle, ", handle.id, ", ", handle.size)
+
+	var res = images.get_data(handle)
+	if res is int:
+		print(
+			"Failed to get image data: ",
+			enum_to_string(Discord.Result, res)
+		)
+		return
+
+	var dimensions: Discord.ImageDimensions = images.get_dimensions(handle)
+	var image: = Image.new()
+	image.create_from_data(
+		dimensions.width, dimensions.height,
+		false,
+		Image.FORMAT_RGBA8,
+		res
+	)
+	image.unlock()
+	var tex: = ImageTexture.new()
+	tex.create_from_image(image)
+	texture_rect.texture = tex
+	OS.window_size = Vector2(dimensions.width, dimensions.height)
 
 
 func get_user_callback(result: int, user: Discord.User) -> void:
@@ -147,37 +182,6 @@ func get_current_user_premium_type_callback(
 	else:
 		print("Current User Premium Type:")
 		print(enum_to_string(Discord.PremiumType, premium_type))
-
-
-func fetch_callback(result: int, handle: Discord.ImageHandle) -> void:
-	if result != Discord.Result.OK:
-		print(
-			"Failed to fetch image handle: ",
-			enum_to_string(Discord.Result, result)
-		)
-	else:
-		print("Fetched image handle, ", handle.id, ", ", handle.size)
-
-		var res = images.get_data(handle)
-		if res is int:
-			print(
-				"Failed to get image data: ",
-				enum_to_string(Discord.Result, res)
-			)
-		else:
-			var dimensions: Discord.ImageDimensions = images.get_dimensions(handle)
-			var image: = Image.new()
-			image.create_from_data(
-				dimensions.width, dimensions.height,
-				false,
-				Image.FORMAT_RGBA8,
-				res
-			)
-			image.unlock()
-			var tex: = ImageTexture.new()
-			tex.create_from_image(image)
-			texture_rect.texture = tex
-			OS.window_size = Vector2(dimensions.width, dimensions.height)
 
 
 func update_activity_callback(result: int):

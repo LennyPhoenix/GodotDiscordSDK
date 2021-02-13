@@ -107,9 +107,7 @@ void log_hook(CallbackData *p_data,
     godot_variant *args[] = {&level_variant, &message_variant};
 
     if (p_data->callback_object)
-    {
         object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
-    }
 
     godot_string signal_name = lib->api->godot_string_chars_to_utf8("log_hook");
     object_emit_signal(p_data->core->object, &signal_name, 2, args, p_data->lib);
