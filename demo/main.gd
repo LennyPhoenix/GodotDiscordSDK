@@ -25,7 +25,8 @@ func _ready() -> void:
 	if result != Discord.Result.OK:
 		core = null
 	else:
-		core.set_log_hook(Discord.LogLevel.DEBUG, self, "log_hook")
+		core.set_log_hook(Discord.LogLevel.DEBUG)
+		core.connect("log_hook", self, "log_hook")
 
 		users = _get_user_manager()
 		images = _get_image_manager()

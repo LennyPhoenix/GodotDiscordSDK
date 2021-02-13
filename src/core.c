@@ -106,7 +106,13 @@ void log_hook(CallbackData *p_data,
 
     godot_variant *args[] = {&level_variant, &message_variant};
 
-    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+    if (p_data->callback_object)
+    {
+        object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+    }
+
+    godot_string signal_name = lib->api->godot_string_chars_to_utf8("log_hook");
+    object_emit_signal(p_data->core->object, &signal_name, 2, args, p_data->lib);
 }
 
 godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
@@ -115,11 +121,9 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal && p_num_args == 3) // Min Level, Hook Object, Hook Method
+    if (p_core->internal && (p_num_args == 1 || p_num_args == 3)) // Min Level, [Hook Object, Hook Method]
     {
         int64_t min_level = p_lib->api->godot_variant_as_int(p_args[0]);
-        godot_object *hook_object = p_lib->api->godot_variant_as_object(p_args[1]);
-        godot_string hook_method = p_lib->api->godot_variant_as_string(p_args[2]);
 
         if (!p_core->hook_data)
         {
@@ -127,10 +131,16 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
         }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));
-        p_core->hook_data->callback_name = hook_method;
-        p_core->hook_data->callback_object = hook_object;
         p_core->hook_data->core = p_core;
         p_core->hook_data->lib = p_lib;
+
+        if (p_num_args == 3)
+        {
+            godot_object *hook_object = p_lib->api->godot_variant_as_object(p_args[1]);
+            godot_string hook_method = p_lib->api->godot_variant_as_string(p_args[2]);
+            p_core->hook_data->callback_name = hook_method;
+            p_core->hook_data->callback_object = hook_object;
+        }
 
         p_core->internal->set_log_hook(p_core->internal, min_level, p_core->hook_data, log_hook);
 
@@ -346,6 +356,39 @@ void register_core(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_activity_manager",
                                                                         attributes, method);
+        }
+    }
+
+    // Signals
+    {
+        godot_signal signal;
+
+        // Log Hook
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("log_hook");
+
+            godot_signal_argument level;
+            {
+                memset(&level, 0, sizeof(godot_signal_argument));
+                level.name = p_lib->api->godot_string_chars_to_utf8("level");
+
+                level.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument message;
+            {
+                memset(&message, 0, sizeof(godot_signal_argument));
+                message.name = p_lib->api->godot_string_chars_to_utf8("message");
+
+                message.type = GODOT_VARIANT_TYPE_STRING;
+            }
+
+            godot_signal_argument args[] = {level, message};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "Core", &signal);
         }
     }
 }
