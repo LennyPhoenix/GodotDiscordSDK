@@ -44,7 +44,7 @@ opts.Add(EnumVariable(
 opts.Add(EnumVariable(
     "target",
     "Compilation target",
-    "debug",
+    "release",
     allowed_values=("debug", "release"),
     ignorecase=2
 ))
