@@ -4,6 +4,8 @@
 
 > A Discord Game SDK wrapper for Godot, written using GDNative C for Windows, Linux and MacOS.
 
+Make sure to use the Release version of the library on Windows if you do not have the MS Build Tools installed, or [it will crash](https://github.com/LennyPhoenix/GodotDiscordSDK/issues/7).
+
 ## Docs
 
 For detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/GodotDiscordSDK/wiki).
