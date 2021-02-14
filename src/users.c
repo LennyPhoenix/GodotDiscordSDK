@@ -362,7 +362,11 @@ void get_user_callback(CallbackData *p_data,
 
     godot_variant *args[] = {&result_variant, &user_variant};
 
-    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+    if (p_data->callback_object)
+        object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+
+    godot_string signal_name = lib->api->godot_string_chars_to_utf8("get_user_callback");
+    object_emit_signal(p_data->core->users->object, &signal_name, 2, args, p_data->lib);
 
     lib->api->godot_free(p_data);
 }
@@ -373,19 +377,23 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_num_args == 3) // ID, Callback Object, Callback Name
+    if (p_num_args == 1 || p_num_args == 3) // ID, [Callback Object, Callback Name]
     {
         int64_t id = p_lib->api->godot_variant_as_int(p_args[0]);
-        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[1]);
-        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[2]);
 
         godot_object *user_object = instantiate_custom_class("User", "Resource", p_lib);
 
         CallbackData *callback_data = p_lib->api->godot_alloc(sizeof(CallbackData));
-        callback_data->callback_object = callback_object;
-        callback_data->callback_name = callback_name;
         callback_data->core = p_user_manager->core;
         callback_data->lib = p_lib;
+
+        if (p_num_args == 3)
+        {
+            godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[1]);
+            godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[2]);
+            callback_data->callback_object = callback_object;
+            callback_data->callback_name = callback_name;
+        }
 
         p_user_manager->internal->get_user(p_user_manager->internal,
                                            id,
@@ -548,6 +556,33 @@ void register_user_manager(void *p_handle, Library *p_lib)
         {
             memset(&signal, 0, sizeof(godot_signal));
             signal.name = p_lib->api->godot_string_chars_to_utf8("get_current_user_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument user;
+            {
+                memset(&user, 0, sizeof(godot_signal_argument));
+                user.name = p_lib->api->godot_string_chars_to_utf8("user");
+
+                user.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+
+            godot_signal_argument args[] = {result, user};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "UserManager", &signal);
+        }
+        // Get User Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("get_user_callback");
 
             godot_signal_argument result;
             {
