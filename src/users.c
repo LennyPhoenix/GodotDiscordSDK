@@ -307,11 +307,8 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
 {
     godot_variant result_variant;
 
-    if (p_num_args == 2) // Callback Object, Callback Name
+    if (p_num_args == 0 || p_num_args == 2) // [Callback Object, Callback Name]
     {
-        godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[0]);
-        godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[1]);
-
         godot_object *user_object = instantiate_custom_class("User", "Resource", p_lib);
         User *user = p_lib->nativescript_api->godot_nativescript_get_userdata(user_object);
         enum EDiscordResult result = p_user_manager->internal->get_current_user(p_user_manager->internal, user->internal);
@@ -326,7 +323,15 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
 
             godot_variant *args[] = {&result_variant, &user_variant};
 
-            object_call(callback_object, &callback_name, 2, args, p_lib);
+            if (p_num_args == 2)
+            {
+                godot_object *callback_object = p_lib->api->godot_variant_as_object(p_args[0]);
+                godot_string callback_name = p_lib->api->godot_variant_as_string(p_args[1]);
+                object_call(callback_object, &callback_name, 2, args, p_lib);
+            }
+
+            godot_string signal_name = p_lib->api->godot_string_chars_to_utf8("get_current_user_callback");
+            object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
         }
 
         p_lib->api->godot_variant_new_nil(&result_variant);
@@ -535,6 +540,33 @@ void register_user_manager(void *p_handle, Library *p_lib)
         {
             memset(&signal, 0, sizeof(godot_signal));
             signal.name = p_lib->api->godot_string_chars_to_utf8("current_user_update");
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "UserManager", &signal);
+        }
+        // Get Current User Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->api->godot_string_chars_to_utf8("get_current_user_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument user;
+            {
+                memset(&user, 0, sizeof(godot_signal_argument));
+                user.name = p_lib->api->godot_string_chars_to_utf8("user");
+
+                user.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+
+            godot_signal_argument args[] = {result, user};
+            signal.args = args;
+            signal.num_args = 2;
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "UserManager", &signal);

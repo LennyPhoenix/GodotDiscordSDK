@@ -95,21 +95,11 @@ func _get_activity_manager() -> Discord.ActivityManager:
 
 
 func _on_current_user_update() -> void:
-	users.get_current_user(self, "get_current_user_callback")
-	users.get_current_user_premium_type(
-		self, "get_current_user_premium_type_callback"
-	)
+	users.get_current_user()
+	var ret: Array = yield(users, "get_current_user_callback")
+	var result: int = ret[0]
+	var user: Discord.User = ret[1]
 
-
-func log_hook(level: int, message: String) -> void:
-	print(
-		"[Discord SDK] ",
-		enum_to_string(Discord.LogLevel, level),
-		": ", message
-	)
-
-
-func get_current_user_callback(result: int, user: Discord.User) -> void:
 	if result != Discord.Result.OK:
 		print(
 			"Failed to get user: ",
@@ -126,7 +116,7 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 	handle.type = Discord.ImageType.USER
 
 	images.fetch(handle, true, self, "fetch_callback")
-	var ret: Array = yield(images, "fetch_callback")
+	ret = yield(images, "fetch_callback")
 	result = ret[0]
 	handle = ret[1]
 
@@ -160,6 +150,18 @@ func get_current_user_callback(result: int, user: Discord.User) -> void:
 	tex.create_from_image(image)
 	texture_rect.texture = tex
 	OS.window_size = Vector2(dimensions.width, dimensions.height)
+
+	users.get_current_user_premium_type(
+		self, "get_current_user_premium_type_callback"
+	)
+
+
+func log_hook(level: int, message: String) -> void:
+	print(
+		"[Discord SDK] ",
+		enum_to_string(Discord.LogLevel, level),
+		": ", message
+	)
 
 
 func get_user_callback(result: int, user: Discord.User) -> void:
