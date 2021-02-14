@@ -10,7 +10,7 @@ on:
 jobs:
   build-64-release:
     runs-on: "ubuntu-20.04"
-    name: Build 64-Bit Release (scons platform=linux target=release bits=64)
+    name: Build 64-Bit Release
     steps:
       - uses: actions/checkout@v2
 
@@ -45,7 +45,7 @@ jobs:
 
   build-64-debug:
     runs-on: "ubuntu-20.04"
-    name: Build 64-Bit Debug (scons platform=linux target=debug bits=64)
+    name: Build 64-Bit Debug
     steps:
       - uses: actions/checkout@v2
 
@@ -80,7 +80,7 @@ jobs:
 
   build-32-release:
     runs-on: "ubuntu-20.04"
-    name: Build 32-Bit Release (scons platform=linux target=release bits=32)
+    name: Build 32-Bit Release
     steps:
       - uses: actions/checkout@v2
 
@@ -115,7 +115,7 @@ jobs:
 
   build-32-debug:
     runs-on: "ubuntu-20.04"
-    name: Build 32-Bit Debug (scons platform=linux target=debug bits=32)
+    name: Build 32-Bit Debug
     steps:
       - uses: actions/checkout@v2
 
