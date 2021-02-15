@@ -14,11 +14,11 @@ GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
                                    Core *p_core)
 {
-    if (p_core->users)
+    if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->users))
         godot_unreference(p_core->users, p_lib);
-    if (p_core->images)
+    if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->images))
         godot_unreference(p_core->images, p_lib);
-    if (p_core->activities)
+    if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->activities))
         godot_unreference(p_core->activities, p_lib);
 
     if (p_core->hook_data)
