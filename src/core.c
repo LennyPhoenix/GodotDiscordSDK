@@ -2,7 +2,7 @@
 
 GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 {
-    Core *core = p_lib->api->godot_alloc(sizeof(Core));
+    Core *core = p_lib->core_api->godot_alloc(sizeof(Core));
     memset(core, 0, sizeof(Core));
 
     core->object = p_instance;
@@ -22,15 +22,15 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         godot_unreference(p_core->activities, p_lib);
 
     if (p_core->hook_data)
-        p_lib->api->godot_free(p_core->hook_data);
+        p_lib->core_api->godot_free(p_core->hook_data);
 
     if (p_core->internal)
     {
         p_core->internal->destroy(p_core->internal);
-        p_lib->api->godot_free(p_core->user_events);
+        p_lib->core_api->godot_free(p_core->user_events);
     }
 
-    p_lib->api->godot_free(p_core);
+    p_lib->core_api->godot_free(p_core);
 }
 
 godot_variant core_create(godot_object *p_instance, Library *p_lib,
@@ -41,11 +41,11 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
 
     if (p_num_args == 2 || p_num_args == 3)
     {
-        uint64_t id = p_lib->api->godot_variant_as_uint(p_args[0]);
-        uint64_t create_flags = p_lib->api->godot_variant_as_uint(p_args[1]);
+        uint64_t id = p_lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint64_t create_flags = p_lib->core_api->godot_variant_as_uint(p_args[1]);
         if (p_num_args == 3)
         {
-            uint64_t instance_id = p_lib->api->godot_variant_as_uint(p_args[2]);
+            uint64_t instance_id = p_lib->core_api->godot_variant_as_uint(p_args[2]);
             char instance[128];
             memset(instance, 0, sizeof(char) * 128);
             sprintf(instance, "%Iu", instance_id);
@@ -63,11 +63,11 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         params.event_data = p_core;
         params.flags = create_flags;
 
-        p_core->user_events = p_lib->api->godot_alloc(sizeof(struct IDiscordUserEvents));
+        p_core->user_events = p_lib->core_api->godot_alloc(sizeof(struct IDiscordUserEvents));
         p_core->user_events->on_current_user_update = on_current_user_update;
         params.user_events = p_core->user_events;
 
-        p_core->activity_events = p_lib->api->godot_alloc(sizeof(struct IDiscordActivityEvents));
+        p_core->activity_events = p_lib->core_api->godot_alloc(sizeof(struct IDiscordActivityEvents));
         p_core->activity_events->on_activity_join = on_activity_join;
         p_core->activity_events->on_activity_spectate = on_activity_spectate;
         p_core->activity_events->on_activity_join_request = on_activity_join_request;
@@ -81,11 +81,11 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
             p_core->internal = NULL;
         }
 
-        p_lib->api->godot_variant_new_int(&result_variant, result);
+        p_lib->core_api->godot_variant_new_int(&result_variant, result);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
@@ -99,10 +99,10 @@ void log_hook(CallbackData *p_data,
     godot_variant level_variant;
     godot_variant message_variant;
 
-    lib->api->godot_variant_new_int(&level_variant, p_level);
+    lib->core_api->godot_variant_new_int(&level_variant, p_level);
 
-    godot_string message_string = p_data->lib->api->godot_string_chars_to_utf8(p_message);
-    lib->api->godot_variant_new_string(&message_variant, &message_string);
+    godot_string message_string = p_data->lib->core_api->godot_string_chars_to_utf8(p_message);
+    lib->core_api->godot_variant_new_string(&message_variant, &message_string);
 
     godot_variant *args[] = {&level_variant, &message_variant};
 
@@ -117,13 +117,13 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
 
     if (p_core->internal && p_num_args == 3) // Min Level, Hook Object, Hook Method
     {
-        int64_t min_level = p_lib->api->godot_variant_as_int(p_args[0]);
-        godot_object *hook_object = p_lib->api->godot_variant_as_object(p_args[1]);
-        godot_string hook_method = p_lib->api->godot_variant_as_string(p_args[2]);
+        int64_t min_level = p_lib->core_api->godot_variant_as_int(p_args[0]);
+        godot_object *hook_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
+        godot_string hook_method = p_lib->core_api->godot_variant_as_string(p_args[2]);
 
         if (!p_core->hook_data)
         {
-            p_core->hook_data = p_lib->api->godot_alloc(sizeof(CallbackData));
+            p_core->hook_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
         }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));
@@ -134,11 +134,11 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
 
         p_core->internal->set_log_hook(p_core->internal, min_level, p_core->hook_data, log_hook);
 
-        p_lib->api->godot_variant_new_nil(&result_variant);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
@@ -154,11 +154,11 @@ godot_variant core_run_callbacks(godot_object *p_instance, Library *p_lib,
     {
         enum EDiscordResult result = p_core->internal->run_callbacks(p_core->internal);
 
-        p_lib->api->godot_variant_new_int(&result_variant, result);
+        p_lib->core_api->godot_variant_new_int(&result_variant, result);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
@@ -188,11 +188,11 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
             manager = p_core->users;
         }
 
-        p_lib->api->godot_variant_new_object(&result_variant, manager);
+        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
@@ -222,11 +222,11 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
             manager = p_core->images;
         }
 
-        p_lib->api->godot_variant_new_object(&result_variant, manager);
+        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
@@ -256,11 +256,11 @@ godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib
             manager = p_core->activities;
         }
 
-        p_lib->api->godot_variant_new_object(&result_variant, manager);
+        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
     }
     else
     {
-        p_lib->api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
     }
 
     return result_variant;
