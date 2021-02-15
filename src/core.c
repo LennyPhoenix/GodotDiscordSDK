@@ -22,7 +22,8 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         godot_unreference(p_core->activities, p_lib);
 
     if (p_core->hook_data)
-        p_lib->core_api->godot_free(p_core->hook_data);
+        p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
+    p_lib->core_api->godot_free(p_core->hook_data);
 
     if (p_core->internal)
     {
@@ -103,6 +104,7 @@ void log_hook(CallbackData *p_data,
 
     godot_string message_string = p_data->lib->core_api->godot_string_chars_to_utf8(p_message);
     lib->core_api->godot_variant_new_string(&message_variant, &message_string);
+    lib->core_api->godot_string_destroy(&message_string);
 
     godot_variant *args[] = {&level_variant, &message_variant};
 
@@ -124,6 +126,10 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
         if (!p_core->hook_data)
         {
             p_core->hook_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
+        }
+        else
+        {
+            p_lib->core_api->godot_string_destroy(&hook_method);
         }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));

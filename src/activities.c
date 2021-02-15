@@ -98,6 +98,8 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
                                                                           "ActivityTimestamps", "start",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // End
         {
@@ -124,6 +126,8 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
                                                                           "ActivityTimestamps", "end",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -162,12 +166,16 @@ GDCALLINGCONV void activity_assets_set_large_image(godot_object *p_instance, Lib
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_large_image);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *large_image = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_assets->internal->large_image, 0, sizeof(char) * 128);
     memcpy(p_assets->internal->large_image, large_image, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_assets_get_large_text(godot_object *p_instance, Library *p_lib,
@@ -188,12 +196,16 @@ GDCALLINGCONV void activity_assets_set_large_text(godot_object *p_instance, Libr
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_large_text);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *large_text = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_assets->internal->large_text, 0, sizeof(char) * 128);
     memcpy(p_assets->internal->large_text, large_text, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_assets_get_small_image(godot_object *p_instance, Library *p_lib,
@@ -214,12 +226,16 @@ GDCALLINGCONV void activity_assets_set_small_image(godot_object *p_instance, Lib
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_small_image);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *small_image = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_assets->internal->small_image, 0, sizeof(char) * 128);
     memcpy(p_assets->internal->small_image, small_image, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_assets_get_small_text(godot_object *p_instance, Library *p_lib,
@@ -240,12 +256,16 @@ GDCALLINGCONV void activity_assets_set_small_text(godot_object *p_instance, Libr
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_small_text);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *small_text = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_assets->internal->small_text, 0, sizeof(char) * 128);
     memcpy(p_assets->internal->small_text, small_text, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 void register_activity_assets(void *p_handle, Library *p_lib)
@@ -283,6 +303,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -297,6 +318,8 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "large_image",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Large Text
         {
@@ -310,6 +333,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -324,6 +348,8 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "large_text",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Small Image
         {
@@ -337,6 +363,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -351,6 +378,8 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "small_image",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Small Text
         {
@@ -364,6 +393,7 @@ void register_activity_assets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -378,6 +408,8 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "small_text",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -480,6 +512,8 @@ void register_party_size(void *p_handle, Library *p_lib)
                                                                           "PartySize", "current_size",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Max Size
         {
@@ -506,6 +540,8 @@ void register_party_size(void *p_handle, Library *p_lib)
                                                                           "PartySize", "max_size",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -550,12 +586,16 @@ GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, Library *p_li
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_id);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *id = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_party->internal->id, 0, sizeof(char) * 128);
     memcpy(p_party->internal->id, id, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_party_get_size(godot_object *p_instance, Library *p_lib,
@@ -634,6 +674,7 @@ void register_activity_party(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -648,6 +689,8 @@ void register_activity_party(void *p_handle, Library *p_lib)
                                                                           "ActivityParty", "id",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Size
         {
@@ -674,6 +717,8 @@ void register_activity_party(void *p_handle, Library *p_lib)
                                                                           "ActivityParty", "size",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -712,12 +757,16 @@ GDCALLINGCONV void activity_secrets_set_match(godot_object *p_instance, Library 
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_match);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *match = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_secrets->internal->match, 0, sizeof(char) * 128);
     memcpy(p_secrets->internal->match, match, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_secrets_get_join(godot_object *p_instance, Library *p_lib,
@@ -738,12 +787,16 @@ GDCALLINGCONV void activity_secrets_set_join(godot_object *p_instance, Library *
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_join);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *join = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_secrets->internal->join, 0, sizeof(char) * 128);
     memcpy(p_secrets->internal->join, join, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_secrets_get_spectate(godot_object *p_instance, Library *p_lib,
@@ -764,12 +817,16 @@ GDCALLINGCONV void activity_secrets_set_spectate(godot_object *p_instance, Libra
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_spectate);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *spectate = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_secrets->internal->spectate, 0, sizeof(char) * 128);
     memcpy(p_secrets->internal->spectate, spectate, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 void register_activity_secrets(void *p_handle, Library *p_lib)
@@ -807,6 +864,7 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -821,6 +879,8 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "match",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Join
         {
@@ -834,6 +894,7 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -848,6 +909,8 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "join",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Spectate
         {
@@ -861,6 +924,7 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -875,6 +939,8 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "spectate",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -938,8 +1004,9 @@ godot_variant activity_get_name(godot_object *p_instance, Library *p_lib,
 {
     godot_variant name;
 
-    godot_string name_string = p_lib->core_api->godot_string_chars_to_utf8(p_activity->internal->name);
-    p_lib->core_api->godot_variant_new_string(&name, &name_string);
+    godot_string string = p_lib->core_api->godot_string_chars_to_utf8(p_activity->internal->name);
+    p_lib->core_api->godot_variant_new_string(&name, &string);
+    p_lib->core_api->godot_string_destroy(&string);
 
     return name;
 }
@@ -966,12 +1033,16 @@ GDCALLINGCONV void activity_set_state(godot_object *p_instance, Library *p_lib,
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_state);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *state = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_activity->internal->state, 0, sizeof(char) * 128);
     memcpy(p_activity->internal->state, state, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_get_details(godot_object *p_instance, Library *p_lib,
@@ -992,12 +1063,16 @@ GDCALLINGCONV void activity_set_details(godot_object *p_instance, Library *p_lib
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_details);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
+    p_lib->core_api->godot_string_destroy(&string);
+
     const char *details = p_lib->core_api->godot_char_string_get_data(&char_string);
 
     int size = p_lib->core_api->godot_char_string_length(&char_string);
 
     memset(p_activity->internal->details, 0, sizeof(char) * 128);
     memcpy(p_activity->internal->details, details, sizeof(char) * MIN(size, 127));
+
+    p_lib->core_api->godot_char_string_destroy(&char_string);
 }
 
 godot_variant activity_get_timestamps(godot_object *p_instance, Library *p_lib,
@@ -1190,6 +1265,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "application_id",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Name
         {
@@ -1203,6 +1280,7 @@ void register_activity(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -1217,6 +1295,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "name",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // State
         {
@@ -1230,6 +1310,7 @@ void register_activity(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -1244,6 +1325,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "state",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Details
         {
@@ -1257,6 +1340,7 @@ void register_activity(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_string_destroy(&string);
             attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
@@ -1271,6 +1355,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "details",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Timestamps
         {
@@ -1297,6 +1383,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "timestamps",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Assets
         {
@@ -1323,6 +1411,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "assets",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Party
         {
@@ -1349,6 +1439,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "party",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Secrets
         {
@@ -1375,6 +1467,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "secrets",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Instance
         {
@@ -1401,6 +1495,8 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "instance",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -1431,10 +1527,13 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
     {
         godot_string command_string = p_lib->core_api->godot_variant_as_string(p_args[0]);
         godot_char_string command_char_string = p_lib->core_api->godot_string_utf8(&command_string);
+        p_lib->core_api->godot_string_destroy(&command_string);
 
         const char *command = p_lib->core_api->godot_char_string_get_data(&command_char_string);
 
         enum EDiscordResult result = p_activity_manager->internal->register_command(p_activity_manager->internal, command);
+
+        p_lib->core_api->godot_char_string_destroy(&command_char_string);
 
         p_lib->core_api->godot_variant_new_int(&result_variant, result);
     }
@@ -1479,6 +1578,7 @@ void update_activity_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
@@ -1528,6 +1628,7 @@ void clear_activity_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
@@ -1572,6 +1673,7 @@ void send_request_reply_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
@@ -1619,6 +1721,7 @@ void send_invite_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
@@ -1638,6 +1741,7 @@ godot_variant activity_manager_send_invite(godot_object *p_instance, Library *p_
 
         godot_char_string content_char_string = p_lib->core_api->godot_string_utf8(&content_string);
         const char *content = p_lib->core_api->godot_char_string_get_data(&content_char_string);
+        p_lib->core_api->godot_string_destroy(&content_string);
 
         CallbackData *callback_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
         callback_data->callback_object = callback_object;
@@ -1648,6 +1752,8 @@ godot_variant activity_manager_send_invite(godot_object *p_instance, Library *p_
         p_activity_manager->internal->send_invite(p_activity_manager->internal,
                                                   user_id, type, content,
                                                   callback_data, send_invite_callback);
+
+        p_lib->core_api->godot_char_string_destroy(&content_char_string);
     }
     else
     {
@@ -1670,6 +1776,7 @@ void accept_invite_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 1, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
@@ -1819,6 +1926,9 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&join_secret.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
         }
         // Spectate Join
         {
@@ -1839,6 +1949,9 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&spectate_secret.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
         }
         // Activity Join Request
         {
@@ -1859,6 +1972,9 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&user.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
         }
         // Activity Invite
         {
@@ -1893,6 +2009,11 @@ void register_activity_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
                                                                         "ActivityManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&activity.name);
+            p_lib->core_api->godot_string_destroy(&user.name);
+            p_lib->core_api->godot_string_destroy(&type.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
         }
     }
 }
@@ -1907,10 +2028,13 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 
     godot_string join_secret_string = lib->core_api->godot_string_chars_to_utf8(p_join_secret);
     lib->core_api->godot_variant_new_string(&join_secret_variant, &join_secret_string);
+    lib->core_api->godot_string_destroy(&join_secret_string);
 
     godot_variant *args[] = {&join_secret_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+
+    lib->core_api->godot_string_destroy(&signal);
 }
 
 void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
@@ -1923,10 +2047,13 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 
     godot_string spectate_secret_string = lib->core_api->godot_string_chars_to_utf8(p_spectate_secret);
     lib->core_api->godot_variant_new_string(&spectate_secret_variant, &spectate_secret_string);
+    lib->core_api->godot_string_destroy(&spectate_secret_string);
 
     godot_variant *args[] = {&spectate_secret_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+
+    lib->core_api->godot_string_destroy(&signal);
 }
 
 void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
@@ -1946,6 +2073,8 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
     godot_variant *args[] = {&user_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+
+    lib->core_api->godot_string_destroy(&signal);
 }
 
 void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
@@ -1975,4 +2104,6 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
     godot_variant *args[] = {&type_variant, &user_variant, &activity_variant};
 
     object_emit_signal(p_core->activities->object, &signal, 3, args, p_core->lib);
+
+    lib->core_api->godot_string_destroy(&signal);
 }

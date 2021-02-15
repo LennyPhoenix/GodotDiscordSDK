@@ -96,6 +96,8 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
                                                                           "ImageDimensions", "width",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Height
         {
@@ -122,6 +124,8 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
                                                                           "ImageDimensions", "height",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -239,6 +243,8 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           "ImageHandle", "type",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // ID
         {
@@ -265,6 +271,8 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           "ImageHandle", "id",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Size
         {
@@ -291,6 +299,8 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           "ImageHandle", "size",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -331,6 +341,7 @@ void fetch_callback(CallbackData *p_data,
 
     object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
 
+    lib->core_api->godot_string_destroy(&p_data->callback_name);
     lib->core_api->godot_free(p_data);
 }
 
