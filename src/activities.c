@@ -1839,12 +1839,20 @@ void accept_invite_callback(CallbackData *p_data,
 
     godot_variant *args[] = {&result_variant};
 
-    if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-        object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
-    else
-        PRINT_ERROR("Callback object is no longer a valid instance.", lib);
+    if (p_data->callback_object)
+    {
+        if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+        else
+            PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
-    lib->core_api->godot_string_destroy(&p_data->callback_name);
+        lib->core_api->godot_string_destroy(&p_data->callback_name);
+    }
+
+    godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("accept_invite_callback");
+    object_emit_signal(p_data->core->activities->object, &signal_name, 1, args, lib);
+    lib->core_api->godot_string_destroy(&signal_name);
+
     lib->core_api->godot_free(p_data);
 }
 
@@ -1854,18 +1862,22 @@ godot_variant activity_manager_accept_invite(godot_object *p_instance, Library *
 {
     godot_variant result_variant;
 
-    if (p_num_args == 3) // User ID, Callback Object, Callback Name
+    if (p_num_args == 1 || p_num_args == 3) // User ID, [Callback Object, Callback Name]
     {
         int64_t user_id = p_lib->core_api->godot_variant_as_int(p_args[0]);
-        godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
-        godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[2]);
 
         CallbackData *callback_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
         memset(callback_data, 0, sizeof(CallbackData));
-        callback_data->callback_object = callback_object;
-        callback_data->callback_name = callback_name;
         callback_data->core = p_activity_manager->core;
         callback_data->lib = p_lib;
+
+        if (p_num_args == 3)
+        {
+            godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
+            godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[2]);
+            callback_data->callback_object = callback_object;
+            callback_data->callback_name = callback_name;
+        }
 
         p_activity_manager->internal->accept_invite(p_activity_manager->internal,
                                                     user_id,
@@ -2157,6 +2169,29 @@ void register_activity_manager(void *p_handle, Library *p_lib)
         {
             memset(&signal, 0, sizeof(godot_signal));
             signal.name = p_lib->core_api->godot_string_chars_to_utf8("send_invite_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->core_api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+
+            godot_signal_argument args[] = {result};
+            signal.args = args;
+            signal.num_args = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ActivityManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&result.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
+        }
+        // Accept Invite Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("accept_invite_callback");
 
             godot_signal_argument result;
             {
