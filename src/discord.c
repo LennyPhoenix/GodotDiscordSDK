@@ -4,54 +4,47 @@ Library lib;
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
 {
-    lib.api = p_options->api_struct;
-    lib.gdnlib = p_options->gd_native_library;
+    lib.core_api = p_options->api_struct;
 
-    for (unsigned int i = 0; i < lib.api->num_extensions; i++)
+    if (lib.core_api->next)
     {
-        switch (lib.api->extensions[i]->type)
+        const godot_gdnative_api_struct *extension = lib.core_api->next;
+
+        while (extension)
         {
-        case GDNATIVE_EXT_NATIVESCRIPT:
-            lib.nativescript_api = (godot_gdnative_ext_nativescript_api_struct *)lib.api->extensions[i];
-
-            if (lib.nativescript_api->next)
+            if (extension->version.major == 1 && extension->version.minor == 1)
             {
-                const godot_gdnative_api_struct *extension = lib.nativescript_api->next;
-
-                while (extension)
-                {
-                    if (extension->version.major == 1 && extension->version.minor == 1)
-                    {
-                        lib.nativescript_1_1_api = (const godot_gdnative_ext_nativescript_1_1_api_struct *)extension;
-                    }
-
-                    extension = extension->next;
-                }
+                lib.core_1_1_api = extension;
             }
 
-            break;
+            extension = extension->next;
+        }
+    }
+
+    for (unsigned int i = 0; i < lib.core_api->num_extensions; i++)
+    {
+        switch (lib.core_api->extensions[i]->type)
+        {
+        case GDNATIVE_EXT_NATIVESCRIPT:
+            lib.nativescript_api = lib.core_api->extensions[i];
 
         default:
             break;
         };
     };
+
+    lib.gdnlib = p_options->gd_native_library;
 }
 
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options)
 {
-    lib.api = NULL;
+    lib.core_api = NULL;
+    lib.core_1_1_api = NULL;
     lib.nativescript_api = NULL;
-    lib.nativescript_1_1_api = NULL;
 }
 
 void GDN_EXPORT godot_nativescript_init(void *p_handle)
 {
-    if (!lib.nativescript_1_1_api)
-    {
-        godot_string string = lib.api->godot_string_chars_to_utf8("Failed to load nativescript 1.1...");
-        lib.api->godot_print(&string);
-    }
-
     register_core(p_handle, &lib);
 
     // Users

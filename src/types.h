@@ -8,9 +8,9 @@
 
 typedef struct Library
 {
-    const godot_gdnative_core_api_struct *api;
+    const godot_gdnative_core_api_struct *core_api;
+    const godot_gdnative_core_1_1_api_struct *core_1_1_api;
     const godot_gdnative_ext_nativescript_api_struct *nativescript_api;
-    const godot_gdnative_ext_nativescript_1_1_api_struct *nativescript_1_1_api;
 
     const godot_object *gdnlib;
 } Library;
