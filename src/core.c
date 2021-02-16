@@ -105,7 +105,7 @@ void log_hook(CallbackData *p_data,
 
     lib->core_api->godot_variant_new_int(&level_variant, p_level);
 
-    godot_string message_string = p_data->lib->core_api->godot_string_chars_to_utf8(p_message);
+    godot_string message_string = lib->core_api->godot_string_chars_to_utf8(p_message);
     lib->core_api->godot_variant_new_string(&message_variant, &message_string);
     lib->core_api->godot_string_destroy(&message_string);
 
@@ -114,13 +114,13 @@ void log_hook(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
         else
-            lib->core_api->godot_print_error("Hook object for callback \"log_hook\" is no longer a valid instance.", __func__, __FILE__, __LINE__);
+            PRINT_ERROR("Callback object is no longer a valid instance.", lib);
     }
 
     godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("log_hook");
-    object_emit_signal(p_data->core->object, &signal_name, 2, args, p_data->lib);
+    object_emit_signal(p_data->core->object, &signal_name, 2, args, lib);
     lib->core_api->godot_string_destroy(&signal_name);
 }
 

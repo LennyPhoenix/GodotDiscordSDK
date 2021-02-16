@@ -341,12 +341,16 @@ void fetch_callback(CallbackData *p_data,
 
     if (p_data->callback_object)
     {
-        object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+        if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
+        else
+            PRINT_ERROR("Callback object is no longer a valid instance.", lib);
+
         lib->core_api->godot_string_destroy(&p_data->callback_name);
     }
 
     godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("fetch_callback");
-    object_emit_signal(p_data->core->images->object, &signal_name, 2, args, p_data->lib);
+    object_emit_signal(p_data->core->images->object, &signal_name, 2, args, lib);
     lib->core_api->godot_string_destroy(&signal_name);
 
     lib->core_api->godot_free(p_data);

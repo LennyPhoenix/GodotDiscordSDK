@@ -14,7 +14,7 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
         {
             if (extension->version.major == 1 && extension->version.minor == 1)
             {
-                lib.core_1_1_api = extension;
+                lib.core_1_1_api = (const godot_gdnative_core_1_1_api_struct *)extension;
             }
 
             extension = extension->next;
@@ -26,7 +26,7 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
         switch (lib.core_api->extensions[i]->type)
         {
         case GDNATIVE_EXT_NATIVESCRIPT:
-            lib.nativescript_api = lib.core_api->extensions[i];
+            lib.nativescript_api = (const godot_gdnative_ext_nativescript_api_struct *)lib.core_api->extensions[i];
 
         default:
             break;
