@@ -424,6 +424,7 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
         godot_object *user_object = instantiate_custom_class("User", "Resource", p_lib);
 
         CallbackData *callback_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
+        memset(callback_data, 0, sizeof(CallbackData));
         callback_data->core = p_user_manager->core;
         callback_data->lib = p_lib;
 

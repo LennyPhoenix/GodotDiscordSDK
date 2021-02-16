@@ -25,8 +25,7 @@ func _ready() -> void:
 	if result != Discord.Result.OK:
 		core = null
 	else:
-		core.set_log_hook(Discord.LogLevel.DEBUG)
-		core.connect("log_hook", self, "log_hook")
+		core.set_log_hook(Discord.LogLevel.DEBUG, self, "log_hook")
 
 		users = _get_user_manager()
 		images = _get_image_manager()
@@ -48,7 +47,16 @@ func _ready() -> void:
 
 		activity.timestamps.start = OS.get_unix_time()
 
-		activities.update_activity(activity, self, "update_activity_callback")
+		activities.update_activity(activity)
+		result = yield(activities, "update_activity_callback")
+
+		if result == Discord.Result.OK:
+			print("Updated activity successfully!")
+		else:
+			print(
+				"Failed to update activity: ",
+				enum_to_string(Discord.Result, result)
+			)
 
 
 func _process(_delta: float) -> void:
@@ -115,7 +123,7 @@ func _on_current_user_update() -> void:
 	handle.size = 256
 	handle.type = Discord.ImageType.USER
 
-	images.fetch(handle, true, self, "fetch_callback")
+	images.fetch(handle, true)
 	ret = yield(images, "fetch_callback")
 	result = ret[0]
 	handle = ret[1]
@@ -184,13 +192,3 @@ func get_current_user_premium_type_callback(
 	else:
 		print("Current User Premium Type:")
 		print(enum_to_string(Discord.PremiumType, premium_type))
-
-
-func update_activity_callback(result: int):
-	if result == Discord.Result.OK:
-		print("Updated activity successfully!")
-	else:
-		print(
-			"Failed to update activity: ",
-			enum_to_string(Discord.Result, result)
-		)

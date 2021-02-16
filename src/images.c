@@ -370,6 +370,7 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
 
         CallbackData *callback_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
+        memset(callback_data, 0, sizeof(CallbackData));
         callback_data->core = p_image_manager->core;
         callback_data->lib = p_lib;
 
