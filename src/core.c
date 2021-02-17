@@ -22,8 +22,11 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         godot_unreference(p_core->activities, p_lib);
 
     if (p_core->hook_data)
-        p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
-    p_lib->core_api->godot_free(p_core->hook_data);
+    {
+        if (p_core->hook_data->callback_object)
+            p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
+        p_lib->core_api->godot_free(p_core->hook_data);
+    }
 
     if (p_core->internal)
     {
@@ -102,13 +105,23 @@ void log_hook(CallbackData *p_data,
 
     lib->core_api->godot_variant_new_int(&level_variant, p_level);
 
-    godot_string message_string = p_data->lib->core_api->godot_string_chars_to_utf8(p_message);
+    godot_string message_string = lib->core_api->godot_string_chars_to_utf8(p_message);
     lib->core_api->godot_variant_new_string(&message_variant, &message_string);
     lib->core_api->godot_string_destroy(&message_string);
 
     godot_variant *args[] = {&level_variant, &message_variant};
 
-    object_call(p_data->callback_object, &p_data->callback_name, 2, args, p_data->lib);
+    if (p_data->callback_object)
+    {
+        if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
+        else
+            PRINT_ERROR("Callback object is no longer a valid instance.", lib);
+    }
+
+    godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("log_hook");
+    object_emit_signal(p_data->core->object, &signal_name, 2, args, lib);
+    lib->core_api->godot_string_destroy(&signal_name);
 }
 
 godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
@@ -117,26 +130,30 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal && p_num_args == 3) // Min Level, Hook Object, Hook Method
+    if (p_core->internal && (p_num_args == 1 || p_num_args == 3)) // Min Level, [Hook Object, Hook Method]
     {
         int64_t min_level = p_lib->core_api->godot_variant_as_int(p_args[0]);
-        godot_object *hook_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
-        godot_string hook_method = p_lib->core_api->godot_variant_as_string(p_args[2]);
 
         if (!p_core->hook_data)
         {
             p_core->hook_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
         }
-        else
+        else if (p_core->hook_data->callback_object)
         {
-            p_lib->core_api->godot_string_destroy(&hook_method);
+            p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
         }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));
-        p_core->hook_data->callback_name = hook_method;
-        p_core->hook_data->callback_object = hook_object;
         p_core->hook_data->core = p_core;
         p_core->hook_data->lib = p_lib;
+
+        if (p_num_args == 3)
+        {
+            godot_object *hook_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
+            godot_string hook_method = p_lib->core_api->godot_variant_as_string(p_args[2]);
+            p_core->hook_data->callback_name = hook_method;
+            p_core->hook_data->callback_object = hook_object;
+        }
 
         p_core->internal->set_log_hook(p_core->internal, min_level, p_core->hook_data, log_hook);
 
@@ -352,6 +369,43 @@ void register_core(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_activity_manager",
                                                                         attributes, method);
+        }
+    }
+
+    // Signals
+    {
+        godot_signal signal;
+
+        // Log Hook
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("log_hook");
+
+            godot_signal_argument level;
+            {
+                memset(&level, 0, sizeof(godot_signal_argument));
+                level.name = p_lib->core_api->godot_string_chars_to_utf8("level");
+
+                level.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument message;
+            {
+                memset(&message, 0, sizeof(godot_signal_argument));
+                message.name = p_lib->core_api->godot_string_chars_to_utf8("message");
+
+                message.type = GODOT_VARIANT_TYPE_STRING;
+            }
+
+            godot_signal_argument args[] = {level, message};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "Core", &signal);
+
+            p_lib->core_api->godot_string_destroy(&message.name);
+            p_lib->core_api->godot_string_destroy(&level.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
         }
     }
 }

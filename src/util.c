@@ -5,8 +5,6 @@ godot_string get_script_path(godot_string *p_class_name,
 {
     // Get the .gdnlib path
     godot_char_string gdnlib_path_char_string;
-    char *gdnlib_path;
-    int gdnlib_path_size;
     {
         godot_method_bind *mb_get_path = p_lib->core_api->godot_method_bind_get_method("Resource", "get_path");
 
@@ -16,23 +14,19 @@ godot_string get_script_path(godot_string *p_class_name,
         godot_string gdnlib_path_string = p_lib->core_api->godot_variant_as_string(&ret);
         gdnlib_path_char_string = p_lib->core_api->godot_string_utf8(&gdnlib_path_string);
         p_lib->core_api->godot_string_destroy(&gdnlib_path_string);
-
-        gdnlib_path = (char *)p_lib->core_api->godot_char_string_get_data(&gdnlib_path_char_string);
-        gdnlib_path_size = p_lib->core_api->godot_char_string_length(&gdnlib_path_char_string);
     }
+    const char *gdnlib_path = p_lib->core_api->godot_char_string_get_data(&gdnlib_path_char_string);
+    int gdnlib_path_size = p_lib->core_api->godot_char_string_length(&gdnlib_path_char_string);
 
     // Get script name
     godot_char_string script_name_char_string;
-    char *script_name;
-    int script_name_size;
     {
         godot_string script_name_string = p_lib->core_api->godot_string_camelcase_to_underscore_lowercased(p_class_name);
         script_name_char_string = p_lib->core_api->godot_string_utf8(&script_name_string);
         p_lib->core_api->godot_string_destroy(&script_name_string);
-
-        script_name = (char *)p_lib->core_api->godot_char_string_get_data(&script_name_char_string);
-        script_name_size = p_lib->core_api->godot_char_string_length(&script_name_char_string);
     }
+    const char *script_name = p_lib->core_api->godot_char_string_get_data(&script_name_char_string);
+    int script_name_size = p_lib->core_api->godot_char_string_length(&script_name_char_string);
 
     // Get folder of script
     int last_slash_char;
@@ -63,11 +57,10 @@ godot_string get_script_path(godot_string *p_class_name,
 godot_object *instantiate_custom_class(const char *p_class_name, const char *p_base,
                                        Library *p_lib)
 {
-    godot_string class_name = p_lib->core_api->godot_string_chars_to_utf8(p_class_name);
-
     // Get the script object
     godot_object *script;
     {
+        godot_string class_name = p_lib->core_api->godot_string_chars_to_utf8(p_class_name);
         godot_string script_path_string = get_script_path(&class_name, p_lib);
         p_lib->core_api->godot_string_destroy(&class_name);
 
