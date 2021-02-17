@@ -137,11 +137,14 @@ func _on_current_user_update() -> void:
 
 	print("Fetched image handle, ", handle.id, ", ", handle.size)
 
-	var res = images.get_data(handle)
-	if res is int:
+	images.get_data(handle)
+	ret = yield(images, "get_data_callback")
+	result = ret[0]
+	var data: PoolByteArray = ret[1]
+	if result != Discord.Result.OK:
 		print(
 			"Failed to get image data: ",
-			enum_to_string(Discord.Result, res)
+			enum_to_string(Discord.Result, result)
 		)
 		return
 
@@ -155,7 +158,7 @@ func _on_current_user_update() -> void:
 		dimensions.width, dimensions.height,
 		false,
 		Image.FORMAT_RGBA8,
-		res
+		data
 	)
 	image.unlock()
 	var tex: = ImageTexture.new()
