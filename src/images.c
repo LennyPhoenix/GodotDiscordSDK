@@ -402,7 +402,7 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
 {
     godot_variant result_variant;
 
-    if (p_num_args == 1) // Handle
+    if (p_num_args == 1 || p_num_args == 3) // Handle, [Callback Object, Callback Name]
     {
         godot_object *handle_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
         ImageHandle *handle = p_lib->nativescript_api->godot_nativescript_get_userdata(handle_object);
@@ -413,14 +413,32 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
         enum EDiscordResult result = p_image_manager->internal->get_dimensions(p_image_manager->internal,
                                                                                *handle->internal, dimensions->internal);
 
-        if (result == DiscordResult_Ok)
+        godot_variant result_variant;
+        godot_variant dimensions_variant;
+
+        p_lib->core_api->godot_variant_new_int(&result_variant, result);
+        p_lib->core_api->godot_variant_new_object(&dimensions_variant, dimensions_object);
+
+        godot_variant *args[] = {&result_variant, &dimensions_variant};
+
+        if (p_num_args == 3)
         {
-            p_lib->core_api->godot_variant_new_object(&result_variant, dimensions_object);
+            godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
+            godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[2]);
+
+            if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
+                object_call(callback_object, &callback_name, 2, args, p_lib);
+            else
+                PRINT_ERROR("Callback object is not a valid instance.", p_lib);
+
+            p_lib->core_api->godot_string_destroy(&callback_name);
         }
-        else
-        {
-            p_lib->core_api->godot_variant_new_int(&result_variant, result);
-        }
+
+        godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_dimensions_callback");
+        object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+        p_lib->core_api->godot_string_destroy(&signal_name);
+
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
@@ -571,6 +589,37 @@ void register_image_manager(void *p_handle, Library *p_lib)
                                                                         "ImageManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&handle.name);
+            p_lib->core_api->godot_string_destroy(&result.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
+        }
+        // Get Dimensions Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("get_dimensions_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->core_api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument dimensions;
+            {
+                memset(&dimensions, 0, sizeof(godot_signal_argument));
+                dimensions.name = p_lib->core_api->godot_string_chars_to_utf8("dimensions");
+
+                dimensions.type = GODOT_VARIANT_TYPE_OBJECT;
+            }
+
+            godot_signal_argument args[] = {result, dimensions};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "ImageManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&dimensions.name);
             p_lib->core_api->godot_string_destroy(&result.name);
             p_lib->core_api->godot_string_destroy(&signal.name);
         }

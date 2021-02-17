@@ -145,7 +145,11 @@ func _on_current_user_update() -> void:
 		)
 		return
 
-	var dimensions: Discord.ImageDimensions = images.get_dimensions(handle)
+	images.get_dimensions(handle)
+	ret = yield(images, "get_dimensions_callback")
+	result = ret[0]
+	var dimensions: Discord.ImageDimensions = ret[1]
+
 	var image: = Image.new()
 	image.create_from_data(
 		dimensions.width, dimensions.height,
