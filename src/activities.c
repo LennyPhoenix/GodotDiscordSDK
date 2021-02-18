@@ -1834,6 +1834,8 @@ godot_variant activity_manager_send_invite(godot_object *p_instance, Library *p_
     }
 
     p_lib->core_api->godot_variant_new_nil(&result_variant);
+
+    return result_variant;
 }
 
 void accept_invite_callback(CallbackData *p_data,
@@ -1897,6 +1899,8 @@ godot_variant activity_manager_accept_invite(godot_object *p_instance, Library *
     }
 
     p_lib->core_api->godot_variant_new_nil(&result_variant);
+
+    return result_variant;
 }
 
 void register_activity_manager(void *p_handle, Library *p_lib)
