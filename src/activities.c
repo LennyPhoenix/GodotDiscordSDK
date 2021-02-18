@@ -69,7 +69,6 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -78,13 +77,6 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_timestamps_get_start;
@@ -98,21 +90,12 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
                                                                           "ActivityTimestamps", "start",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // End
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_timestamps_get_end;
@@ -126,8 +109,6 @@ void register_activity_timestamps(void *p_handle, Library *p_lib)
                                                                           "ActivityTimestamps", "end",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -287,7 +268,6 @@ void register_activity_assets(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -296,15 +276,10 @@ void register_activity_assets(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_large_image;
@@ -318,23 +293,16 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "large_image",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Large Text
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_large_text;
@@ -348,23 +316,16 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "large_text",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Small Image
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_small_image;
@@ -378,23 +339,16 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "small_image",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Small Text
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_assets_get_small_text;
@@ -408,8 +362,6 @@ void register_activity_assets(void *p_handle, Library *p_lib)
                                                                           "ActivityAssets", "small_text",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -483,7 +435,6 @@ void register_party_size(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -492,13 +443,6 @@ void register_party_size(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = party_size_get_current_size;
@@ -512,21 +456,12 @@ void register_party_size(void *p_handle, Library *p_lib)
                                                                           "PartySize", "current_size",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Max Size
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = party_size_get_max_size;
@@ -540,8 +475,6 @@ void register_party_size(void *p_handle, Library *p_lib)
                                                                           "PartySize", "max_size",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -658,7 +591,6 @@ void register_activity_party(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -667,15 +599,10 @@ void register_activity_party(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_party_get_id;
@@ -689,21 +616,12 @@ void register_activity_party(void *p_handle, Library *p_lib)
                                                                           "ActivityParty", "id",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Size
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_OBJECT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_nil(&default_value);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_party_get_size;
@@ -717,8 +635,6 @@ void register_activity_party(void *p_handle, Library *p_lib)
                                                                           "ActivityParty", "size",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -848,7 +764,6 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -857,15 +772,10 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_secrets_get_match;
@@ -879,23 +789,16 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "match",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Join
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_secrets_get_join;
@@ -909,23 +812,16 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "join",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Spectate
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_secrets_get_spectate;
@@ -939,8 +835,6 @@ void register_activity_secrets(void *p_handle, Library *p_lib)
                                                                           "ActivitySecrets", "spectate",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -1236,7 +1130,6 @@ void register_activity(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -1245,13 +1138,6 @@ void register_activity(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_STORAGE | GODOT_PROPERTY_USAGE_NETWORK;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_application_id;
@@ -1265,23 +1151,16 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "application_id",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Name
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_STORAGE | GODOT_PROPERTY_USAGE_NETWORK;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_name;
@@ -1295,23 +1174,16 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "name",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // State
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_state;
@@ -1325,23 +1197,16 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "state",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Details
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_details;
@@ -1355,21 +1220,12 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "details",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Timestamps
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_OBJECT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_nil(&default_value);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_timestamps;
@@ -1383,21 +1239,12 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "timestamps",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Assets
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_OBJECT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_nil(&default_value);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_assets;
@@ -1411,21 +1258,12 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "assets",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Party
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_OBJECT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_nil(&default_value);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_party;
@@ -1439,21 +1277,12 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "party",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Secrets
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_OBJECT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_nil(&default_value);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_secrets;
@@ -1467,21 +1296,12 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "secrets",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Instance
         {
             memset(&get, 0, sizeof(godot_property_get_func));
             attributes.type = GODOT_VARIANT_TYPE_BOOL;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_bool(&default_value, false);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = activity_get_instance;
@@ -1495,8 +1315,6 @@ void register_activity(void *p_handle, Library *p_lib)
                                                                           "Activity", "instance",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }

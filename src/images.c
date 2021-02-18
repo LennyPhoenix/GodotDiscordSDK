@@ -67,7 +67,6 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -76,13 +75,6 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_uint(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_dimensions_get_width;
@@ -96,21 +88,12 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
                                                                           "ImageDimensions", "width",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Height
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_uint(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_dimensions_get_height;
@@ -124,8 +107,6 @@ void register_image_dimensions(void *p_handle, Library *p_lib)
                                                                           "ImageDimensions", "height",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
@@ -214,7 +195,6 @@ void register_image_handle(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -223,13 +203,11 @@ void register_image_handle(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
 
             attributes.hint = GODOT_PROPERTY_HINT_ENUM;
             attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("User");
 
-            p_lib->core_api->godot_variant_new_int(&default_value, DiscordImageType_User);
-            attributes.default_value = default_value;
+            p_lib->core_api->godot_variant_new_int(&attributes.default_value, DiscordImageType_User);
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_type;
@@ -251,13 +229,6 @@ void register_image_handle(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_id;
@@ -271,21 +242,12 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           "ImageHandle", "id",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Size
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_uint(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = image_handle_get_size;
@@ -299,8 +261,6 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           "ImageHandle", "size",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }

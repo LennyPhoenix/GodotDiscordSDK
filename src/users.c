@@ -157,7 +157,6 @@ void register_user(void *p_handle, Library *p_lib)
     // Attributes
     {
         godot_property_attributes attributes;
-        godot_variant default_value;
         godot_property_get_func get;
         godot_property_set_func set;
 
@@ -166,13 +165,6 @@ void register_user(void *p_handle, Library *p_lib)
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_INT;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_int(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_id;
@@ -186,23 +178,16 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "id",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Username
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_username;
@@ -216,23 +201,16 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "username",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Discriminator
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_STRING;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_discriminator;
@@ -246,8 +224,6 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "discriminator",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Avatar
         {
@@ -256,13 +232,9 @@ void register_user(void *p_handle, Library *p_lib)
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
             attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
 
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
-            p_lib->core_api->godot_variant_new_string(&default_value, &string);
+            p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
             p_lib->core_api->godot_string_destroy(&string);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_avatar;
@@ -276,21 +248,12 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "avatar",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // Bot
         {
             memset(&attributes, 0, sizeof(godot_property_attributes));
             attributes.type = GODOT_VARIANT_TYPE_BOOL;
             attributes.usage = GODOT_PROPERTY_USAGE_DEFAULT;
-            attributes.rset_type = GODOT_METHOD_RPC_MODE_DISABLED;
-
-            attributes.hint = GODOT_PROPERTY_HINT_NONE;
-            attributes.hint_string = p_lib->core_api->godot_string_chars_to_utf8("");
-
-            p_lib->core_api->godot_variant_new_bool(&default_value, 0);
-            attributes.default_value = default_value;
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_bot;
@@ -304,8 +267,6 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "bot",
                                                                           &attributes,
                                                                           set, get);
-
-            p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
     }
 }
