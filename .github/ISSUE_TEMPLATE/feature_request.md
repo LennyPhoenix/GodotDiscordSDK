@@ -1,10 +1,7 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
+name: Feature Request
+about: Suggest an idea for this project.
 labels: enhancement
-assignees: ''
-
 ---
 
 **Is your feature request related to a problem? Please describe.**
@@ -19,7 +16,7 @@ assignees: ''
 **Additional context**
 <!-- Add any other context or screenshots about the feature request here. -->
 
-**Please confirm the following:** 
+**Please confirm the following:**
 <!-- (Place an `X` between the square brackets) -->
 - [ ] I have checked for duplicate issues.
 - [ ] I have provided a detailed description of the enhancement.
