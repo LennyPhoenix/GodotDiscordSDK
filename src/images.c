@@ -385,13 +385,13 @@ godot_variant image_manager_fetch(godot_object *p_instance, Library *p_lib,
         p_image_manager->internal->fetch(p_image_manager->internal,
                                          *handle->internal, refresh,
                                          callback_data, fetch_callback);
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"fetch()\" call. Expected 2 or 4.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -440,13 +440,13 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
             p_lib->core_api->godot_string_destroy(&signal_name);
         }
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"get_dimensions()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -516,13 +516,13 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
             p_lib->core_api->godot_string_destroy(&signal_name);
         }
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"get_data()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }

@@ -365,13 +365,13 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
             p_lib->core_api->godot_string_destroy(&signal_name);
         }
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"get_current_user()\" call. Expected 0 or 2.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -439,13 +439,13 @@ godot_variant user_manager_get_user(godot_object *p_instance, Library *p_lib,
         p_user_manager->internal->get_user(p_user_manager->internal,
                                            id,
                                            callback_data, get_user_callback);
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"get_user()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -488,13 +488,13 @@ godot_variant user_manager_get_current_user_premium_type(godot_object *p_instanc
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
             p_lib->core_api->godot_string_destroy(&signal_name);
         }
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"get_current_user_premium_type()\" call. Expected 0 or 2.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -540,13 +540,13 @@ godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Libra
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
             p_lib->core_api->godot_string_destroy(&signal_name);
         }
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"current_user_has_flag()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }

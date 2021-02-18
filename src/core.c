@@ -89,7 +89,8 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"create()\" call. Expected 2 or 3.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
 
     return result_variant;
@@ -130,7 +131,14 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal && (p_num_args == 1 || p_num_args == 3)) // Min Level, [Hook Object, Hook Method]
+    if (!p_core->internal)
+    {
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
+
+    if (p_num_args == 1 || p_num_args == 3) // Min Level, [Hook Object, Hook Method]
     {
         int64_t min_level = p_lib->core_api->godot_variant_as_int(p_args[0]);
 
@@ -156,13 +164,13 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
         }
 
         p_core->internal->set_log_hook(p_core->internal, min_level, p_core->hook_data, log_hook);
-
-        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"set_log_hook()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -173,16 +181,16 @@ godot_variant core_run_callbacks(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal)
+    if (!p_core->internal)
     {
-        enum EDiscordResult result = p_core->internal->run_callbacks(p_core->internal);
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
 
-        p_lib->core_api->godot_variant_new_int(&result_variant, result);
-    }
-    else
-    {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
-    }
+    enum EDiscordResult result = p_core->internal->run_callbacks(p_core->internal);
+
+    p_lib->core_api->godot_variant_new_int(&result_variant, result);
 
     return result_variant;
 }
@@ -193,30 +201,30 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal)
+    if (!p_core->internal)
     {
-        godot_object *manager;
-        if (!p_core->users)
-        {
-            manager = instantiate_custom_class("UserManager", "Reference", p_lib);
-            UserManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
-            data->core = p_core;
-            data->internal = p_core->internal->get_user_manager(p_core->internal);
-            p_core->users = data;
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
 
-            godot_reference(manager, p_lib);
-        }
-        else
-        {
-            manager = p_core->users;
-        }
+    godot_object *manager;
+    if (!p_core->users)
+    {
+        manager = instantiate_custom_class("UserManager", "Reference", p_lib);
+        UserManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->core = p_core;
+        data->internal = p_core->internal->get_user_manager(p_core->internal);
+        p_core->users = data;
 
-        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
+        godot_reference(manager, p_lib);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        manager = p_core->users;
     }
+
+    p_lib->core_api->godot_variant_new_object(&result_variant, manager);
 
     return result_variant;
 }
@@ -227,30 +235,30 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
 {
     godot_variant result_variant;
 
-    if (p_core->internal)
+    if (!p_core->internal)
     {
-        godot_object *manager;
-        if (!p_core->images)
-        {
-            manager = instantiate_custom_class("ImageManager", "Reference", p_lib);
-            ImageManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
-            data->core = p_core;
-            data->internal = p_core->internal->get_image_manager(p_core->internal);
-            p_core->images = data;
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
 
-            godot_reference(manager, p_lib);
-        }
-        else
-        {
-            manager = p_core->images;
-        }
+    godot_object *manager;
+    if (!p_core->images)
+    {
+        manager = instantiate_custom_class("ImageManager", "Reference", p_lib);
+        ImageManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->core = p_core;
+        data->internal = p_core->internal->get_image_manager(p_core->internal);
+        p_core->images = data;
 
-        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
+        godot_reference(manager, p_lib);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        manager = p_core->images;
     }
+
+    p_lib->core_api->godot_variant_new_object(&result_variant, manager);
 
     return result_variant;
 }
@@ -261,30 +269,30 @@ godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib
 {
     godot_variant result_variant;
 
-    if (p_core->internal)
+    if (!p_core->internal)
     {
-        godot_object *manager;
-        if (!p_core->activities)
-        {
-            manager = instantiate_custom_class("ActivityManager", "Reference", p_lib);
-            ActivityManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
-            data->core = p_core;
-            data->internal = p_core->internal->get_activity_manager(p_core->internal);
-            p_core->activities = data;
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
 
-            godot_reference(manager, p_lib);
-        }
-        else
-        {
-            manager = p_core->activities;
-        }
+    godot_object *manager;
+    if (!p_core->activities)
+    {
+        manager = instantiate_custom_class("ActivityManager", "Reference", p_lib);
+        ActivityManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->core = p_core;
+        data->internal = p_core->internal->get_activity_manager(p_core->internal);
+        p_core->activities = data;
 
-        p_lib->core_api->godot_variant_new_object(&result_variant, manager);
+        godot_reference(manager, p_lib);
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        manager = p_core->activities;
     }
+
+    p_lib->core_api->godot_variant_new_object(&result_variant, manager);
 
     return result_variant;
 }

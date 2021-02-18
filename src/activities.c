@@ -1539,7 +1539,8 @@ godot_variant activity_manager_register_command(godot_object *p_instance, Librar
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"register_command()\" call. Expected 1.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
 
     return result_variant;
@@ -1561,7 +1562,8 @@ godot_variant activity_manager_register_steam(godot_object *p_instance, Library 
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"register_steam()\" call. Expected 1.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
     }
 
     return result_variant;
@@ -1627,8 +1629,10 @@ godot_variant activity_manager_update_activity(godot_object *p_instance, Library
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"update_activity()\" call. Expected 1 or 3.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -1687,8 +1691,10 @@ godot_variant activity_manager_clear_activity(godot_object *p_instance, Library 
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"clear_activity()\" call. Expected 0 or 2.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -1751,8 +1757,10 @@ godot_variant activity_manager_send_request_reply(godot_object *p_instance, Libr
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"send_request_reply()\" call. Expected 2 or 4.", p_lib);
     }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -1822,10 +1830,10 @@ godot_variant activity_manager_send_invite(godot_object *p_instance, Library *p_
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"send_invite()\" call. Expected 3 or 5.", p_lib);
     }
 
-    return result_variant;
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 }
 
 void accept_invite_callback(CallbackData *p_data,
@@ -1885,10 +1893,10 @@ godot_variant activity_manager_accept_invite(godot_object *p_instance, Library *
     }
     else
     {
-        p_lib->core_api->godot_variant_new_int(&result_variant, DiscordResult_InvalidCommand);
+        PRINT_ERROR("Invalid number of arguments for \"accept_invite()\" call. Expected 1 or 3.", p_lib);
     }
 
-    return result_variant;
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
 }
 
 void register_activity_manager(void *p_handle, Library *p_lib)
