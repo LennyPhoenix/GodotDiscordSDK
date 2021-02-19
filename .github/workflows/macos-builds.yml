@@ -1,4 +1,4 @@
-name: 🍎 MacOS
+name: MacOS
 on:
   pull_request:
     branches:
