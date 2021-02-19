@@ -1,5 +1,9 @@
 # Godot Discord Game SDK
 
+[![Windows](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/windows-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/windows-builds.yml)
+[![MacOS](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/macos-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/macos-builds.yml)
+[![Linux](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/linux-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/linux-builds.yml)
+
 **NOTE:** This wrapper is still under development.
 
 > A Discord Game SDK wrapper for Godot, written using GDNative C for Windows, Linux and MacOS.
