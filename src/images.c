@@ -222,6 +222,7 @@ void register_image_handle(void *p_handle, Library *p_lib)
                                                                           &attributes,
                                                                           set, get);
 
+            p_lib->core_api->godot_variant_destroy(&attributes.default_value);
             p_lib->core_api->godot_string_destroy(&attributes.hint_string);
         }
         // ID
@@ -311,8 +312,10 @@ void fetch_callback(CallbackData *p_data,
 
     godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("fetch_callback");
     object_emit_signal(p_data->core->images->object, &signal_name, 2, args, lib);
-    lib->core_api->godot_string_destroy(&signal_name);
 
+    lib->core_api->godot_string_destroy(&signal_name);
+    lib->core_api->godot_variant_destroy(&handle_variant);
+    lib->core_api->godot_variant_destroy(&result_variant);
     lib->core_api->godot_free(p_data);
 }
 
@@ -398,7 +401,10 @@ godot_variant image_manager_get_dimensions(godot_object *p_instance, Library *p_
 
             godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_dimensions_callback");
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
             p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&dimensions_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
@@ -474,7 +480,10 @@ godot_variant image_manager_get_data(godot_object *p_instance, Library *p_lib,
 
             godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_data_callback");
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
             p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&data_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else

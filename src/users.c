@@ -38,6 +38,7 @@ godot_variant user_get_username(godot_object *p_instance, struct Library *p_lib,
 
     godot_string string = p_lib->core_api->godot_string_chars_to_utf8(p_user->internal->username);
     p_lib->core_api->godot_variant_new_string(&username, &string);
+
     p_lib->core_api->godot_string_destroy(&string);
 
     return username;
@@ -49,7 +50,6 @@ GDCALLINGCONV void user_set_username(godot_object *p_instance, struct Library *p
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_username);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
-    p_lib->core_api->godot_string_destroy(&string);
 
     const char *username = p_lib->core_api->godot_char_string_get_data(&char_string);
 
@@ -59,6 +59,7 @@ GDCALLINGCONV void user_set_username(godot_object *p_instance, struct Library *p
     memcpy(p_user->internal->username, username, sizeof(char) * MIN(size, 255));
 
     p_lib->core_api->godot_char_string_destroy(&char_string);
+    p_lib->core_api->godot_string_destroy(&string);
 }
 
 godot_variant user_get_discriminator(godot_object *p_instance, struct Library *p_lib,
@@ -68,6 +69,7 @@ godot_variant user_get_discriminator(godot_object *p_instance, struct Library *p
 
     godot_string string = p_lib->core_api->godot_string_chars_to_utf8(p_user->internal->discriminator);
     p_lib->core_api->godot_variant_new_string(&discriminator, &string);
+
     p_lib->core_api->godot_string_destroy(&string);
 
     return discriminator;
@@ -79,7 +81,6 @@ GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, struct Libra
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_discriminator);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
-    p_lib->core_api->godot_string_destroy(&string);
 
     const char *discriminator = p_lib->core_api->godot_char_string_get_data(&char_string);
 
@@ -89,6 +90,7 @@ GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, struct Libra
     memcpy(p_user->internal->discriminator, discriminator, sizeof(char) * MIN(size, 7));
 
     p_lib->core_api->godot_char_string_destroy(&char_string);
+    p_lib->core_api->godot_string_destroy(&string);
 }
 
 godot_variant user_get_avatar(godot_object *p_instance, struct Library *p_lib,
@@ -98,6 +100,7 @@ godot_variant user_get_avatar(godot_object *p_instance, struct Library *p_lib,
 
     godot_string string = p_lib->core_api->godot_string_chars_to_utf8(p_user->internal->avatar);
     p_lib->core_api->godot_variant_new_string(&avatar, &string);
+
     p_lib->core_api->godot_string_destroy(&string);
 
     return avatar;
@@ -109,7 +112,6 @@ GDCALLINGCONV void user_set_avatar(godot_object *p_instance, struct Library *p_l
 {
     godot_string string = p_lib->core_api->godot_variant_as_string(p_avatar);
     godot_char_string char_string = p_lib->core_api->godot_string_utf8(&string);
-    p_lib->core_api->godot_string_destroy(&string);
 
     const char *avatar = p_lib->core_api->godot_char_string_get_data(&char_string);
 
@@ -119,6 +121,7 @@ GDCALLINGCONV void user_set_avatar(godot_object *p_instance, struct Library *p_l
     memcpy(p_user->internal->avatar, avatar, sizeof(char) * MIN(size, 127));
 
     p_lib->core_api->godot_char_string_destroy(&char_string);
+    p_lib->core_api->godot_string_destroy(&string);
 }
 
 godot_variant user_get_bot(godot_object *p_instance, struct Library *p_lib,
@@ -187,7 +190,6 @@ void register_user(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
-            p_lib->core_api->godot_string_destroy(&string);
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_username;
@@ -201,6 +203,9 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "username",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_variant_destroy(&attributes.default_value);
+            p_lib->core_api->godot_string_destroy(&string);
         }
         // Discriminator
         {
@@ -210,7 +215,6 @@ void register_user(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
-            p_lib->core_api->godot_string_destroy(&string);
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_discriminator;
@@ -224,6 +228,9 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "discriminator",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_variant_destroy(&attributes.default_value);
+            p_lib->core_api->godot_string_destroy(&string);
         }
         // Avatar
         {
@@ -234,7 +241,6 @@ void register_user(void *p_handle, Library *p_lib)
 
             godot_string string = p_lib->core_api->godot_string_chars_to_utf8("");
             p_lib->core_api->godot_variant_new_string(&attributes.default_value, &string);
-            p_lib->core_api->godot_string_destroy(&string);
 
             memset(&get, 0, sizeof(godot_property_get_func));
             get.get_func = user_get_avatar;
@@ -248,6 +254,9 @@ void register_user(void *p_handle, Library *p_lib)
                                                                           "User", "avatar",
                                                                           &attributes,
                                                                           set, get);
+
+            p_lib->core_api->godot_variant_destroy(&attributes.default_value);
+            p_lib->core_api->godot_string_destroy(&string);
         }
         // Bot
         {
@@ -324,7 +333,10 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
 
             godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_current_user_callback");
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
             p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&user_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
@@ -367,8 +379,10 @@ void get_user_callback(CallbackData *p_data,
 
     godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("get_user_callback");
     object_emit_signal(p_data->core->users->object, &signal_name, 2, args, lib);
-    lib->core_api->godot_string_destroy(&signal_name);
 
+    lib->core_api->godot_string_destroy(&signal_name);
+    lib->core_api->godot_variant_destroy(&user_variant);
+    lib->core_api->godot_variant_destroy(&result_variant);
     lib->core_api->godot_free(p_data);
 }
 
@@ -447,7 +461,10 @@ godot_variant user_manager_get_current_user_premium_type(godot_object *p_instanc
 
             godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_current_user_premium_type_callback");
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
             p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&premium_type_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
@@ -499,7 +516,10 @@ godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Libra
 
             godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("current_user_has_flag_callback");
             object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
             p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&has_flag_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else

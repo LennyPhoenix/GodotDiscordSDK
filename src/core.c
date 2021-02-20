@@ -108,7 +108,6 @@ void log_hook(CallbackData *p_data,
 
     godot_string message_string = lib->core_api->godot_string_chars_to_utf8(p_message);
     lib->core_api->godot_variant_new_string(&message_variant, &message_string);
-    lib->core_api->godot_string_destroy(&message_string);
 
     godot_variant *args[] = {&level_variant, &message_variant};
 
@@ -122,7 +121,11 @@ void log_hook(CallbackData *p_data,
 
     godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("log_hook");
     object_emit_signal(p_data->core->object, &signal_name, 2, args, lib);
+
     lib->core_api->godot_string_destroy(&signal_name);
+    lib->core_api->godot_string_destroy(&message_string);
+    lib->core_api->godot_variant_destroy(&message_variant);
+    lib->core_api->godot_variant_destroy(&level_variant);
 }
 
 godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
