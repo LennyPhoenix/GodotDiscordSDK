@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/menus/main.gd" type="Script" id=2]
+
+[node name="MainMenu" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+scroll_horizontal_enabled = false
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="UsersButton" type="Button" parent="GridContainer"]
+margin_right = 512.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+size_flags_horizontal = 3
+text = "Users"
+[connection signal="button_up" from="GridContainer/UsersButton" to="." method="_on_users_button_up"]
