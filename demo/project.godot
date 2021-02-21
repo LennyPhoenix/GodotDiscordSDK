@@ -21,4 +21,9 @@ _global_script_class_icons={
 [application]
 
 config/name="DiscordSDK Demo Project"
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/main.tscn"
+config/icon="res://assets/icon.png"
+
+[autoload]
+
+DiscordManager="*res://scripts/autoload/discord_manager.gd"
