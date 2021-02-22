@@ -68,12 +68,12 @@ margin_right = 990.0
 margin_bottom = 77.0
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Size"]
-margin_right = 70.0
+margin_right = 49.0
 margin_bottom = 36.0
-text = "Result:"
+text = "Size:"
 
 [node name="OptionButton" type="OptionButton" parent="VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Size"]
-margin_left = 75.0
+margin_left = 54.0
 margin_right = 990.0
 margin_bottom = 36.0
 size_flags_horizontal = 3

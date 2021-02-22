@@ -8,7 +8,7 @@
 [ext_resource path="res://scenes/menus/users.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/menus/images.tscn" type="PackedScene" id=7]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 32
 use_mipmaps = true
 use_filter = true
@@ -54,7 +54,7 @@ margin_right = 913.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "GodotDiscordSDK Example Application"
 valign = 1
 autowrap = true

@@ -59,6 +59,6 @@ func _on_fetch_button_down() -> void:
 			image.unlock()
 
 			var texture: = ImageTexture.new()
-			texture.create_from_image(image)
+			texture.create_from_image(image, Texture.FLAG_MIPMAPS)
 
 			image_texture_rect.texture = texture
