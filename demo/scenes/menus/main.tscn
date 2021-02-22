@@ -21,9 +21,18 @@ size_flags_vertical = 3
 columns = 2
 
 [node name="UsersButton" type="Button" parent="GridContainer"]
-margin_right = 512.0
+margin_right = 510.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 0, 64 )
 size_flags_horizontal = 3
 text = "Users"
+
+[node name="ImagesButton" type="Button" parent="GridContainer"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+size_flags_horizontal = 3
+text = "Images"
 [connection signal="button_up" from="GridContainer/UsersButton" to="." method="_on_users_button_up"]
+[connection signal="button_up" from="GridContainer/ImagesButton" to="." method="_on_images_button_up"]

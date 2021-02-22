@@ -5,12 +5,14 @@ class_name Main
 enum Menu {
 	MAIN,
 	USERS,
+	IMAGES,
 }
 
 
 onready var back_button: = $MarginContainer/VBoxContainer/Title/BackButton
 onready var main_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
 onready var users_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
+onready var images_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
 
 
 func _on_main_switch_to(menu: int) -> void:
@@ -19,12 +21,15 @@ func _on_main_switch_to(menu: int) -> void:
 			to_main()
 		Menu.USERS:
 			to_users()
+		Menu.IMAGES:
+			to_images()
 
 
 func _hide_all() -> void:
 	back_button.disabled = false
 	main_menu.visible = false
 	users_menu.visible = false
+	images_menu.visible = false
 
 
 func to_main() -> void:
@@ -36,3 +41,8 @@ func to_main() -> void:
 func to_users() -> void:
 	_hide_all()
 	users_menu.visible = true
+
+
+func to_images() -> void:
+	_hide_all()
+	images_menu.visible = true

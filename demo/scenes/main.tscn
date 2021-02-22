@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/main.gd" type="Script" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://assets/fonts/notosans_ui_bold.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://scenes/menus/main.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/menus/users.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/menus/images.tscn" type="PackedScene" id=7]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 size = 32
 use_mipmaps = true
 use_filter = true
@@ -53,7 +54,7 @@ margin_right = 913.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "GodotDiscordSDK Example Application"
 valign = 1
 autowrap = true
@@ -92,6 +93,15 @@ margin_bottom = 516.0
 theme = null
 
 [node name="Users" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+
+[node name="Images" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 7 )]
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0

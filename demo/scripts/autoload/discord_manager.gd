@@ -3,6 +3,7 @@ extends Node
 
 var core: Discord.Core
 var users: Discord.UserManager
+var images: Discord.ImageManager
 
 
 func _ready() -> void:
@@ -46,11 +47,13 @@ func create_core() -> void:
 	core.set_log_hook(Discord.LogLevel.DEBUG, self, "_log_hook")
 
 	users = core.get_user_manager()
+	images = core.get_image_manager()
 
 
 func destroy_core() -> void:
 	core = null
 	users = null
+	images = null
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:
