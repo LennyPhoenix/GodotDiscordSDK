@@ -12,11 +12,11 @@ Make sure to use the Release version of the library on Windows if you do not hav
 
 ## Docs
 
-For detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/GodotDiscordSDK/wiki).
+For more detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/GodotDiscordSDK/wiki).
 
 ## Downloading
 
-To download precompiled binaries for every commit, head to [the actions page](https://github.com/LennyPhoenix/GodotDiscordSDK/actions), or download [a specific release](https://github.com/LennyPhoenix/GodotDiscordSDK/releases).
+If you can't or don't want to compile the library yourself head to [the actions page](https://github.com/LennyPhoenix/GodotDiscordSDK/actions), or download [a specific release](https://github.com/LennyPhoenix/GodotDiscordSDK/releases).
 
 ## Compiling & Installing
 
@@ -40,9 +40,19 @@ To download precompiled binaries for every commit, head to [the actions page](ht
 
     - Copy the `discord_game_sdk.h` file from the `c/` folder of the SDK, and place it in the [`src/`](src/) folder of the repo.
 
-    - Place the `discord_game_sdk.dll.lib` file from the `lib/x86` folder of the SDK in [the lib folder](lib/) of the repo and rename it to `discord_game_sdk.32.lib`.
+    - On Windows:
 
-      Do the same with the `discord_game_sdk.dll.lib` file from the `lib/x86_64` folder, renaming it to `discord_game_sdk.64.lib`.
+        - Place the `discord_game_sdk.dll.lib` file from the `lib/x86` folder of the SDK in the [`lib/`](lib/) of the repo and rename it to `discord_game_sdk.32.lib`.
+
+          Do the same with the `discord_game_sdk.dll.lib` file from the `lib/x86_64` folder, renaming it to `discord_game_sdk.64.lib`.
+          
+    - On Linux:
+
+        - Place the `discord_game_sdk.so` file from the `lib/x86_64` folder of the SDK in the [`lib/`](lib/) folder of the repo and rename it to `libdiscord_game_sdk.so`.
+
+    - On MacOS:
+
+        - Place the `discord_game_sdk.dylib` file from the `lib/x86_64` folder of the SDK in the [`lib/`](lib/) folder of the repo and rename it to `libdiscord_game_sdk.dylib`.
 
     - Make sure to place the appropriate Discord Game SDK shared library in [the demo's bin directory](demo/bin/) (ensure it is also placed in any exports, this should be automatic if it is selected as a dependency).
 
@@ -57,6 +67,8 @@ To download precompiled binaries for every commit, head to [the actions page](ht
   
 - Compile the library:
   - Windows Example: `scons platform=windows bits=64`
+  - Linux Example: `scons platform=linux`
+  - MacOS Example: `scons platform=osx`
   
 - The compiled binaries will be available from [the demo's bin directory](demo/bin/).
 
@@ -64,6 +76,6 @@ To download precompiled binaries for every commit, head to [the actions page](ht
 
 - These may now be used in a GDNative library in your godot project. See [the demo project](demo/) for an example.
 
-- Ensure that the `.gdns` files are all located in the same folder as the `.gdnlib` folder, otherwise the library will not work.
+- Ensure that the `.gdns` files are all located in the same folder as the `.gdnlib`'s folder, otherwise the library will not work.
 
 - All the classes required can be accessed from the `Discord` class as preloaded constants.
