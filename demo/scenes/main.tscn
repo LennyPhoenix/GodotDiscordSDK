@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/main.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/menus/main.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/menus/users.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/menus/images.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/menus/activities.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -102,6 +103,15 @@ margin_right = 1009.0
 margin_bottom = 516.0
 
 [node name="Images" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 7 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+
+[node name="Activities" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 8 )]
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0

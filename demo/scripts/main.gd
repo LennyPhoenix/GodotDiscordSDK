@@ -6,6 +6,7 @@ enum Menu {
 	MAIN,
 	USERS,
 	IMAGES,
+	ACTIVITIES,
 }
 
 
@@ -13,6 +14,7 @@ onready var back_button: = $MarginContainer/VBoxContainer/Title/BackButton
 onready var main_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
 onready var users_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
 onready var images_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
+onready var activities_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
 
 
 func _on_main_switch_to(menu: int) -> void:
@@ -23,6 +25,8 @@ func _on_main_switch_to(menu: int) -> void:
 			to_users()
 		Menu.IMAGES:
 			to_images()
+		Menu.ACTIVITIES:
+			to_activities()
 
 
 func _hide_all() -> void:
@@ -30,6 +34,7 @@ func _hide_all() -> void:
 	main_menu.visible = false
 	users_menu.visible = false
 	images_menu.visible = false
+	activities_menu.visible = false
 
 
 func to_main() -> void:
@@ -46,3 +51,8 @@ func to_users() -> void:
 func to_images() -> void:
 	_hide_all()
 	images_menu.visible = true
+
+
+func to_activities() -> void:
+	_hide_all()
+	activities_menu.visible = true

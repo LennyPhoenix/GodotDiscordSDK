@@ -4,6 +4,7 @@ extends Node
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
+var activities: Discord.ActivityManager
 
 
 func _ready() -> void:
@@ -48,12 +49,14 @@ func create_core() -> void:
 
 	users = core.get_user_manager()
 	images = core.get_image_manager()
+	activities = core.get_activity_manager()
 
 
 func destroy_core() -> void:
 	core = null
 	users = null
 	images = null
+	activities = null
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:

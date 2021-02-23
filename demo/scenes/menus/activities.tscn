@@ -1,0 +1,107 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scenes/menus/activities/register_command.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+[ext_resource path="res://scenes/menus/activities/register_steam.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/menus/activities/update_activity.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/menus/activities/clear_activity.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/menus/activities/send_request_reply.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/menus/activities/send_invite.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/menus/activities/accept_invite.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/menus/activities/activity_joined.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/menus/activities/activity_spectated.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/menus/activities/activity_join_requested.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/menus/activities/activity_invite.tscn" type="PackedScene" id=12]
+
+[node name="Activities" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1012.0
+margin_bottom = 3691.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RegisterCommand" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1012.0
+margin_bottom = 199.0
+
+[node name="RegisterSteam" parent="VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 204.0
+margin_right = 1012.0
+margin_bottom = 403.0
+
+[node name="UpdateActivity" parent="VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 408.0
+margin_right = 1012.0
+margin_bottom = 1229.0
+
+[node name="ClearActivity" parent="VBoxContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 1234.0
+margin_right = 1012.0
+margin_bottom = 1392.0
+
+[node name="SendRequestReply" parent="VBoxContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 1397.0
+margin_right = 1012.0
+margin_bottom = 1637.0
+
+[node name="SendInvite" parent="VBoxContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 1642.0
+margin_right = 1012.0
+margin_bottom = 1923.0
+
+[node name="AcceptInvite" parent="VBoxContainer" instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 1928.0
+margin_right = 1012.0
+margin_bottom = 2127.0
+
+[node name="ActivityJoined" parent="VBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 2132.0
+margin_right = 1012.0
+margin_bottom = 2233.0
+
+[node name="ActivitySpectated" parent="VBoxContainer" instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 2238.0
+margin_right = 1012.0
+margin_bottom = 2339.0
+
+[node name="ActivityJoinRequested" parent="VBoxContainer" instance=ExtResource( 11 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 2344.0
+margin_right = 1012.0
+margin_bottom = 2663.0
+
+[node name="ActivityInvited" parent="VBoxContainer" instance=ExtResource( 12 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 2668.0
+margin_right = 1012.0
+margin_bottom = 3691.0

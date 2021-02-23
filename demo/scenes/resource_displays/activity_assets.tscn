@@ -1,0 +1,101 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/resource_displays/activity_assets.gd" type="Script" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+
+[node name="Assets" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 596.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 36.0
+text = "Assets:"
+align = 1
+
+[node name="Large" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 41.0
+margin_right = 1012.0
+margin_bottom = 77.0
+
+[node name="Image" type="HBoxContainer" parent="VBoxContainer/Large"]
+margin_right = 503.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Large/Image"]
+margin_right = 130.0
+margin_bottom = 36.0
+text = "Large Image:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Large/Image"]
+margin_left = 135.0
+margin_right = 503.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Text" type="HBoxContainer" parent="VBoxContainer/Large"]
+margin_left = 508.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Large/Text"]
+margin_right = 110.0
+margin_bottom = 36.0
+text = "Large Text:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Large/Text"]
+margin_left = 115.0
+margin_right = 504.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Small" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 82.0
+margin_right = 1012.0
+margin_bottom = 118.0
+
+[node name="Image" type="HBoxContainer" parent="VBoxContainer/Small"]
+margin_right = 503.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Small/Image"]
+margin_right = 129.0
+margin_bottom = 36.0
+text = "Small Image:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Small/Image"]
+margin_left = 134.0
+margin_right = 503.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Text" type="HBoxContainer" parent="VBoxContainer/Small"]
+margin_left = 508.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Small/Text"]
+margin_right = 109.0
+margin_bottom = 36.0
+text = "Small Text:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Small/Text"]
+margin_left = 114.0
+margin_right = 504.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
