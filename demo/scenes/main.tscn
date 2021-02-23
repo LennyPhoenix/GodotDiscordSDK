@@ -1,0 +1,123 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/main.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://assets/fonts/notosans_ui_bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/menus/main.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/menus/users.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/menus/images.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/menus/activities.tscn" type="PackedScene" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 4 )
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+
+[node name="Title" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 1014.0
+margin_bottom = 64.0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Title"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Title"]
+margin_left = 69.0
+margin_right = 913.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+custom_fonts/font = SubResource( 1 )
+text = "GodotDiscordSDK Example Application"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/Title"]
+margin_left = 918.0
+margin_right = 1014.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 96, 0 )
+disabled = true
+text = "Back"
+
+[node name="Menu" type="Panel" parent="MarginContainer/VBoxContainer"]
+margin_top = 69.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Main" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+theme = null
+
+[node name="Users" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+
+[node name="Images" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 7 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+
+[node name="Activities" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 8 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+[connection signal="button_up" from="MarginContainer/VBoxContainer/Title/BackButton" to="." method="to_main"]
+[connection signal="switch_to" from="MarginContainer/VBoxContainer/Menu/MarginContainer/Main" to="." method="_on_main_switch_to"]

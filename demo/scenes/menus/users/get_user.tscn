@@ -1,0 +1,110 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/header.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/menus/users/get_user.gd" type="Script" id=2]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=3]
+[ext_resource path="res://scenes/resource_displays/user.tscn" type="PackedScene" id=4]
+
+[node name="Get User" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 596.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 1 )
+text = "Get User"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 47.0
+margin_right = 1012.0
+margin_bottom = 445.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1007.0
+margin_bottom = 393.0
+
+[node name="InputFields" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+margin_right = 1002.0
+margin_bottom = 85.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/InputFields"]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 996.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer"]
+margin_right = 990.0
+margin_bottom = 36.0
+clear_button_enabled = true
+placeholder_text = "Enter User ID"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer"]
+margin_top = 41.0
+margin_right = 990.0
+margin_bottom = 77.0
+text = "Fetch Info"
+
+[node name="OutputFields" type="PanelContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+margin_top = 90.0
+margin_right = 1002.0
+margin_bottom = 388.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/OutputFields"]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 996.0
+margin_bottom = 294.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Result" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer"]
+margin_right = 990.0
+margin_bottom = 36.0
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result"]
+margin_right = 70.0
+margin_bottom = 36.0
+text = "Result:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result"]
+margin_left = 75.0
+margin_right = 990.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="User" parent="VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 41.0
+margin_right = 990.0
+margin_bottom = 290.0
+[connection signal="button_down" from="VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Button" to="." method="_on_fetch_button_down"]

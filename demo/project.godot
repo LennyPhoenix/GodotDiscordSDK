@@ -13,12 +13,28 @@ _global_script_classes=[ {
 "class": "Discord",
 "language": "GDScript",
 "path": "res://discord_sdk/discord.gd"
+}, {
+"base": "Control",
+"class": "Main",
+"language": "GDScript",
+"path": "res://scripts/main.gd"
 } ]
 _global_script_class_icons={
-"Discord": ""
+"Discord": "",
+"Main": ""
 }
 
 [application]
 
 config/name="DiscordSDK Demo Project"
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/main.tscn"
+boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
+config/icon="res://icon.png"
+
+[autoload]
+
+DiscordManager="*res://scripts/autoload/discord_manager.gd"
+
+[rendering]
+
+environment/default_clear_color=Color( 0.12549, 0.145098, 0.192157, 1 )

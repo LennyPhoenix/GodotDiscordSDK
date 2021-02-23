@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/resource_inputs/activity_timestamps.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+[ext_resource path="res://scenes/resource_inputs/activity_assets.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/resource_inputs/activity_party.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/resource_inputs/activity_secrets.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/resource_inputs/activity.gd" type="Script" id=6]
+
+[node name="Activity" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 654.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 36.0
+text = "Activity:"
+align = 1
+
+[node name="State" type="LineEdit" parent="VBoxContainer"]
+margin_top = 41.0
+margin_right = 1012.0
+margin_bottom = 77.0
+size_flags_horizontal = 3
+placeholder_text = "State"
+
+[node name="Details" type="LineEdit" parent="VBoxContainer"]
+margin_top = 82.0
+margin_right = 1012.0
+margin_bottom = 118.0
+size_flags_horizontal = 3
+placeholder_text = "Details"
+
+[node name="Timestamps" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 123.0
+margin_right = 1012.0
+margin_bottom = 208.0
+
+[node name="Assets" parent="VBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 213.0
+margin_right = 1012.0
+margin_bottom = 339.0
+
+[node name="Party" parent="VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 344.0
+margin_right = 1012.0
+margin_bottom = 519.0
+
+[node name="Secrets" parent="VBoxContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 524.0
+margin_right = 1012.0
+margin_bottom = 650.0

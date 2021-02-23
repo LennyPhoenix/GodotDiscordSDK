@@ -1,0 +1,105 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/resource_displays/user.gd" type="Script" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+
+[node name="UserInfo" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 596.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 36.0
+text = "User:"
+align = 1
+
+[node name="ID" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 41.0
+margin_right = 1012.0
+margin_bottom = 77.0
+
+[node name="Label" type="Label" parent="VBoxContainer/ID"]
+margin_right = 35.0
+margin_bottom = 36.0
+text = "ID:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/ID"]
+margin_left = 40.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Username" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 82.0
+margin_right = 1012.0
+margin_bottom = 118.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Username"]
+margin_right = 110.0
+margin_bottom = 36.0
+text = "Username:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Username"]
+margin_left = 115.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Discriminator" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 123.0
+margin_right = 1012.0
+margin_bottom = 159.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Discriminator"]
+margin_right = 140.0
+margin_bottom = 36.0
+text = "Discriminator:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Discriminator"]
+margin_left = 145.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Avatar" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 164.0
+margin_right = 1012.0
+margin_bottom = 200.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Avatar"]
+margin_right = 73.0
+margin_bottom = 36.0
+text = "Avatar:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Avatar"]
+margin_left = 78.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Bot" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 205.0
+margin_right = 1012.0
+margin_bottom = 241.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Bot"]
+margin_right = 45.0
+margin_bottom = 36.0
+text = "Bot:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Bot"]
+margin_left = 50.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3

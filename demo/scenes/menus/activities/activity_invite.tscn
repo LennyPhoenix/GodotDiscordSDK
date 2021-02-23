@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/fonts/header.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/menus/activities/activity_invite.gd" type="Script" id=2]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=3]
+[ext_resource path="res://scenes/resource_displays/user.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/resource_displays/activity.tscn" type="PackedScene" id=5]
+
+[node name="ActivityInvited" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 1019.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 1 )
+text = "Join Request"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 47.0
+margin_right = 1012.0
+margin_bottom = 57.0
+
+[node name="Type" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 62.0
+margin_right = 1012.0
+margin_bottom = 98.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Type"]
+margin_right = 57.0
+margin_bottom = 36.0
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/Type"]
+margin_left = 62.0
+margin_right = 1012.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="UserInfo" parent="VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 103.0
+margin_right = 1012.0
+margin_bottom = 352.0
+
+[node name="Activity" parent="VBoxContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 357.0
+margin_right = 1012.0
+margin_bottom = 1015.0
