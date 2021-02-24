@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include <gdnative_api_struct.gen.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))

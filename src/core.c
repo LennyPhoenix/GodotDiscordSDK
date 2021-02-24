@@ -1,5 +1,10 @@
 #include "core.h"
 
+#include "util.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+
 GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 {
     Core *core = p_lib->core_api->godot_alloc(sizeof(Core));

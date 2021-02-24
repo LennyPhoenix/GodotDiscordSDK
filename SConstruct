@@ -121,6 +121,7 @@ env.Append(LIBPATH=["lib/"])
 # Source Files
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.c")
+sources += Glob("src/*/*.c")
 
 folder_name = f"{env['platform']}-{env['bits']}/"
 

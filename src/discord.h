@@ -1,13 +1,6 @@
 #ifndef DISCORD_H_
 #define DISCORD_H_
 
-#include "types.h"
-#include "core.h"
-#include "users.h"
-#include "images.h"
-#include "activities.h"
-
-#include <stdlib.h>
 #include <gdnative_api_struct.gen.h>
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options);

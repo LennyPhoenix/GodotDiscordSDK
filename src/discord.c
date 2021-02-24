@@ -1,5 +1,20 @@
 #include "discord.h"
 
+#include "types.h"
+#include "core.h"
+#include "users.h"
+#include "users/user.h"
+#include "images.h"
+#include "images/image_handle.h"
+#include "images/image_dimensions.h"
+#include "activities.h"
+#include "activities/activity_timestamps.h"
+#include "activities/activity_assets.h"
+#include "activities/party_size.h"
+#include "activities/activity_party.h"
+#include "activities/activity_secrets.h"
+#include "activities/activity.h"
+
 Library lib;
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
