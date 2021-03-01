@@ -322,7 +322,7 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, Library *p
     }
 
     godot_object *manager;
-    if (!p_core->activities)
+    if (!p_core->relationships)
     {
         manager = instantiate_custom_class("RelationshipManager", "Reference", p_lib);
         RelationshipManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
