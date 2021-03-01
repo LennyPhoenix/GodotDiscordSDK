@@ -19,12 +19,15 @@ GDCALLINGCONV void *core_constructor(godot_object *p_instance, Library *p_lib)
 GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
                                    Core *p_core)
 {
+    // Dereference all managers
     if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->users))
         godot_unreference(p_core->users, p_lib);
     if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->images))
         godot_unreference(p_core->images, p_lib);
     if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->activities))
         godot_unreference(p_core->activities, p_lib);
+    if (p_lib->core_1_1_api->godot_is_instance_valid(p_core->relationships))
+        godot_unreference(p_core->relationships, p_lib);
 
     if (p_core->hook_data)
     {
@@ -305,6 +308,40 @@ godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib
     return result_variant;
 }
 
+godot_variant core_get_relationship_manager(godot_object *p_instance, Library *p_lib,
+                                            Core *p_core,
+                                            int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (!p_core->internal)
+    {
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
+
+    godot_object *manager;
+    if (!p_core->activities)
+    {
+        manager = instantiate_custom_class("RelationshipManager", "Reference", p_lib);
+        RelationshipManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->core = p_core;
+        data->internal = p_core->internal->get_relationship_manager(p_core->internal);
+        p_core->relationships = data;
+
+        godot_reference(manager, p_lib);
+    }
+    else
+    {
+        manager = p_core->activities;
+    }
+
+    p_lib->core_api->godot_variant_new_object(&result_variant, manager);
+
+    return result_variant;
+}
+
 void register_core(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -384,6 +421,16 @@ void register_core(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_activity_manager",
+                                                                        attributes, method);
+        }
+        // Get Relationship Manager
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = core_get_relationship_manager;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "get_relationship_manager",
                                                                         attributes, method);
         }
     }

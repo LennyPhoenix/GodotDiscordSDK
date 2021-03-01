@@ -14,6 +14,7 @@
 #include "activities/activity_party.h"
 #include "activities/activity_secrets.h"
 #include "activities/activity.h"
+#include "relationships.h"
 
 Library lib;
 
@@ -79,4 +80,7 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_activity_secrets(p_handle, &lib);
     register_activity(p_handle, &lib);
     register_activity_manager(p_handle, &lib);
+
+    // Relationships
+    register_relationship_manager(p_handle, &lib);
 }

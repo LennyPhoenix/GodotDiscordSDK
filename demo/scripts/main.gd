@@ -7,6 +7,7 @@ enum Menu {
 	USERS,
 	IMAGES,
 	ACTIVITIES,
+	RELATIONSHIPS,
 }
 
 
@@ -15,6 +16,7 @@ onready var main_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Mai
 onready var users_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
 onready var images_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
 onready var activities_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
+onready var relationships_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Relationships
 
 
 func _on_main_switch_to(menu: int) -> void:
@@ -27,6 +29,8 @@ func _on_main_switch_to(menu: int) -> void:
 			to_images()
 		Menu.ACTIVITIES:
 			to_activities()
+		Menu.RELATIONSHIPS:
+			to_relationships()
 
 
 func _hide_all() -> void:
@@ -35,6 +39,7 @@ func _hide_all() -> void:
 	users_menu.visible = false
 	images_menu.visible = false
 	activities_menu.visible = false
+	relationships_menu.visible = false
 
 
 func to_main() -> void:
@@ -56,3 +61,8 @@ func to_images() -> void:
 func to_activities() -> void:
 	_hide_all()
 	activities_menu.visible = true
+
+
+func to_relationships() -> void:
+	_hide_all()
+	relationships_menu.visible = true
