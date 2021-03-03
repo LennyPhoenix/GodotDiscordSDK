@@ -12,12 +12,19 @@ func _ready() -> void:
 	for item in Discord.UserFlag.keys():
 		user_flags_button.add_item(item, Discord.UserFlag[item])
 
-	var _err: = user_flags_button.connect(
+	var _err = user_flags_button.connect(
 		"item_selected",
 		self, "_on_flags_item_selected"
 	)
 
-	_err = DiscordManager.users.connect(
+	_err = DiscordManager.connect(
+		"initialised",
+		self, "_on_discord_manager_initialised"
+	)
+
+
+func _on_discord_manager_initialised() -> void:
+	DiscordManager.users.connect(
 		"current_user_update",
 		self, "_on_current_user_update"
 	)

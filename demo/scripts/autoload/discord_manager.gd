@@ -1,6 +1,9 @@
 extends Node
 
 
+signal initialised()
+
+
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
@@ -9,7 +12,7 @@ var relationships: Discord.RelationshipManager
 
 
 func _ready() -> void:
-	create_core()
+	call_deferred("create_core")
 
 
 func _process(_delta: float) -> void:
@@ -52,6 +55,8 @@ func create_core() -> void:
 	images = core.get_image_manager()
 	activities = core.get_activity_manager()
 	relationships = core.get_relationship_manager()
+
+	emit_signal("initialised")
 
 
 func destroy_core() -> void:
