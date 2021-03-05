@@ -21,6 +21,7 @@ const Activity: = preload("./activity.gdns")
 const ActivityManager: = preload("./activity_manager.gdns")
 
 # Relationships
+const Presence: = preload("./presence.gdns")
 const RelationshipManager: = preload("./relationship_manager.gdns")
 
 enum Result {
