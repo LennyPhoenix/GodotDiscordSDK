@@ -37,6 +37,7 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
     {
         p_core->internal->destroy(p_core->internal);
         p_lib->core_api->godot_free(p_core->user_events);
+        p_lib->core_api->godot_free(p_core->activity_events);
     }
 
     p_lib->core_api->godot_free(p_core);
