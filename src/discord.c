@@ -16,6 +16,7 @@
 #include "activities/activity.h"
 #include "relationships.h"
 #include "relationships/presence.h"
+#include "relationships/relationship.h"
 
 Library lib;
 
@@ -84,5 +85,6 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
 
     // Relationships
     register_presence(p_handle, &lib);
+    register_relationship(p_handle, &lib);
     register_relationship_manager(p_handle, &lib);
 }
