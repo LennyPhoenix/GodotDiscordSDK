@@ -20,4 +20,6 @@ struct RelationshipManager
 
 void register_relationship_manager(void *p_handle, Library *p_lib);
 
+void on_refresh(Core *p_core);
+
 #endif

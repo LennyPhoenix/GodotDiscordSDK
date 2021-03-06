@@ -41,6 +41,7 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         p_core->internal->destroy(p_core->internal);
         p_lib->core_api->godot_free(p_core->user_events);
         p_lib->core_api->godot_free(p_core->activity_events);
+        p_lib->core_api->godot_free(p_core->relationship_events);
     }
 
     p_lib->core_api->godot_free(p_core);
@@ -87,10 +88,15 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         p_core->activity_events->on_activity_invite = on_activity_invite;
         params.activity_events = p_core->activity_events;
 
+        p_core->relationship_events = p_lib->core_api->godot_alloc(sizeof(struct IDiscordRelationshipEvents));
+        p_core->relationship_events->on_refresh = on_refresh;
+        params.relationship_events = p_core->relationship_events;
+
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
 
         if (result != DiscordResult_Ok)
         {
+            p_core->internal->destroy(p_core->internal);
             p_core->internal = NULL;
         }
 

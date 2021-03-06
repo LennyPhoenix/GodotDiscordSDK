@@ -24,6 +24,7 @@ struct Core
     ActivityManager *activities;
     struct IDiscordActivityEvents *activity_events;
     RelationshipManager *relationships;
+    struct IDiscordRelationshipEvents *relationship_events;
 
     Library *lib;
 };
