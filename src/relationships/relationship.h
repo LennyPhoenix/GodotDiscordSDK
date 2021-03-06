@@ -14,6 +14,9 @@ typedef struct Relationship
     godot_object *presence;
 } Relationship;
 
+struct DiscordRelationship *relationship_collapse(godot_object *p_instance, Library *p_lib);
+void relationship_reconstruct(godot_object *p_instance, struct DiscordRelationship *p_relationship, Library *p_lib);
+
 void register_relationship(void *p_handle, Library *p_lib);
 
 #endif

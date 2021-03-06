@@ -461,7 +461,9 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
 void on_current_user_update(Core *p_core)
 {
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("current_user_update");
-    object_emit_signal(p_core->users->object, &signal, 0, NULL, p_core->lib);
-    p_core->lib->core_api->godot_string_destroy(&signal);
+    Library *lib = p_core->lib;
+
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("current_user_update");
+    object_emit_signal(p_core->users->object, &signal, 0, NULL, lib);
+    lib->core_api->godot_string_destroy(&signal);
 }

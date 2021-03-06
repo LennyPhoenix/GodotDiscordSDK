@@ -743,7 +743,7 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_join");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_join");
 
     godot_variant join_secret_variant;
 
@@ -752,7 +752,7 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 
     godot_variant *args[] = {&join_secret_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_string_destroy(&join_secret_string);
     lib->core_api->godot_variant_destroy(&join_secret_variant);
@@ -763,7 +763,7 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_spectate");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_spectate");
 
     godot_variant spectate_secret_variant;
 
@@ -772,7 +772,7 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 
     godot_variant *args[] = {&spectate_secret_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_string_destroy(&signal);
     lib->core_api->godot_variant_destroy(&spectate_secret_variant);
@@ -783,7 +783,7 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_join_request");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_join_request");
 
     godot_variant user_variant;
 
@@ -795,7 +795,7 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
 
     godot_variant *args[] = {&user_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_variant_destroy(&user_variant);
     lib->core_api->godot_string_destroy(&signal);
@@ -806,7 +806,7 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_invite");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_invite");
 
     godot_variant type_variant;
     godot_variant user_variant;
@@ -827,7 +827,7 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
 
     godot_variant *args[] = {&type_variant, &user_variant, &activity_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 3, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 3, args, lib);
 
     lib->core_api->godot_variant_destroy(&activity_variant);
     lib->core_api->godot_variant_destroy(&user_variant);

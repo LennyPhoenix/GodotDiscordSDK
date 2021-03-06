@@ -90,6 +90,7 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
 
         p_core->relationship_events = p_lib->core_api->godot_alloc(sizeof(struct IDiscordRelationshipEvents));
         p_core->relationship_events->on_refresh = on_refresh;
+        p_core->relationship_events->on_relationship_update = on_relationship_update;
         params.relationship_events = p_core->relationship_events;
 
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
