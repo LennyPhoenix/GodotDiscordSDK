@@ -1,7 +1,8 @@
-echo -e "By running this script you agree to the Discord Developers ToS.\n"
+echo By running this script you agree to the Discord Developers ToS.
+echo -e "https://discord.com/developers/docs/legal \n"
 
 echo Downloading the Discord Game SDK...
-wget https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip
+wget https://dl-game-sdk.discordapp.net/3.0.1/discord_game_sdk.zip
 unzip discord_game_sdk -d dsdk
 
 mkdir demo/bin/linux-32

@@ -36,7 +36,7 @@ If you can't or don't want to compile the library yourself head to [the actions 
 
   - Or manually setup:
   
-    - Download the [Discord Game SDK (2.5.6)](https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip).
+    - Download the [Discord Game SDK (3.0.1)](https://dl-game-sdk.discordapp.net/3.0.1/discord_game_sdk.zip).
 
     - Copy the `discord_game_sdk.h` file from the `c/` folder of the SDK, and place it in the [`src/`](src/) folder of the repo.
 
