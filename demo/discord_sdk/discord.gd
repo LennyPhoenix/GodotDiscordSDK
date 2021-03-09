@@ -65,6 +65,7 @@ enum Result {
 	INVALID_GIFT_CODE = 41,
 	PURCHASE_ERROR = 42,
 	TRANSACTION_ABORTED = 43,
+	DRAWING_INIT_FAILED = 44,
 }
 
 enum CreateFlags {
@@ -95,6 +96,11 @@ enum PremiumType {
 
 enum ImageType {
 	USER,
+}
+
+enum ActivityPartyPrivacy {
+    PRIVATE = 0,
+    PUBLIC = 1,
 }
 
 enum ActivityType {
@@ -155,6 +161,18 @@ enum LobbySearchDistance {
 	DEFAULT,
 	EXTENDED,
 	GLOBAL,
+}
+
+enum KeyVariant {
+    NORMAL,
+    RIGHT,
+    LEFT,
+}
+
+enum MouseButton {
+    LEFT,
+    MIDDLE,
+    RIGHT,
 }
 
 enum EntitlementType {
