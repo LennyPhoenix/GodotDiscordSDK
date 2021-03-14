@@ -58,7 +58,7 @@ godot_variant relationship_manager_filter(godot_object *p_instance, Library *p_l
 {
     godot_variant result_variant;
 
-    if (p_num_args == 2) // Hook Object, Hook Method
+    if (p_num_args == 2) // Filter Object, Filter Method
     {
         godot_object *filter_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
         godot_string filter_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
