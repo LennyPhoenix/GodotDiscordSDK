@@ -194,13 +194,14 @@ godot_variant_call_error object_emit_signal_deferred(godot_object *p_object,
 godot_variant_call_error object_call(godot_object *p_object,
                                      godot_string *p_method_name,
                                      int p_num_args, godot_variant **p_args,
+                                     godot_variant *r_return,
                                      Library *p_lib)
 {
     godot_variant variant;
     p_lib->core_api->godot_variant_new_object(&variant, p_object);
 
     godot_variant_call_error error;
-    p_lib->core_api->godot_variant_call(&variant, p_method_name, p_args, p_num_args, &error);
+    *r_return = p_lib->core_api->godot_variant_call(&variant, p_method_name, p_args, p_num_args, &error);
 
     p_lib->core_api->godot_variant_destroy(&variant);
 
@@ -222,7 +223,7 @@ void godot_unreference(godot_object *p_object, Library *p_lib)
     if (!bind)
         bind = p_lib->core_api->godot_method_bind_get_method("Reference", "unreference");
     godot_bool ret;
-    p_lib->core_api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret); // this returns `true` if the reference count is now at zero...
+    p_lib->core_api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret);
     if (ret)
-        p_lib->core_api->godot_object_destroy(p_object); // ...in which case, delete the object
+        p_lib->core_api->godot_object_destroy(p_object);
 }

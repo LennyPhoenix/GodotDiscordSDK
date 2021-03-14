@@ -12,6 +12,7 @@
 GDCALLINGCONV void *activity_manager_constructor(godot_object *p_instance, Library *p_lib)
 {
     ActivityManager *activity_manager = p_lib->core_api->godot_alloc(sizeof(ActivityManager));
+    memset(activity_manager, 0, sizeof(ActivityManager));
 
     activity_manager->object = p_instance;
     activity_manager->lib = p_lib;
@@ -91,7 +92,7 @@ void update_activity_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -160,7 +161,7 @@ void clear_activity_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -223,7 +224,7 @@ void send_request_reply_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -290,7 +291,7 @@ void send_invite_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -364,7 +365,7 @@ void accept_invite_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 

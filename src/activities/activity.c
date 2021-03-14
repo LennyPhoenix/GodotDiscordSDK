@@ -274,6 +274,7 @@ void activity_reconstruct(godot_object *p_instance, struct DiscordActivity *p_ac
 
     ActivityAssets *activity_assets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->assets);
     *activity_assets->internal = p_activity->assets;
+
     activity_party_reconstruct(activity->party, &p_activity->party, p_lib);
 
     ActivitySecrets *activity_secrets = p_lib->nativescript_api->godot_nativescript_get_userdata(activity->secrets);

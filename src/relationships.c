@@ -3,9 +3,12 @@
 #include "util.h"
 #include "relationships/relationship.h"
 
+#include <stdbool.h>
+
 GDCALLINGCONV void *relationship_manager_constructor(godot_object *p_instance, Library *p_lib)
 {
     RelationshipManager *relationship_manager = p_lib->core_api->godot_alloc(sizeof(RelationshipManager));
+    memset(relationship_manager, 0, sizeof(RelationshipManager));
 
     relationship_manager->object = p_instance;
     relationship_manager->lib = p_lib;
@@ -16,7 +19,73 @@ GDCALLINGCONV void *relationship_manager_constructor(godot_object *p_instance, L
 GDCALLINGCONV void relationship_manager_destructor(godot_object *p_instance, Library *p_lib,
                                                    RelationshipManager *p_relationship_manager)
 {
+    if (p_relationship_manager->filter_data)
+    {
+        if (p_relationship_manager->filter_data->callback_object)
+            p_lib->core_api->godot_string_destroy(&p_relationship_manager->filter_data->callback_name);
+        p_lib->core_api->godot_free(p_relationship_manager->filter_data);
+    }
+
     p_lib->core_api->godot_free(p_relationship_manager);
+}
+
+bool filter(CallbackData *p_data, struct DiscordRelationship *p_relationship)
+{
+    Library *lib = p_data->lib;
+
+    godot_variant relationship_variant;
+
+    godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", lib);
+    relationship_reconstruct(relationship_object, p_relationship, lib);
+
+    lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
+
+    godot_variant *args[] = {&relationship_variant};
+
+    godot_variant result_variant;
+    object_call(p_data->callback_object, &p_data->callback_name, 1, args, &result_variant, lib);
+    bool result = lib->core_api->godot_variant_as_bool(&result_variant);
+
+    lib->core_api->godot_variant_destroy(&result_variant);
+    lib->core_api->godot_variant_destroy(&relationship_variant);
+
+    return true;
+}
+
+godot_variant relationship_manager_filter(godot_object *p_instance, Library *p_lib,
+                                          RelationshipManager *p_relationship_manager,
+                                          int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 2) // Hook Object, Hook Method
+    {
+        godot_object *filter_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
+        godot_string filter_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
+
+        if (!p_relationship_manager->filter_data)
+            p_relationship_manager->filter_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
+        else if (p_relationship_manager->filter_data->callback_object)
+            p_lib->core_api->godot_string_destroy(&p_relationship_manager->filter_data->callback_name);
+
+        memset(p_relationship_manager->filter_data, 0, sizeof(CallbackData));
+        p_relationship_manager->filter_data->core = p_relationship_manager->core;
+        p_relationship_manager->filter_data->lib = p_lib;
+        p_relationship_manager->filter_data->callback_name = filter_name;
+        p_relationship_manager->filter_data->callback_object = filter_object;
+
+        p_relationship_manager->internal->filter(p_relationship_manager->internal, p_relationship_manager->filter_data, filter);
+
+        p_lib->core_api->godot_string_destroy(&filter_name);
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"filter()\" call. Expected 2.", p_lib);
+    }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
+
+    return result_variant;
 }
 
 void register_relationship_manager(void *p_handle, Library *p_lib)
@@ -34,6 +103,23 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
     p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
                                                                "RelationshipManager", "Reference",
                                                                constructor, destructor);
+
+    // Methods
+    {
+        godot_instance_method method;
+        godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+
+        // Filter
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = relationship_manager_filter;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "RelationshipManager", "filter",
+                                                                        attributes, method);
+        }
+    }
 
     // Signals
     {

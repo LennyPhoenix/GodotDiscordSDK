@@ -129,7 +129,7 @@ void log_hook(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
     }
@@ -161,13 +161,9 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
         int64_t min_level = p_lib->core_api->godot_variant_as_int(p_args[0]);
 
         if (!p_core->hook_data)
-        {
             p_core->hook_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
-        }
         else if (p_core->hook_data->callback_object)
-        {
             p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
-        }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));
         p_core->hook_data->core = p_core;
@@ -335,7 +331,7 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, Library *p
     }
     else
     {
-        manager = p_core->activities;
+        manager = p_core->relationships;
     }
 
     p_lib->core_api->godot_variant_new_object(&result_variant, manager);

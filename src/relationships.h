@@ -13,6 +13,8 @@ struct RelationshipManager
     struct IDiscordRelationshipManager *internal;
     godot_object *object;
 
+    CallbackData *filter_data;
+
     Core *core;
 
     Library *lib;
