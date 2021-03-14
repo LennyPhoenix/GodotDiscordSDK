@@ -201,7 +201,9 @@ godot_variant_call_error object_call(godot_object *p_object,
     p_lib->core_api->godot_variant_new_object(&variant, p_object);
 
     godot_variant_call_error error;
-    *r_return = p_lib->core_api->godot_variant_call(&variant, p_method_name, p_args, p_num_args, &error);
+    godot_variant ret = p_lib->core_api->godot_variant_call(&variant, p_method_name, p_args, p_num_args, &error);
+    if (r_return)
+        *r_return = ret;
 
     p_lib->core_api->godot_variant_destroy(&variant);
 
