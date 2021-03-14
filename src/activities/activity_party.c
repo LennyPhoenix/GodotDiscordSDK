@@ -10,7 +10,6 @@ GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library
                 p_lib, p_instance);
 
     party->size = instantiate_custom_class("PartySize", "Resource", p_lib);
-    godot_reference(party->size, p_lib);
 
     return party;
 }
