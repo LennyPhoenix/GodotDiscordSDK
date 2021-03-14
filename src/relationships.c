@@ -204,6 +204,59 @@ godot_variant relationship_manager_get_at(godot_object *p_instance, Library *p_l
     return result_variant;
 }
 
+godot_variant relationship_manager_count(godot_object *p_instance, Library *p_lib,
+                                         RelationshipManager *p_relationship_manager,
+                                         int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (p_num_args == 0 || p_num_args == 2) // [Callback Object, Callback Name]
+    {
+        int32_t count = -1;
+        enum EDiscordResult result = p_relationship_manager->internal->count(p_relationship_manager->internal,
+                                                                             &count);
+
+        // Run Callback
+        {
+            godot_variant result_variant;
+            godot_variant count_variant;
+
+            p_lib->core_api->godot_variant_new_int(&result_variant, result);
+            p_lib->core_api->godot_variant_new_int(&count_variant, (int64_t)count);
+
+            godot_variant *args[] = {&result_variant, &count_variant};
+
+            if (p_num_args == 2)
+            {
+                godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
+                godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
+
+                if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
+                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
+                else
+                    PRINT_ERROR("Callback object is not a valid instance.", p_lib);
+
+                p_lib->core_api->godot_string_destroy(&callback_name);
+            }
+
+            godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("count_callback");
+            object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+
+            p_lib->core_api->godot_string_destroy(&signal_name);
+            p_lib->core_api->godot_variant_destroy(&count_variant);
+            p_lib->core_api->godot_variant_destroy(&result_variant);
+        }
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"get_at()\" call. Expected 1 or 3.", p_lib);
+    }
+
+    p_lib->core_api->godot_variant_new_nil(&result_variant);
+
+    return result_variant;
+}
+
 void register_relationship_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -253,6 +306,16 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "RelationshipManager", "get_at",
+                                                                        attributes, method);
+        }
+        // Count
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = relationship_manager_count;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "RelationshipManager", "count",
                                                                         attributes, method);
         }
     }
@@ -353,6 +416,37 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
                                                                         "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&relationship.name);
+            p_lib->core_api->godot_string_destroy(&result.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
+        }
+        // Count Callback
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("count_callback");
+
+            godot_signal_argument result;
+            {
+                memset(&result, 0, sizeof(godot_signal_argument));
+                result.name = p_lib->core_api->godot_string_chars_to_utf8("result");
+
+                result.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument count;
+            {
+                memset(&count, 0, sizeof(godot_signal_argument));
+                count.name = p_lib->core_api->godot_string_chars_to_utf8("count");
+
+                count.type = GODOT_VARIANT_TYPE_INT;
+            }
+
+            godot_signal_argument args[] = {result, count};
+            signal.args = args;
+            signal.num_args = 2;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
+                                                                        "RelationshipManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&count.name);
             p_lib->core_api->godot_string_destroy(&result.name);
             p_lib->core_api->godot_string_destroy(&signal.name);
         }
