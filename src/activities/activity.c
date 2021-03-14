@@ -15,16 +15,9 @@ GDCALLINGCONV void *activity_constructor(godot_object *p_instance, Library *p_li
                 p_lib, p_instance);
 
     activity->timestamps = instantiate_custom_class("ActivityTimestamps", "Resource", p_lib);
-    godot_reference(activity->timestamps, p_lib);
-
     activity->assets = instantiate_custom_class("ActivityAssets", "Resource", p_lib);
-    godot_reference(activity->assets, p_lib);
-
     activity->party = instantiate_custom_class("ActivityParty", "Resource", p_lib);
-    godot_reference(activity->party, p_lib);
-
     activity->secrets = instantiate_custom_class("ActivitySecrets", "Resource", p_lib);
-    godot_reference(activity->secrets, p_lib);
 
     return activity;
 }
@@ -34,13 +27,10 @@ GDCALLINGCONV void activity_destructor(godot_object *p_instance, Library *p_lib,
 {
     if (p_activity->timestamps)
         godot_unreference(p_activity->timestamps, p_lib);
-
     if (p_activity->assets)
         godot_unreference(p_activity->assets, p_lib);
-
     if (p_activity->party)
         godot_unreference(p_activity->party, p_lib);
-
     if (p_activity->secrets)
         godot_unreference(p_activity->secrets, p_lib);
 

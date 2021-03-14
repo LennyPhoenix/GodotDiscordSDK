@@ -234,8 +234,6 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
         data->core = p_core;
         data->internal = p_core->internal->get_user_manager(p_core->internal);
         p_core->users = data;
-
-        godot_reference(manager, p_lib);
     }
     else
     {
@@ -268,8 +266,6 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
         data->core = p_core;
         data->internal = p_core->internal->get_image_manager(p_core->internal);
         p_core->images = data;
-
-        godot_reference(manager, p_lib);
     }
     else
     {
@@ -302,8 +298,6 @@ godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib
         data->core = p_core;
         data->internal = p_core->internal->get_activity_manager(p_core->internal);
         p_core->activities = data;
-
-        godot_reference(manager, p_lib);
     }
     else
     {
