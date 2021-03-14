@@ -8,7 +8,6 @@ GDCALLINGCONV void *presence_constructor(godot_object *p_instance, Library *p_li
     INIT_OBJECT(presence, Presence, struct DiscordPresence, p_lib, p_instance);
 
     presence->activity = instantiate_custom_class("Activity", "Resource", p_lib);
-    godot_reference(presence->activity, p_lib);
 
     return presence;
 }

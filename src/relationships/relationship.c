@@ -9,10 +9,7 @@ GDCALLINGCONV void *relationship_constructor(godot_object *p_instance, Library *
     INIT_OBJECT(relationship, Relationship, struct DiscordRelationship, p_lib, p_instance);
 
     relationship->user = instantiate_custom_class("User", "Resource", p_lib);
-    godot_reference(relationship->user, p_lib);
-
     relationship->presence = instantiate_custom_class("Presence", "Resource", p_lib);
-    godot_reference(relationship->presence, p_lib);
 
     return relationship;
 }
@@ -112,8 +109,6 @@ void relationship_reconstruct(godot_object *p_instance, struct DiscordRelationsh
     User *user = p_lib->nativescript_api->godot_nativescript_get_userdata(relationship->user);
     *user->internal = p_relationship->user;
 
-    Presence *presence = p_lib->nativescript_api->godot_nativescript_get_userdata(relationship->presence);
-    *presence->internal = p_relationship->presence;
     presence_reconstruct(relationship->presence, &p_relationship->presence, p_lib);
 }
 
