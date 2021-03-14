@@ -217,13 +217,24 @@ void godot_reference(godot_object *p_object, Library *p_lib)
     p_lib->core_api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret);
 }
 
+bool unref(godot_object *p_object, godot_method_bind *p_bind, Library *p_lib)
+{
+    godot_bool ret;
+    p_lib->core_api->godot_method_bind_ptrcall(p_bind, p_object, NULL, &ret);
+    if (ret)
+        p_lib->core_api->godot_object_destroy(p_object);
+
+    return ret;
+}
+
 void godot_unreference(godot_object *p_object, Library *p_lib)
 {
     static godot_method_bind *bind = NULL;
     if (!bind)
         bind = p_lib->core_api->godot_method_bind_get_method("Reference", "unreference");
-    godot_bool ret;
-    p_lib->core_api->godot_method_bind_ptrcall(bind, p_object, NULL, &ret);
-    if (ret)
-        p_lib->core_api->godot_object_destroy(p_object);
+
+    unref(p_object, bind, p_lib);
+
+    if (!unref(p_object, bind, p_lib))
+        godot_reference(p_object, p_lib);
 }

@@ -9,7 +9,10 @@ GDCALLINGCONV void *relationship_constructor(godot_object *p_instance, Library *
     INIT_OBJECT(relationship, Relationship, struct DiscordRelationship, p_lib, p_instance);
 
     relationship->user = instantiate_custom_class("User", "Resource", p_lib);
+    godot_reference(relationship->user, p_lib);
+
     relationship->presence = instantiate_custom_class("Presence", "Resource", p_lib);
+    godot_reference(relationship->presence, p_lib);
 
     return relationship;
 }
