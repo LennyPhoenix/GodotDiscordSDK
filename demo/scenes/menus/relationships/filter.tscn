@@ -56,9 +56,9 @@ func _filter(relationship: Discord.Relationship) -> bool:
 	return true # This will make all relationships match.
 
 	# Example for only friends:
-	# return relationship.type == Discord.RelationshipType.FRIEND
+	#return relationship.type == Discord.RelationshipType.FRIEND
 	# Example for only online users:
-	# return relationship.presence.status == Discord.Status.ONLINE
+	#return relationship.presence.status == Discord.Status.ONLINE
 "
 
 [node name="Button" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer"]
