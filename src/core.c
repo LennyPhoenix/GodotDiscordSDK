@@ -25,6 +25,8 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         godot_unreference(p_core->images->object, p_lib);
     if (p_core->activities)
         godot_unreference(p_core->activities->object, p_lib);
+    if (p_core->relationships)
+        godot_unreference(p_core->relationships->object, p_lib);
 
     if (p_core->hook_data)
     {
@@ -38,6 +40,7 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, Library *p_lib,
         p_core->internal->destroy(p_core->internal);
         p_lib->core_api->godot_free(p_core->user_events);
         p_lib->core_api->godot_free(p_core->activity_events);
+        p_lib->core_api->godot_free(p_core->relationship_events);
     }
 
     p_lib->core_api->godot_free(p_core);
@@ -84,10 +87,16 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         p_core->activity_events->on_activity_invite = on_activity_invite;
         params.activity_events = p_core->activity_events;
 
+        p_core->relationship_events = p_lib->core_api->godot_alloc(sizeof(struct IDiscordRelationshipEvents));
+        p_core->relationship_events->on_refresh = on_refresh;
+        p_core->relationship_events->on_relationship_update = on_relationship_update;
+        params.relationship_events = p_core->relationship_events;
+
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
 
         if (result != DiscordResult_Ok)
         {
+            p_core->internal->destroy(p_core->internal);
             p_core->internal = NULL;
         }
 
@@ -120,7 +129,7 @@ void log_hook(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
     }
@@ -152,13 +161,9 @@ godot_variant core_set_log_hook(godot_object *p_instance, Library *p_lib,
         int64_t min_level = p_lib->core_api->godot_variant_as_int(p_args[0]);
 
         if (!p_core->hook_data)
-        {
             p_core->hook_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
-        }
         else if (p_core->hook_data->callback_object)
-        {
             p_lib->core_api->godot_string_destroy(&p_core->hook_data->callback_name);
-        }
 
         memset(p_core->hook_data, 0, sizeof(CallbackData));
         p_core->hook_data->core = p_core;
@@ -225,6 +230,8 @@ godot_variant core_get_user_manager(godot_object *p_instance, Library *p_lib,
         data->core = p_core;
         data->internal = p_core->internal->get_user_manager(p_core->internal);
         p_core->users = data;
+
+        godot_reference(manager, p_lib);
     }
     else
     {
@@ -257,6 +264,8 @@ godot_variant core_get_image_manager(godot_object *p_instance, Library *p_lib,
         data->core = p_core;
         data->internal = p_core->internal->get_image_manager(p_core->internal);
         p_core->images = data;
+
+        godot_reference(manager, p_lib);
     }
     else
     {
@@ -289,10 +298,46 @@ godot_variant core_get_activity_manager(godot_object *p_instance, Library *p_lib
         data->core = p_core;
         data->internal = p_core->internal->get_activity_manager(p_core->internal);
         p_core->activities = data;
+
+        godot_reference(manager, p_lib);
     }
     else
     {
         manager = p_core->activities;
+    }
+
+    p_lib->core_api->godot_variant_new_object(&result_variant, manager);
+
+    return result_variant;
+}
+
+godot_variant core_get_relationship_manager(godot_object *p_instance, Library *p_lib,
+                                            Core *p_core,
+                                            int p_num_args, godot_variant **p_args)
+{
+    godot_variant result_variant;
+
+    if (!p_core->internal)
+    {
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", p_lib);
+        p_lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
+
+    godot_object *manager;
+    if (!p_core->relationships)
+    {
+        manager = instantiate_custom_class("RelationshipManager", "Reference", p_lib);
+        RelationshipManager *data = p_lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->core = p_core;
+        data->internal = p_core->internal->get_relationship_manager(p_core->internal);
+        p_core->relationships = data;
+
+        godot_reference(manager, p_lib);
+    }
+    else
+    {
+        manager = p_core->relationships;
     }
 
     p_lib->core_api->godot_variant_new_object(&result_variant, manager);
@@ -379,6 +424,16 @@ void register_core(void *p_handle, Library *p_lib)
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
                                                                         "Core", "get_activity_manager",
+                                                                        attributes, method);
+        }
+        // Get Relationship Manager
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method = core_get_relationship_manager;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
+                                                                        "Core", "get_relationship_manager",
                                                                         attributes, method);
         }
     }

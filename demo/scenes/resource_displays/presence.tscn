@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/resource_displays/activity.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/resource_displays/presence.gd" type="Script" id=3]
+
+[node name="PresenceInfo" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 1018.0
+margin_bottom = 608.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1012.0
+margin_bottom = 28.0
+text = "Presence:"
+align = 1
+
+[node name="Status" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 33.0
+margin_right = 1012.0
+margin_bottom = 61.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Status"]
+margin_right = 54.0
+margin_bottom = 28.0
+text = "Status:"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Status"]
+margin_left = 59.0
+margin_right = 1012.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="Activity" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 66.0
+margin_right = 1012.0
+margin_bottom = 604.0

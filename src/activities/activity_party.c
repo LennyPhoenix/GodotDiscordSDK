@@ -10,6 +10,7 @@ GDCALLINGCONV void *activity_party_constructor(godot_object *p_instance, Library
                 p_lib, p_instance);
 
     party->size = instantiate_custom_class("PartySize", "Resource", p_lib);
+    godot_reference(party->size, p_lib);
 
     return party;
 }
@@ -81,9 +82,9 @@ GDCALLINGCONV void activity_party_set_size(godot_object *p_instance, Library *p_
 struct DiscordActivityParty *activity_party_collapse(godot_object *p_instance, Library *p_lib)
 {
     ActivityParty *party = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
-    PartySize *size = p_lib->nativescript_api->godot_nativescript_get_userdata(party->size);
 
-    memcpy(&party->internal->size, size->internal, sizeof(struct DiscordPartySize));
+    PartySize *size = p_lib->nativescript_api->godot_nativescript_get_userdata(party->size);
+    party->internal->size = *size->internal;
 
     return party->internal;
 }
@@ -91,9 +92,10 @@ struct DiscordActivityParty *activity_party_collapse(godot_object *p_instance, L
 void activity_party_reconstruct(godot_object *p_instance, struct DiscordActivityParty *p_party, Library *p_lib)
 {
     ActivityParty *activity_party = p_lib->nativescript_api->godot_nativescript_get_userdata(p_instance);
-    memcpy(activity_party->internal, activity_party, sizeof(struct DiscordActivityParty));
+    *activity_party->internal = *p_party;
+
     PartySize *party_size = p_lib->nativescript_api->godot_nativescript_get_userdata(activity_party->size);
-    memcpy(party_size->internal, &p_party->size, sizeof(struct DiscordPartySize));
+    *party_size->internal = p_party->size;
 }
 
 void register_activity_party(void *p_handle, Library *p_lib)

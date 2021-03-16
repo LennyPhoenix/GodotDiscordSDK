@@ -1,14 +1,18 @@
 extends Node
 
 
+signal initialised()
+
+
 var core: Discord.Core
 var users: Discord.UserManager
 var images: Discord.ImageManager
 var activities: Discord.ActivityManager
+var relationships: Discord.RelationshipManager
 
 
 func _ready() -> void:
-	create_core()
+	call_deferred("create_core")
 
 
 func _process(_delta: float) -> void:
@@ -50,6 +54,9 @@ func create_core() -> void:
 	users = core.get_user_manager()
 	images = core.get_image_manager()
 	activities = core.get_activity_manager()
+	relationships = core.get_relationship_manager()
+
+	emit_signal("initialised")
 
 
 func destroy_core() -> void:
@@ -57,6 +64,7 @@ func destroy_core() -> void:
 	users = null
 	images = null
 	activities = null
+	relationships = null
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:

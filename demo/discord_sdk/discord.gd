@@ -20,6 +20,11 @@ const ActivitySecrets: = preload("./activity_secrets.gdns")
 const Activity: = preload("./activity.gdns")
 const ActivityManager: = preload("./activity_manager.gdns")
 
+# Relationships
+const Presence: = preload("./presence.gdns")
+const Relationship: = preload("./relationship.gdns")
+const RelationshipManager: = preload("./relationship_manager.gdns")
+
 enum Result {
 	OK = 0,
 	SERVICE_UNAVAILABLE = 1,

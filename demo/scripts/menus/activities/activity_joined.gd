@@ -5,7 +5,14 @@ onready var join_secret_line_edit: = $VBoxContainer/MarginContainer/JoinSecret/L
 
 
 func _ready() -> void:
-	var _err = DiscordManager.activities.connect(
+	var _err = DiscordManager.connect(
+		"initialised",
+		self, "_on_discord_manager_initialised"
+	)
+
+
+func _on_discord_manager_initialised() -> void:
+	DiscordManager.activities.connect(
 		"activity_join",
 		self, "_on_activity_join"
 	)

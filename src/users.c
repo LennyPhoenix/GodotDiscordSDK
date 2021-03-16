@@ -6,6 +6,7 @@
 GDCALLINGCONV void *user_manager_constructor(godot_object *p_instance, Library *p_lib)
 {
     UserManager *user_manager = p_lib->core_api->godot_alloc(sizeof(UserManager));
+    memset(user_manager, 0, sizeof(UserManager));
 
     user_manager->object = p_instance;
     user_manager->lib = p_lib;
@@ -47,7 +48,7 @@ godot_variant user_manager_get_current_user(godot_object *p_instance, Library *p
                 godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
 
                 if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, p_lib);
+                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
                 else
                     PRINT_ERROR("Callback object is not a valid instance.", p_lib);
 
@@ -93,7 +94,7 @@ void get_user_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 2, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 2, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -175,7 +176,7 @@ godot_variant user_manager_get_current_user_premium_type(godot_object *p_instanc
                 godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
 
                 if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, p_lib);
+                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
                 else
                     PRINT_ERROR("Callback object is not a valid instance.", p_lib);
 
@@ -230,7 +231,7 @@ godot_variant user_manager_current_user_has_flag(godot_object *p_instance, Libra
                 godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
 
                 if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, p_lib);
+                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
                 else
                     PRINT_ERROR("Callback object is not a valid instance.", p_lib);
 
@@ -461,7 +462,9 @@ void register_user_manager(void *p_handle, Library *p_lib)
 
 void on_current_user_update(Core *p_core)
 {
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("current_user_update");
-    object_emit_signal(p_core->users->object, &signal, 0, NULL, p_core->lib);
-    p_core->lib->core_api->godot_string_destroy(&signal);
+    Library *lib = p_core->lib;
+
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("current_user_update");
+    object_emit_signal(p_core->users->object, &signal, 0, NULL, lib);
+    lib->core_api->godot_string_destroy(&signal);
 }

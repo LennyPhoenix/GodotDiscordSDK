@@ -5,6 +5,7 @@
 #include "users.h"
 #include "images.h"
 #include "activities.h"
+#include "relationships.h"
 
 #include "discord_game_sdk.h"
 
@@ -22,6 +23,8 @@ struct Core
     ImageManager *images;
     ActivityManager *activities;
     struct IDiscordActivityEvents *activity_events;
+    RelationshipManager *relationships;
+    struct IDiscordRelationshipEvents *relationship_events;
 
     Library *lib;
 };

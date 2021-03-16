@@ -12,6 +12,7 @@
 GDCALLINGCONV void *activity_manager_constructor(godot_object *p_instance, Library *p_lib)
 {
     ActivityManager *activity_manager = p_lib->core_api->godot_alloc(sizeof(ActivityManager));
+    memset(activity_manager, 0, sizeof(ActivityManager));
 
     activity_manager->object = p_instance;
     activity_manager->lib = p_lib;
@@ -91,7 +92,7 @@ void update_activity_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -160,7 +161,7 @@ void clear_activity_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -223,7 +224,7 @@ void send_request_reply_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -290,7 +291,7 @@ void send_invite_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -364,7 +365,7 @@ void accept_invite_callback(CallbackData *p_data,
     if (p_data->callback_object)
     {
         if (lib->core_1_1_api->godot_is_instance_valid(p_data->callback_object))
-            object_call(p_data->callback_object, &p_data->callback_name, 1, args, lib);
+            object_call(p_data->callback_object, &p_data->callback_name, 1, args, NULL, lib);
         else
             PRINT_ERROR("Callback object is no longer a valid instance.", lib);
 
@@ -743,7 +744,7 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_join");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_join");
 
     godot_variant join_secret_variant;
 
@@ -752,7 +753,7 @@ void on_activity_join(Core *p_core, const char *p_join_secret)
 
     godot_variant *args[] = {&join_secret_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_string_destroy(&join_secret_string);
     lib->core_api->godot_variant_destroy(&join_secret_variant);
@@ -763,7 +764,7 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_spectate");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_spectate");
 
     godot_variant spectate_secret_variant;
 
@@ -772,7 +773,7 @@ void on_activity_spectate(Core *p_core, const char *p_spectate_secret)
 
     godot_variant *args[] = {&spectate_secret_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_string_destroy(&signal);
     lib->core_api->godot_variant_destroy(&spectate_secret_variant);
@@ -783,7 +784,7 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_join_request");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_join_request");
 
     godot_variant user_variant;
 
@@ -795,7 +796,7 @@ void on_activity_join_request(Core *p_core, struct DiscordUser *p_user)
 
     godot_variant *args[] = {&user_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 1, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 1, args, lib);
 
     lib->core_api->godot_variant_destroy(&user_variant);
     lib->core_api->godot_string_destroy(&signal);
@@ -806,7 +807,7 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
 {
     Library *lib = p_core->lib;
 
-    godot_string signal = p_core->lib->core_api->godot_string_chars_to_utf8("activity_invite");
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("activity_invite");
 
     godot_variant type_variant;
     godot_variant user_variant;
@@ -827,7 +828,7 @@ void on_activity_invite(Core *p_core, enum EDiscordActivityActionType p_type,
 
     godot_variant *args[] = {&type_variant, &user_variant, &activity_variant};
 
-    object_emit_signal(p_core->activities->object, &signal, 3, args, p_core->lib);
+    object_emit_signal(p_core->activities->object, &signal, 3, args, lib);
 
     lib->core_api->godot_variant_destroy(&activity_variant);
     lib->core_api->godot_variant_destroy(&user_variant);
