@@ -32,7 +32,7 @@ If you can't or don't want to compile the library yourself head to [the actions 
   - Run the setup script:
 
     - Windows: `setup.bat`
-    - Linux/OSX: `./setup.sh`
+    - Linux/OSX: `sh setup.sh`
 
   - Or manually setup:
   
