@@ -1,0 +1,4 @@
+-I./src
+-I./godot_headers
+-I.
+-std=c17
