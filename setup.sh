@@ -1,4 +1,5 @@
-echo -e "By running this script you agree to the Discord Developers ToS.\n"
+echo By running this script you agree to the Discord Developers ToS.
+echo
 
 echo Downloading the Discord Game SDK...
 wget https://dl-game-sdk.discordapp.net/2.5.6/discord_game_sdk.zip
