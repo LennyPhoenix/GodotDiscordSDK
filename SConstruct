@@ -70,6 +70,8 @@ if host_platform == "windows":
 
     opts.Update(env)
 
+folder_name = f"{env['platform']}-{env['bits']}"
+
 if env["platform"] == "linux":
     env["target_name"] = "lib" + env["target_name"]
 
@@ -80,6 +82,8 @@ if env["platform"] == "linux":
         env.Append(CCFLAGS=["-fPIC", "-O3"])
         env.Append(CXXFLAGS=["-std=c17"])
         env.Append(LINKFLAGS=["-s"])
+
+    env.Append(LINKFLAGS=[f"-Wl,-rpath,'$$ORIGIN'"])
 
     env.Append(LIBS=["discord_game_sdk"])
 
@@ -119,10 +123,8 @@ env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.c")
 sources += Glob("src/*/*.c")
 
-folder_name = f"{env['platform']}-{env['bits']}/"
-
 library = env.SharedLibrary(
-    target=env["target_path"] + folder_name + env["target_name"], source=sources
+    target=f"{env['target_path']}{folder_name}/{env['target_name']}", source=sources
 )
 Default(library)
 
