@@ -77,13 +77,11 @@ if env["platform"] == "linux":
 
     if env["target"] == "debug":
         env.Append(CCFLAGS=["-fPIC", "-g3", "-Og"])
-        env.Append(CXXFLAGS=["-std=c17"])
     else:
         env.Append(CCFLAGS=["-fPIC", "-O3"])
-        env.Append(CXXFLAGS=["-std=c17"])
         env.Append(LINKFLAGS=["-s"])
 
-    env.Append(LINKFLAGS=[f"-Wl,-rpath,'$$ORIGIN'"])
+    env.Append(LINKFLAGS=["-Wl,-rpath,'$$ORIGIN'"])
 
     env.Append(LIBS=["discord_game_sdk"])
 
@@ -114,12 +112,11 @@ elif env["platform"] == "windows":
     env.Append(LIBS=[f"discord_game_sdk.{env['bits']}"])
 
 # Make sure our library includes the Godot headers.
-env.Append(CPPPATH=[".", godot_headers_path])
+env.Append(CPPPATH=[godot_headers_path])
 
 env.Append(LIBPATH=["lib/"])
 
 # Source Files
-env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.c")
 sources += Glob("src/*/*.c")
 
