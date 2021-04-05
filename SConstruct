@@ -117,6 +117,7 @@ env.Append(CPPPATH=[godot_headers_path])
 env.Append(LIBPATH=["lib/"])
 
 # Source Files
+env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.c")
 sources += Glob("src/*/*.c")
 
