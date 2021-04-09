@@ -39,7 +39,7 @@ jobs:
           scons platform=linux target=release bits=64
 
       - name: Remove SDK Shared Object
-        run: rm demo/bin/linux-64/discord_game_sdk.so
+        run: rm demo/bin/linux-64/libdiscord_game_sdk.so
 
       - uses: actions/upload-artifact@v2
         with:
@@ -77,7 +77,7 @@ jobs:
           scons platform=linux target=debug bits=64
 
       - name: Remove SDK Shared Object
-        run: rm demo/bin/linux-64/discord_game_sdk.so
+        run: rm demo/bin/linux-64/libdiscord_game_sdk.so
 
       - uses: actions/upload-artifact@v2
         with:
@@ -115,7 +115,7 @@ jobs:
           scons platform=linux target=release bits=32
 
       - name: Remove SDK Shared Object
-        run: rm demo/bin/linux-32/discord_game_sdk.so
+        run: rm demo/bin/linux-32/libdiscord_game_sdk.so
 
       - uses: actions/upload-artifact@v2
         with:
@@ -153,7 +153,7 @@ jobs:
           scons platform=linux target=debug bits=32
 
       - name: Remove SDK Shared Object
-        run: rm demo/bin/linux-32/discord_game_sdk.so
+        run: rm demo/bin/linux-32/libdiscord_game_sdk.so
 
       - uses: actions/upload-artifact@v2
         with:

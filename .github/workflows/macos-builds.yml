@@ -40,7 +40,7 @@ jobs:
           scons platform=osx target=release bits=64
 
       - name: Remove SDK DyLib
-        run: rm demo/bin/osx-64/discord_game_sdk.dylib
+        run: rm demo/bin/osx-64/libdiscord_game_sdk.dylib
 
       - uses: actions/upload-artifact@v2
         with:
@@ -79,7 +79,7 @@ jobs:
           scons platform=osx target=debug bits=64
 
       - name: Remove SDK DyLib
-        run: rm demo/bin/osx-64/discord_game_sdk.dylib
+        run: rm demo/bin/osx-64/libdiscord_game_sdk.dylib
 
       - uses: actions/upload-artifact@v2
         with:
@@ -118,7 +118,7 @@ jobs:
           scons platform=osx target=release bits=32
 
       - name: Remove SDK DyLib
-        run: rm demo/bin/osx-32/discord_game_sdk.dylib
+        run: rm demo/bin/osx-32/libdiscord_game_sdk.dylib
 
       - uses: actions/upload-artifact@v2
         with:
@@ -157,7 +157,7 @@ jobs:
           scons platform=osx target=debug bits=32
 
       - name: Remove SDK DyLib
-        run: rm demo/bin/osx-32/discord_game_sdk.dylib
+        run: rm demo/bin/osx-32/libdiscord_game_sdk.dylib
 
       - uses: actions/upload-artifact@v2
         with:
