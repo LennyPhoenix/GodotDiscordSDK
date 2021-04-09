@@ -39,6 +39,10 @@ jobs:
         run: |
           scons platform=windows target=release bits=64
 
+      - name: Remove SDK DLL
+        shell: cmd
+        run: rm demo/bin/windows-64/discord_game_sdk.dll
+
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_64_release
@@ -74,6 +78,10 @@ jobs:
       - name: Compilation
         run: |
           scons platform=windows target=debug bits=64
+
+      - name: Remove SDK DLL
+        shell: cmd
+        run: rm demo/bin/windows-64/discord_game_sdk.dll
 
       - uses: actions/upload-artifact@v2
         with:
@@ -111,6 +119,10 @@ jobs:
         run: |
           scons platform=windows target=release bits=32
 
+      - name: Remove SDK DLL
+        shell: cmd
+        run: rm demo/bin/windows-32/discord_game_sdk.dll
+
       - uses: actions/upload-artifact@v2
         with:
           name: gdsdk_32_release
@@ -146,6 +158,10 @@ jobs:
       - name: Compilation
         run: |
           scons platform=windows target=debug bits=32
+
+      - name: Remove SDK DLL
+        shell: cmd
+        run: rm demo/bin/windows-32/discord_game_sdk.dll
 
       - uses: actions/upload-artifact@v2
         with:
