@@ -5,6 +5,12 @@ labels: bug
 assignees: LennyPhoenix
 ---
 
+## System Info
+
+- Godot Version: <!-- Enter your godot version here -->
+- Operating System: <!-- Enter your operating system here -->
+- Compilation Method: <!-- Enter your compilation method here, make sure to include whether it is the debug or release build -->
+
 ## Describe the bug
 <!-- A clear and concise description of what the bug is. Include any applicable error messages. -->
 
