@@ -95,10 +95,7 @@ godot_variant core_create(godot_object *p_instance, Library *p_lib,
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &p_core->internal);
 
         if (result != DiscordResult_Ok)
-        {
-            p_core->internal->destroy(p_core->internal);
             p_core->internal = NULL;
-        }
 
         p_lib->core_api->godot_variant_new_int(&result_variant, result);
     }
