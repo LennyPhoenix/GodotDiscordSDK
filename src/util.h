@@ -8,9 +8,9 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-#define PRINT_WARNING(Error, Lib) Lib->core_api->godot_print_warning(Error, func__, __FILE__, __LINE__);
+#define PRINT_WARNING(Error, Lib) Lib->core_api->godot_print_warning(Error, __func__, __FILE__, __LINE__);
 
-#define PRINT_ERROR(Error, Lib) Lib->core_api->godot_print_error(Error, func__, __FILE__, __LINE__);
+#define PRINT_ERROR(Error, Lib) Lib->core_api->godot_print_error(Error, __func__, __FILE__, __LINE__);
 
 #define INIT_OBJECT(Name, Class, InternalClass, Lib, Instance)          \
     Class *Name = Lib->core_api->godot_alloc(sizeof(Class));            \
