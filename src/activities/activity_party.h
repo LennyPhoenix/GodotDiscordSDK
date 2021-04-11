@@ -1,5 +1,5 @@
-#ifndef ACTIVITY_PARTY_H_
-#define ACTIVITY_PARTY_H_
+#ifndef __ACTIVITY_PARTY_H_
+#define __ACTIVITY_PARTY_H_
 
 #include "types.h"
 
@@ -18,4 +18,4 @@ void activity_party_reconstruct(godot_object *p_instance, struct DiscordActivity
 
 void register_activity_party(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __ACTIVITY_PARTY_H_

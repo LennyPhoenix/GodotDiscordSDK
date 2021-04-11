@@ -1,8 +1,7 @@
-#ifndef RELATIONSHIPS_H_
-#define RELATIONSHIPS_H_
+#ifndef __RELATIONSHIPS_H_
+#define __RELATIONSHIPS_H_
 
 #include "types.h"
-#include "core.h"
 
 #include "discord_game_sdk.h"
 
@@ -15,14 +14,12 @@ struct RelationshipManager
 
     CallbackData *filter_data;
 
-    Core *core;
-
     Library *lib;
 };
 
 void register_relationship_manager(void *p_handle, Library *p_lib);
 
-void on_refresh(Core *p_core);
-void on_relationship_update(Core *p_core, struct DiscordRelationship *p_relationship);
+void on_refresh(void *p_event_data);
+void on_relationship_update(void *p_event_data, struct DiscordRelationship *p_relationship);
 
-#endif
+#endif // __RELATIONSHIPS_H_

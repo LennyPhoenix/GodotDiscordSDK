@@ -1,5 +1,5 @@
-#ifndef PARTY_SIZE_H_
-#define PARTY_SIZE_H_
+#ifndef __PARTY_SIZE_H_
+#define __PARTY_SIZE_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct PartySize
 
 void register_party_size(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __PARTY_SIZE_H_

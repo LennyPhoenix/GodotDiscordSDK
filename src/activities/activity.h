@@ -1,5 +1,5 @@
-#ifndef ACTIVITY_H_
-#define ACTIVITY_H_
+#ifndef __ACTIVITY_H_
+#define __ACTIVITY_H_
 
 #include "types.h"
 
@@ -21,4 +21,4 @@ void activity_reconstruct(godot_object *p_instance, struct DiscordActivity *p_ac
 
 void register_activity(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __ACTIVITY_H_

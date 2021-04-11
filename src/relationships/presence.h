@@ -1,5 +1,5 @@
-#ifndef PRESENCE_H_
-#define PRESENCE_H_
+#ifndef __PRESENCE_H_
+#define __PRESENCE_H_
 
 #include "types.h"
 
@@ -13,9 +13,9 @@ typedef struct Presence
     godot_object *activity;
 } Presence;
 
-void register_presence(void *p_handle, Library *p_lib);
-
 struct DiscordPresence *presence_collapse(godot_object *p_instance, Library *p_lib);
 void presence_reconstruct(godot_object *p_instance, struct DiscordPresence *p_presence, Library *p_lib);
 
-#endif
+void register_presence(void *p_handle, Library *p_lib);
+
+#endif // __PRESENCE_H_

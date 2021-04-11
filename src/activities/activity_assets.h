@@ -1,5 +1,5 @@
-#ifndef ACTIVITY_ASSETS_H_
-#define ACTIVITY_ASSETS_H_
+#ifndef __ACTIVITY_ASSETS_H_
+#define __ACTIVITY_ASSETS_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct ActivityAssets
 
 void register_activity_assets(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __ACTIVITY_ASSETS_H_

@@ -1,5 +1,5 @@
-#ifndef ACTIVITY_TIMESTAMPS_H_
-#define ACTIVITY_TIMESTAMPS_H_
+#ifndef __ACTIVITY_TIMESTAMPS_H_
+#define __ACTIVITY_TIMESTAMPS_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct ActivityTimestamps
 
 void register_activity_timestamps(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __ACTIVITY_TIMESTAMPS_H_

@@ -1,5 +1,5 @@
-#ifndef TYPES_H_
-#define TYPES_H_
+#ifndef __TYPES_H_
+#define __TYPES_H_
 
 #include "discord_game_sdk.h"
 
@@ -28,7 +28,6 @@ typedef struct CallbackData
     void *data;
 
     Library *lib;
-    Core *core;
 } CallbackData;
 
-#endif
+#endif // __TYPES_H_

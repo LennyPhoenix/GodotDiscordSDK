@@ -1,37 +1,44 @@
 #include "relationships.h"
-
-#include "util.h"
 #include "relationships/relationship.h"
+
+#include "core.h"
+#include "util.h"
 
 #include <stdbool.h>
 
-GDCALLINGCONV void *relationship_manager_constructor(godot_object *p_instance, Library *p_lib)
+GDCALLINGCONV void *relationship_manager_constructor(godot_object *p_instance, void *p_method_data)
 {
-    RelationshipManager *relationship_manager = p_lib->core_api->godot_alloc(sizeof(RelationshipManager));
+    Library *lib = p_method_data;
+
+    RelationshipManager *relationship_manager = lib->core_api->godot_alloc(sizeof(RelationshipManager));
     memset(relationship_manager, 0, sizeof(RelationshipManager));
 
     relationship_manager->object = p_instance;
-    relationship_manager->lib = p_lib;
+    relationship_manager->lib    = lib;
 
     return relationship_manager;
 }
 
-GDCALLINGCONV void relationship_manager_destructor(godot_object *p_instance, Library *p_lib,
-                                                   RelationshipManager *p_relationship_manager)
+GDCALLINGCONV void relationship_manager_destructor(godot_object *p_instance, void *p_method_data, void *p_user_data)
 {
-    if (p_relationship_manager->filter_data)
+    Library *lib                              = p_method_data;
+    RelationshipManager *relationship_manager = p_user_data;
+
+    if (relationship_manager->filter_data)
     {
-        if (p_relationship_manager->filter_data->callback_object)
-            p_lib->core_api->godot_string_destroy(&p_relationship_manager->filter_data->callback_name);
-        p_lib->core_api->godot_free(p_relationship_manager->filter_data);
+        if (relationship_manager->filter_data->callback_object)
+            lib->core_api->godot_string_destroy(&relationship_manager->filter_data->callback_name);
+        lib->core_api->godot_free(relationship_manager->filter_data);
     }
 
-    p_lib->core_api->godot_free(p_relationship_manager);
+    lib->core_api->godot_free(relationship_manager);
 }
 
-bool filter(CallbackData *p_data, struct DiscordRelationship *p_relationship)
+bool filter(void *p_callback_data, struct DiscordRelationship *p_relationship)
 {
-    Library *lib = p_data->lib;
+    CallbackData *data                        = p_callback_data;
+    Library *lib                              = data->lib;
+    RelationshipManager *relationship_manager = data->data;
 
     godot_variant relationship_variant;
 
@@ -40,10 +47,10 @@ bool filter(CallbackData *p_data, struct DiscordRelationship *p_relationship)
 
     lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
 
-    godot_variant *args[] = {&relationship_variant};
+    const godot_variant *args[] = {&relationship_variant};
 
     godot_variant result_variant;
-    object_call(p_data->callback_object, &p_data->callback_name, 1, args, &result_variant, lib);
+    object_call(data->callback_object, &data->callback_name, 1, args, &result_variant, lib);
     bool result = lib->core_api->godot_variant_as_bool(&result_variant);
 
     lib->core_api->godot_variant_destroy(&result_variant);
@@ -52,207 +59,214 @@ bool filter(CallbackData *p_data, struct DiscordRelationship *p_relationship)
     return true;
 }
 
-godot_variant relationship_manager_filter(godot_object *p_instance, Library *p_lib,
-                                          RelationshipManager *p_relationship_manager,
+godot_variant relationship_manager_filter(godot_object *p_instance, void *p_method_data, void *p_user_data,
                                           int p_num_args, godot_variant **p_args)
 {
+    Library *lib                              = p_method_data;
+    RelationshipManager *relationship_manager = p_user_data;
+
     godot_variant result_variant;
 
     if (p_num_args == 2) // Filter Object, Filter Method
     {
-        godot_object *filter_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
-        godot_string filter_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
+        godot_object *filter_object = lib->core_api->godot_variant_as_object(p_args[0]);
+        godot_string filter_name    = lib->core_api->godot_variant_as_string(p_args[1]);
 
-        if (!p_relationship_manager->filter_data)
-            p_relationship_manager->filter_data = p_lib->core_api->godot_alloc(sizeof(CallbackData));
-        else if (p_relationship_manager->filter_data->callback_object)
-            p_lib->core_api->godot_string_destroy(&p_relationship_manager->filter_data->callback_name);
+        if (!relationship_manager->filter_data)
+            relationship_manager->filter_data = lib->core_api->godot_alloc(sizeof(CallbackData));
+        else if (relationship_manager->filter_data->callback_object)
+            lib->core_api->godot_string_destroy(&relationship_manager->filter_data->callback_name);
 
-        memset(p_relationship_manager->filter_data, 0, sizeof(CallbackData));
-        p_relationship_manager->filter_data->core = p_relationship_manager->core;
-        p_relationship_manager->filter_data->lib = p_lib;
-        p_relationship_manager->filter_data->callback_name = filter_name;
-        p_relationship_manager->filter_data->callback_object = filter_object;
+        memset(relationship_manager->filter_data, 0, sizeof(CallbackData));
+        relationship_manager->filter_data->lib             = lib;
+        relationship_manager->filter_data->callback_name   = filter_name;
+        relationship_manager->filter_data->callback_object = filter_object;
 
-        p_relationship_manager->internal->filter(p_relationship_manager->internal, p_relationship_manager->filter_data, filter);
+        relationship_manager->internal->filter(relationship_manager->internal, relationship_manager->filter_data,
+                                               filter);
 
-        p_lib->core_api->godot_string_destroy(&filter_name);
+        lib->core_api->godot_string_destroy(&filter_name);
     }
     else
     {
-        PRINT_ERROR("Invalid number of arguments for \"filter()\" call. Expected 2.", p_lib);
+        PRINT_ERROR("Invalid number of arguments for \"filter()\" call. Expected 2.", lib);
     }
 
-    p_lib->core_api->godot_variant_new_nil(&result_variant);
+    lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
 
-godot_variant relationship_manager_get(godot_object *p_instance, Library *p_lib,
-                                       RelationshipManager *p_relationship_manager,
-                                       int p_num_args, godot_variant **p_args)
+godot_variant relationship_manager_get(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args,
+                                       godot_variant **p_args)
 {
+    Library *lib                              = p_method_data;
+    RelationshipManager *relationship_manager = p_user_data;
+
     godot_variant result_variant;
 
     if (p_num_args == 1 || p_num_args == 3) // User ID, [Callback Object, Callback Name]
     {
-        int64_t user_id = p_lib->core_api->godot_variant_as_int(p_args[0]);
+        int64_t user_id = lib->core_api->godot_variant_as_int(p_args[0]);
 
-        godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", p_lib);
-        Relationship *relationship = p_lib->nativescript_api->godot_nativescript_get_userdata(relationship_object);
-        enum EDiscordResult result = p_relationship_manager->internal->get(p_relationship_manager->internal,
-                                                                           user_id, relationship->internal);
+        godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", lib);
+        Relationship *relationship        = lib->nativescript_api->godot_nativescript_get_userdata(relationship_object);
+        enum EDiscordResult result =
+            relationship_manager->internal->get(relationship_manager->internal, user_id, relationship->internal);
 
-        relationship_reconstruct(relationship_object, relationship->internal, p_lib);
+        relationship_reconstruct(relationship_object, relationship->internal, lib);
 
         // Run Callback
         {
             godot_variant result_variant;
             godot_variant relationship_variant;
 
-            p_lib->core_api->godot_variant_new_int(&result_variant, result);
-            p_lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
+            lib->core_api->godot_variant_new_int(&result_variant, result);
+            lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
 
-            godot_variant *args[] = {&result_variant, &relationship_variant};
+            const godot_variant *args[] = {&result_variant, &relationship_variant};
 
             if (p_num_args == 3)
             {
-                godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
-                godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[2]);
+                godot_object *callback_object = lib->core_api->godot_variant_as_object(p_args[1]);
+                godot_string callback_name    = lib->core_api->godot_variant_as_string(p_args[2]);
 
-                if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
+                if (lib->core_1_1_api->godot_is_instance_valid(callback_object))
+                    object_call(callback_object, &callback_name, 2, args, NULL, lib);
                 else
-                    PRINT_ERROR("Callback object is not a valid instance.", p_lib);
+                    PRINT_ERROR("Callback object is not a valid instance.", lib);
 
-                p_lib->core_api->godot_string_destroy(&callback_name);
+                lib->core_api->godot_string_destroy(&callback_name);
             }
 
-            godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_callback");
-            object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+            godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("get_callback");
+            object_emit_signal_deferred(p_instance, &signal_name, 2, args, lib);
 
-            p_lib->core_api->godot_string_destroy(&signal_name);
-            p_lib->core_api->godot_variant_destroy(&relationship_variant);
-            p_lib->core_api->godot_variant_destroy(&result_variant);
+            lib->core_api->godot_string_destroy(&signal_name);
+            lib->core_api->godot_variant_destroy(&relationship_variant);
+            lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
     {
-        PRINT_ERROR("Invalid number of arguments for \"get()\" call. Expected 1 or 3.", p_lib);
+        PRINT_ERROR("Invalid number of arguments for \"get()\" call. Expected 1 or 3.", lib);
     }
 
-    p_lib->core_api->godot_variant_new_nil(&result_variant);
+    lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
 
-godot_variant relationship_manager_get_at(godot_object *p_instance, Library *p_lib,
-                                          RelationshipManager *p_relationship_manager,
+godot_variant relationship_manager_get_at(godot_object *p_instance, void *p_method_data, void *p_user_data,
                                           int p_num_args, godot_variant **p_args)
 {
+    Library *lib                              = p_method_data;
+    RelationshipManager *relationship_manager = p_user_data;
+
     godot_variant result_variant;
 
     if (p_num_args == 1 || p_num_args == 3) // Index, [Callback Object, Callback Name]
     {
-        uint32_t index = (uint32_t)p_lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint32_t index = (uint32_t)lib->core_api->godot_variant_as_uint(p_args[0]);
 
-        godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", p_lib);
-        Relationship *relationship = p_lib->nativescript_api->godot_nativescript_get_userdata(relationship_object);
-        enum EDiscordResult result = p_relationship_manager->internal->get_at(p_relationship_manager->internal,
-                                                                              index, relationship->internal);
+        godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", lib);
+        Relationship *relationship        = lib->nativescript_api->godot_nativescript_get_userdata(relationship_object);
+        enum EDiscordResult result =
+            relationship_manager->internal->get_at(relationship_manager->internal, index, relationship->internal);
 
-        relationship_reconstruct(relationship_object, relationship->internal, p_lib);
+        relationship_reconstruct(relationship_object, relationship->internal, lib);
 
         // Run Callback
         {
             godot_variant result_variant;
             godot_variant relationship_variant;
 
-            p_lib->core_api->godot_variant_new_int(&result_variant, result);
-            p_lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
+            lib->core_api->godot_variant_new_int(&result_variant, result);
+            lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
 
-            godot_variant *args[] = {&result_variant, &relationship_variant};
+            const godot_variant *args[] = {&result_variant, &relationship_variant};
 
             if (p_num_args == 3)
             {
-                godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[1]);
-                godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[2]);
+                godot_object *callback_object = lib->core_api->godot_variant_as_object(p_args[1]);
+                godot_string callback_name    = lib->core_api->godot_variant_as_string(p_args[2]);
 
-                if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
+                if (lib->core_1_1_api->godot_is_instance_valid(callback_object))
+                    object_call(callback_object, &callback_name, 2, args, NULL, lib);
                 else
-                    PRINT_ERROR("Callback object is not a valid instance.", p_lib);
+                    PRINT_ERROR("Callback object is not a valid instance.", lib);
 
-                p_lib->core_api->godot_string_destroy(&callback_name);
+                lib->core_api->godot_string_destroy(&callback_name);
             }
 
-            godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("get_at_callback");
-            object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+            godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("get_at_callback");
+            object_emit_signal_deferred(p_instance, &signal_name, 2, args, lib);
 
-            p_lib->core_api->godot_string_destroy(&signal_name);
-            p_lib->core_api->godot_variant_destroy(&relationship_variant);
-            p_lib->core_api->godot_variant_destroy(&result_variant);
+            lib->core_api->godot_string_destroy(&signal_name);
+            lib->core_api->godot_variant_destroy(&relationship_variant);
+            lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
     {
-        PRINT_ERROR("Invalid number of arguments for \"get_at()\" call. Expected 1 or 3.", p_lib);
+        PRINT_ERROR("Invalid number of arguments for \"get_at()\" call. Expected 1 or 3.", lib);
     }
 
-    p_lib->core_api->godot_variant_new_nil(&result_variant);
+    lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
 
-godot_variant relationship_manager_count(godot_object *p_instance, Library *p_lib,
-                                         RelationshipManager *p_relationship_manager,
+godot_variant relationship_manager_count(godot_object *p_instance, void *p_method_data, void *p_user_data,
                                          int p_num_args, godot_variant **p_args)
 {
+    Library *lib                              = p_method_data;
+    RelationshipManager *relationship_manager = p_user_data;
+
     godot_variant result_variant;
 
     if (p_num_args == 0 || p_num_args == 2) // [Callback Object, Callback Name]
     {
-        int32_t count = -1;
-        enum EDiscordResult result = p_relationship_manager->internal->count(p_relationship_manager->internal,
-                                                                             &count);
+        int32_t count              = -1;
+        enum EDiscordResult result = relationship_manager->internal->count(relationship_manager->internal, &count);
 
         // Run Callback
         {
             godot_variant result_variant;
             godot_variant count_variant;
 
-            p_lib->core_api->godot_variant_new_int(&result_variant, result);
-            p_lib->core_api->godot_variant_new_int(&count_variant, (int64_t)count);
+            lib->core_api->godot_variant_new_int(&result_variant, result);
+            lib->core_api->godot_variant_new_int(&count_variant, (int64_t)count);
 
-            godot_variant *args[] = {&result_variant, &count_variant};
+            const godot_variant *args[] = {&result_variant, &count_variant};
 
             if (p_num_args == 2)
             {
-                godot_object *callback_object = p_lib->core_api->godot_variant_as_object(p_args[0]);
-                godot_string callback_name = p_lib->core_api->godot_variant_as_string(p_args[1]);
+                godot_object *callback_object = lib->core_api->godot_variant_as_object(p_args[0]);
+                godot_string callback_name    = lib->core_api->godot_variant_as_string(p_args[1]);
 
-                if (p_lib->core_1_1_api->godot_is_instance_valid(callback_object))
-                    object_call(callback_object, &callback_name, 2, args, NULL, p_lib);
+                if (lib->core_1_1_api->godot_is_instance_valid(callback_object))
+                    object_call(callback_object, &callback_name, 2, args, NULL, lib);
                 else
-                    PRINT_ERROR("Callback object is not a valid instance.", p_lib);
+                    PRINT_ERROR("Callback object is not a valid instance.", lib);
 
-                p_lib->core_api->godot_string_destroy(&callback_name);
+                lib->core_api->godot_string_destroy(&callback_name);
             }
 
-            godot_string signal_name = p_lib->core_api->godot_string_chars_to_utf8("count_callback");
-            object_emit_signal_deferred(p_instance, &signal_name, 2, args, p_lib);
+            godot_string signal_name = lib->core_api->godot_string_chars_to_utf8("count_callback");
+            object_emit_signal_deferred(p_instance, &signal_name, 2, args, lib);
 
-            p_lib->core_api->godot_string_destroy(&signal_name);
-            p_lib->core_api->godot_variant_destroy(&count_variant);
-            p_lib->core_api->godot_variant_destroy(&result_variant);
+            lib->core_api->godot_string_destroy(&signal_name);
+            lib->core_api->godot_variant_destroy(&count_variant);
+            lib->core_api->godot_variant_destroy(&result_variant);
         }
     }
     else
     {
-        PRINT_ERROR("Invalid number of arguments for \"get_at()\" call. Expected 1 or 3.", p_lib);
+        PRINT_ERROR("Invalid number of arguments for \"get_at()\" call. Expected 1 or 3.", lib);
     }
 
-    p_lib->core_api->godot_variant_new_nil(&result_variant);
+    lib->core_api->godot_variant_new_nil(&result_variant);
 
     return result_variant;
 }
@@ -267,10 +281,9 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
     godot_instance_destroy_func destructor;
     memset(&destructor, 0, sizeof(godot_instance_destroy_func));
     destructor.destroy_func = relationship_manager_destructor;
-    destructor.method_data = p_lib;
+    destructor.method_data  = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_class(p_handle,
-                                                               "RelationshipManager", "Reference",
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "RelationshipManager", "Reference",
                                                                constructor, destructor);
 
     // Methods
@@ -281,41 +294,37 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
         // Filter
         {
             memset(&method, 0, sizeof(godot_instance_method));
-            method.method = relationship_manager_filter;
+            method.method      = relationship_manager_filter;
             method.method_data = p_lib;
 
-            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                        "RelationshipManager", "filter",
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "RelationshipManager", "filter",
                                                                         attributes, method);
         }
         // Get
         {
             memset(&method, 0, sizeof(godot_instance_method));
-            method.method = relationship_manager_get;
+            method.method      = relationship_manager_get;
             method.method_data = p_lib;
 
-            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                        "RelationshipManager", "get",
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "RelationshipManager", "get",
                                                                         attributes, method);
         }
         // Get At
         {
             memset(&method, 0, sizeof(godot_instance_method));
-            method.method = relationship_manager_get_at;
+            method.method      = relationship_manager_get_at;
             method.method_data = p_lib;
 
-            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                        "RelationshipManager", "get_at",
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "RelationshipManager", "get_at",
                                                                         attributes, method);
         }
         // Count
         {
             memset(&method, 0, sizeof(godot_instance_method));
-            method.method = relationship_manager_count;
+            method.method      = relationship_manager_count;
             method.method_data = p_lib;
 
-            p_lib->nativescript_api->godot_nativescript_register_method(p_handle,
-                                                                        "RelationshipManager", "count",
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "RelationshipManager", "count",
                                                                         attributes, method);
         }
     }
@@ -329,8 +338,7 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
             memset(&signal, 0, sizeof(godot_signal));
             signal.name = p_lib->core_api->godot_string_chars_to_utf8("refresh");
 
-            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
-                                                                        "RelationshipManager", &signal);
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&signal.name);
         }
@@ -348,11 +356,10 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
             }
 
             godot_signal_argument args[] = {relationship};
-            signal.args = args;
-            signal.num_args = 1;
+            signal.args                  = args;
+            signal.num_args              = 1;
 
-            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
-                                                                        "RelationshipManager", &signal);
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&relationship.name);
             p_lib->core_api->godot_string_destroy(&signal.name);
@@ -378,11 +385,10 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
             }
 
             godot_signal_argument args[] = {result, relationship};
-            signal.args = args;
-            signal.num_args = 2;
+            signal.args                  = args;
+            signal.num_args              = 2;
 
-            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
-                                                                        "RelationshipManager", &signal);
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&relationship.name);
             p_lib->core_api->godot_string_destroy(&result.name);
@@ -409,11 +415,10 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
             }
 
             godot_signal_argument args[] = {result, relationship};
-            signal.args = args;
-            signal.num_args = 2;
+            signal.args                  = args;
+            signal.num_args              = 2;
 
-            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
-                                                                        "RelationshipManager", &signal);
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&relationship.name);
             p_lib->core_api->godot_string_destroy(&result.name);
@@ -440,11 +445,10 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
             }
 
             godot_signal_argument args[] = {result, count};
-            signal.args = args;
-            signal.num_args = 2;
+            signal.args                  = args;
+            signal.num_args              = 2;
 
-            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle,
-                                                                        "RelationshipManager", &signal);
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "RelationshipManager", &signal);
 
             p_lib->core_api->godot_string_destroy(&count.name);
             p_lib->core_api->godot_string_destroy(&result.name);
@@ -453,33 +457,35 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
     }
 }
 
-void on_refresh(Core *p_core)
+void on_refresh(void *p_event_data)
 {
-    Library *lib = p_core->lib;
+    Core *core   = p_event_data;
+    Library *lib = core->lib;
 
     godot_string signal = lib->core_api->godot_string_chars_to_utf8("refresh");
 
-    object_emit_signal(p_core->relationships->object, &signal, 0, NULL, lib);
+    object_emit_signal(core->relationships->object, &signal, 0, NULL, lib);
 
     lib->core_api->godot_string_destroy(&signal);
 }
 
-void on_relationship_update(Core *p_core, struct DiscordRelationship *p_relationship)
+void on_relationship_update(void *p_event_data, struct DiscordRelationship *p_relationship)
 {
-    Library *lib = p_core->lib;
+    Core *core   = p_event_data;
+    Library *lib = core->lib;
 
     godot_string signal = lib->core_api->godot_string_chars_to_utf8("relationship_update");
 
     godot_variant relationship_variant;
 
     godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", lib);
-    relationship_reconstruct(relationship_object, p_relationship, p_core->lib);
+    relationship_reconstruct(relationship_object, p_relationship, core->lib);
 
     lib->core_api->godot_variant_new_object(&relationship_variant, relationship_object);
 
-    godot_variant *args[] = {&relationship_variant};
+    const godot_variant *args[] = {&relationship_variant};
 
-    object_emit_signal(p_core->relationships->object, &signal, 1, args, lib);
+    object_emit_signal(core->relationships->object, &signal, 1, args, lib);
 
     lib->core_api->godot_variant_destroy(&relationship_variant);
     lib->core_api->godot_string_destroy(&signal);

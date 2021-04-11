@@ -1,22 +1,22 @@
 #include "discord.h"
 
-#include "types.h"
-#include "core.h"
-#include "users.h"
-#include "users/user.h"
-#include "images.h"
-#include "images/image_handle.h"
-#include "images/image_dimensions.h"
 #include "activities.h"
-#include "activities/activity_timestamps.h"
+#include "activities/activity.h"
 #include "activities/activity_assets.h"
-#include "activities/party_size.h"
 #include "activities/activity_party.h"
 #include "activities/activity_secrets.h"
-#include "activities/activity.h"
+#include "activities/activity_timestamps.h"
+#include "activities/party_size.h"
+#include "core.h"
+#include "images.h"
+#include "images/image_dimensions.h"
+#include "images/image_handle.h"
 #include "relationships.h"
 #include "relationships/presence.h"
 #include "relationships/relationship.h"
+#include "types.h"
+#include "users.h"
+#include "users/user.h"
 
 Library lib;
 
@@ -56,8 +56,8 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
 
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options)
 {
-    lib.core_api = NULL;
-    lib.core_1_1_api = NULL;
+    lib.core_api         = NULL;
+    lib.core_1_1_api     = NULL;
     lib.nativescript_api = NULL;
 }
 

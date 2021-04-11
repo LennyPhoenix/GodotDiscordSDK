@@ -1,5 +1,5 @@
-#ifndef ACTIVITY_SECRETS_H_
-#define ACTIVITY_SECRETS_H_
+#ifndef __ACTIVITY_SECRETS_H_
+#define __ACTIVITY_SECRETS_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct ActivitySecrets
 
 void register_activity_secrets(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __ACTIVITY_SECRETS_H_

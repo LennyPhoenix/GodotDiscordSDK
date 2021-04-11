@@ -1,7 +1,6 @@
 #include "util.h"
 
-godot_string get_script_path(godot_string *p_class_name,
-                             Library *p_lib)
+godot_string get_script_path(godot_string *p_class_name, Library *p_lib)
 {
     // Get the .gdnlib path
     godot_char_string gdnlib_path_char_string;
@@ -9,37 +8,35 @@ godot_string get_script_path(godot_string *p_class_name,
         godot_method_bind *mb_get_path = p_lib->core_api->godot_method_bind_get_method("Resource", "get_path");
 
         godot_variant_call_error error;
-        godot_variant ret = p_lib->core_api->godot_method_bind_call(mb_get_path, (godot_object *)p_lib->gdnlib, NULL, 0, &error);
+        godot_variant ret =
+            p_lib->core_api->godot_method_bind_call(mb_get_path, (godot_object *)p_lib->gdnlib, NULL, 0, &error);
 
         godot_string gdnlib_path_string = p_lib->core_api->godot_variant_as_string(&ret);
-        gdnlib_path_char_string = p_lib->core_api->godot_string_utf8(&gdnlib_path_string);
+        gdnlib_path_char_string         = p_lib->core_api->godot_string_utf8(&gdnlib_path_string);
 
         p_lib->core_api->godot_string_destroy(&gdnlib_path_string);
         p_lib->core_api->godot_variant_destroy(&ret);
     }
     const char *gdnlib_path = p_lib->core_api->godot_char_string_get_data(&gdnlib_path_char_string);
-    int gdnlib_path_size = p_lib->core_api->godot_char_string_length(&gdnlib_path_char_string);
+    int gdnlib_path_size    = p_lib->core_api->godot_char_string_length(&gdnlib_path_char_string);
 
     // Get script name
     godot_char_string script_name_char_string;
     {
-        godot_string script_name_string = p_lib->core_api->godot_string_camelcase_to_underscore_lowercased(p_class_name);
+        godot_string script_name_string =
+            p_lib->core_api->godot_string_camelcase_to_underscore_lowercased(p_class_name);
         script_name_char_string = p_lib->core_api->godot_string_utf8(&script_name_string);
 
         p_lib->core_api->godot_string_destroy(&script_name_string);
     }
     const char *script_name = p_lib->core_api->godot_char_string_get_data(&script_name_char_string);
-    int script_name_size = p_lib->core_api->godot_char_string_length(&script_name_char_string);
+    int script_name_size    = p_lib->core_api->godot_char_string_length(&script_name_char_string);
 
     // Get folder of script
     int last_slash_char;
     for (int i = 0; i < gdnlib_path_size; i++)
-    {
         if (gdnlib_path[i] == '/')
-        {
             last_slash_char = i + 1;
-        }
-    }
 
     // Join the strings together
     char *script_path = p_lib->core_api->godot_alloc(sizeof(char) * (last_slash_char + script_name_size + 6));
@@ -57,13 +54,12 @@ godot_string get_script_path(godot_string *p_class_name,
     return script_path_string;
 }
 
-godot_object *instantiate_custom_class(const char *p_class_name, const char *p_base,
-                                       Library *p_lib)
+godot_object *instantiate_custom_class(const char *p_class_name, const char *p_base, Library *p_lib)
 {
     // Get the script object
     godot_object *script;
     {
-        godot_string class_name = p_lib->core_api->godot_string_chars_to_utf8(p_class_name);
+        godot_string class_name         = p_lib->core_api->godot_string_chars_to_utf8(p_class_name);
         godot_string script_path_string = get_script_path(&class_name, p_lib);
 
         // Load the script
@@ -77,15 +73,13 @@ godot_object *instantiate_custom_class(const char *p_class_name, const char *p_b
 
         godot_variant script_variant;
         {
-            godot_variant *args[] = {&path_variant};
+            const godot_variant *args[] = {&path_variant};
 
             godot_string method_name = p_lib->core_api->godot_string_chars_to_utf8("load");
 
             godot_variant_call_error error;
-            script_variant = p_lib->core_api->godot_variant_call(&resource_loader_variant,
-                                                                 &method_name,
-                                                                 args, 1,
-                                                                 &error);
+            script_variant =
+                p_lib->core_api->godot_variant_call(&resource_loader_variant, &method_name, args, 1, &error);
 
             p_lib->core_api->godot_string_destroy(&method_name);
         }
@@ -101,7 +95,7 @@ godot_object *instantiate_custom_class(const char *p_class_name, const char *p_b
 
     // Construct the base object
     godot_class_constructor base_constructor = p_lib->core_api->godot_get_class_constructor(p_base);
-    godot_object *object = base_constructor();
+    godot_object *object                     = base_constructor();
 
     // Add the script
     {
@@ -117,17 +111,15 @@ godot_object *instantiate_custom_class(const char *p_class_name, const char *p_b
     return object;
 }
 
-godot_variant_call_error object_emit_signal(godot_object *p_object,
-                                            godot_string *p_signal_name,
-                                            int p_num_args, godot_variant **p_args,
-                                            Library *p_lib)
+godot_variant_call_error object_emit_signal(godot_object *p_object, godot_string *p_signal_name, int p_num_args,
+                                            const godot_variant **p_args, Library *p_lib)
 {
     godot_variant variant;
     p_lib->core_api->godot_variant_new_object(&variant, p_object);
 
     godot_string method_name = p_lib->core_api->godot_string_chars_to_utf8("emit_signal");
 
-    godot_variant **args = p_lib->core_api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 1));
+    const godot_variant **args = p_lib->core_api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 1));
 
     godot_variant variant_signal_name;
     p_lib->core_api->godot_variant_new_string(&variant_signal_name, p_signal_name);
@@ -150,17 +142,15 @@ godot_variant_call_error object_emit_signal(godot_object *p_object,
     return error;
 }
 
-godot_variant_call_error object_emit_signal_deferred(godot_object *p_object,
-                                                     godot_string *p_signal_name,
-                                                     int p_num_args, godot_variant **p_args,
-                                                     Library *p_lib)
+godot_variant_call_error object_emit_signal_deferred(godot_object *p_object, godot_string *p_signal_name,
+                                                     int p_num_args, const godot_variant **p_args, Library *p_lib)
 {
     godot_variant variant;
     p_lib->core_api->godot_variant_new_object(&variant, p_object);
 
     godot_string method = p_lib->core_api->godot_string_chars_to_utf8("call_deferred");
 
-    godot_variant **args = p_lib->core_api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 2));
+    const godot_variant **args = p_lib->core_api->godot_alloc(sizeof(godot_variant *) * (p_num_args + 2));
 
     godot_variant variant_method_name;
     godot_string method_name = p_lib->core_api->godot_string_chars_to_utf8("emit_signal");
@@ -191,11 +181,8 @@ godot_variant_call_error object_emit_signal_deferred(godot_object *p_object,
     return error;
 }
 
-godot_variant_call_error object_call(godot_object *p_object,
-                                     godot_string *p_method_name,
-                                     int p_num_args, godot_variant **p_args,
-                                     godot_variant *r_return,
-                                     Library *p_lib)
+godot_variant_call_error object_call(godot_object *p_object, godot_string *p_method_name, int p_num_args,
+                                     const godot_variant **p_args, godot_variant *r_return, Library *p_lib)
 {
     godot_variant variant;
     p_lib->core_api->godot_variant_new_object(&variant, p_object);

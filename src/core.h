@@ -1,11 +1,11 @@
-#ifndef CORE_H_
-#define CORE_H_
+#ifndef __CORE_H_
+#define __CORE_H_
 
+#include "activities.h"
+#include "images.h"
+#include "relationships.h"
 #include "types.h"
 #include "users.h"
-#include "images.h"
-#include "activities.h"
-#include "relationships.h"
 
 #include "discord_game_sdk.h"
 
@@ -31,4 +31,4 @@ struct Core
 
 void register_core(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __CORE_H_

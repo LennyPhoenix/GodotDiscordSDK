@@ -1,8 +1,7 @@
-#ifndef USERS_H_
-#define USERS_H_
+#ifndef __USERS_H_
+#define __USERS_H_
 
 #include "types.h"
-#include "core.h"
 
 #include "discord_game_sdk.h"
 
@@ -13,13 +12,11 @@ struct UserManager
     struct IDiscordUserManager *internal;
     godot_object *object;
 
-    Core *core;
-
     Library *lib;
 };
 
 void register_user_manager(void *p_handle, Library *p_lib);
 
-void on_current_user_update(Core *p_core);
+void on_current_user_update(void *p_event_data);
 
-#endif
+#endif // __USERS_H_

@@ -1,5 +1,5 @@
-#ifndef USER_H_
-#define USER_H_
+#ifndef __USER_H_
+#define __USER_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct User
 
 void register_user(void *p_handle, Library *p_lib);
 
-#endif
+#endif // __USER_H_
