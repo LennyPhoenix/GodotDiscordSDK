@@ -447,7 +447,7 @@ void register_activity_manager(void *p_handle, Library *p_lib)
     destructor.destroy_func = activity_manager_destructor;
     destructor.method_data  = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "ActivityManager", "Reference", constructor,
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "ActivityManager", "Object", constructor,
                                                                destructor);
 
     // Methods

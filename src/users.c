@@ -282,7 +282,7 @@ void register_user_manager(void *p_handle, Library *p_lib)
     destructor.destroy_func = user_manager_destructor;
     destructor.method_data  = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "UserManager", "Reference", constructor,
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "UserManager", "Object", constructor,
                                                                destructor);
 
     // Methods

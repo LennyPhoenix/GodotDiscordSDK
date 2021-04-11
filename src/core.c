@@ -24,13 +24,13 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, void *p_method_data
     Core *core   = p_user_data;
 
     if (core->users)
-        godot_unreference(core->users->object, lib);
+        lib->core_api->godot_object_destroy(core->users->object);
     if (core->images)
-        godot_unreference(core->images->object, lib);
+        lib->core_api->godot_object_destroy(core->images->object);
     if (core->activities)
-        godot_unreference(core->activities->object, lib);
+        lib->core_api->godot_object_destroy(core->activities->object);
     if (core->relationships)
-        godot_unreference(core->relationships->object, lib);
+        lib->core_api->godot_object_destroy(core->relationships->object);
 
     if (core->hook_data)
     {
@@ -240,8 +240,6 @@ godot_variant core_get_user_manager(godot_object *p_instance, void *p_method_dat
 
         data->internal = core->internal->get_user_manager(core->internal);
         core->users    = data;
-
-        godot_reference(manager, lib);
     }
     else
     {
@@ -275,8 +273,6 @@ godot_variant core_get_image_manager(godot_object *p_instance, void *p_method_da
         ImageManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal     = core->internal->get_image_manager(core->internal);
         core->images       = data;
-
-        godot_reference(manager, lib);
     }
     else
     {
@@ -310,8 +306,6 @@ godot_variant core_get_activity_manager(godot_object *p_instance, void *p_method
         ActivityManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal        = core->internal->get_activity_manager(core->internal);
         core->activities      = data;
-
-        godot_reference(manager, lib);
     }
     else
     {
@@ -345,8 +339,6 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, void *p_me
         RelationshipManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal            = core->internal->get_relationship_manager(core->internal);
         core->relationships       = data;
-
-        godot_reference(manager, lib);
     }
     else
     {

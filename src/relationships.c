@@ -283,8 +283,8 @@ void register_relationship_manager(void *p_handle, Library *p_lib)
     destructor.destroy_func = relationship_manager_destructor;
     destructor.method_data  = p_lib;
 
-    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "RelationshipManager", "Reference",
-                                                               constructor, destructor);
+    p_lib->nativescript_api->godot_nativescript_register_class(p_handle, "RelationshipManager", "Object", constructor,
+                                                               destructor);
 
     // Methods
     {
