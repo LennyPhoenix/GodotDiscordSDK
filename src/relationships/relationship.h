@@ -1,5 +1,5 @@
-#ifndef __RELATIONSHIP_H_
-#define __RELATIONSHIP_H_
+#ifndef RELATIONSHIP_H_
+#define RELATIONSHIP_H_
 
 #include "types.h"
 
@@ -19,4 +19,4 @@ void relationship_reconstruct(godot_object *p_instance, struct DiscordRelationsh
 
 void register_relationship(void *p_handle, Library *p_lib);
 
-#endif // __RELATIONSHIP_H_
+#endif // RELATIONSHIP_H_

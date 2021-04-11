@@ -1,5 +1,5 @@
-#ifndef __ACTIVITIES_H_
-#define __ACTIVITIES_H_
+#ifndef ACTIVITIES_H_
+#define ACTIVITIES_H_
 
 #include "types.h"
 
@@ -23,4 +23,4 @@ void on_activity_join_request(void *p_event_data, struct DiscordUser *p_user);
 void on_activity_invite(void *p_event_data, enum EDiscordActivityActionType p_type, struct DiscordUser *p_user,
                         struct DiscordActivity *p_activity);
 
-#endif // __ACTIVITIES_H_
+#endif // ACTIVITIES_H_

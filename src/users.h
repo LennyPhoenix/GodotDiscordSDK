@@ -1,5 +1,5 @@
-#ifndef __USERS_H_
-#define __USERS_H_
+#ifndef USERS_H_
+#define USERS_H_
 
 #include "types.h"
 
@@ -19,4 +19,4 @@ void register_user_manager(void *p_handle, Library *p_lib);
 
 void on_current_user_update(void *p_event_data);
 
-#endif // __USERS_H_
+#endif // USERS_H_

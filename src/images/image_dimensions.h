@@ -1,5 +1,5 @@
-#ifndef __IMAGE_DIMENSIONS_H_
-#define __IMAGE_DIMENSIONS_H_
+#ifndef IMAGE_DIMENSIONS_H_
+#define IMAGE_DIMENSIONS_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct ImageDimensions
 
 void register_image_dimensions(void *p_handle, Library *p_lib);
 
-#endif // __IMAGE_DIMENSIONS_H_
+#endif // IMAGE_DIMENSIONS_H_

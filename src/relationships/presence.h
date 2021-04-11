@@ -1,5 +1,5 @@
-#ifndef __PRESENCE_H_
-#define __PRESENCE_H_
+#ifndef PRESENCE_H_
+#define PRESENCE_H_
 
 #include "types.h"
 
@@ -18,4 +18,4 @@ void presence_reconstruct(godot_object *p_instance, struct DiscordPresence *p_pr
 
 void register_presence(void *p_handle, Library *p_lib);
 
-#endif // __PRESENCE_H_
+#endif // PRESENCE_H_

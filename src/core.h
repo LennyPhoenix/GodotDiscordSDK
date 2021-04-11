@@ -1,5 +1,5 @@
-#ifndef __CORE_H_
-#define __CORE_H_
+#ifndef CORE_H_
+#define CORE_H_
 
 #include "activities.h"
 #include "images.h"
@@ -31,4 +31,4 @@ struct Core
 
 void register_core(void *p_handle, Library *p_lib);
 
-#endif // __CORE_H_
+#endif // CORE_H_

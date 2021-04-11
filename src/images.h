@@ -1,5 +1,5 @@
-#ifndef __IMAGES_H_
-#define __IMAGES_H_
+#ifndef IMAGES_H_
+#define IMAGES_H_
 
 #include "types.h"
 
@@ -17,4 +17,4 @@ struct ImageManager
 
 void register_image_manager(void *p_handle, Library *p_lib);
 
-#endif // __IMAGES_H_
+#endif // IMAGES_H_

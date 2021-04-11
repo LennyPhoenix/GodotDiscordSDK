@@ -1,5 +1,5 @@
-#ifndef __IMAGE_HANDLE_H_
-#define __IMAGE_HANDLE_H_
+#ifndef IMAGE_HANDLE_H_
+#define IMAGE_HANDLE_H_
 
 #include "types.h"
 
@@ -13,4 +13,4 @@ typedef struct ImageHandle
 
 void register_image_handle(void *p_handle, Library *p_lib);
 
-#endif // __IMAGE_HANDLE_H_
+#endif // IMAGE_HANDLE_H_
