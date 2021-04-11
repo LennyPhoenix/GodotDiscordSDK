@@ -1,3 +1,9 @@
 ---
 BasedOnStyle: Microsoft
+AlignConsecutiveMacros: true
+AlignEscapedNewlines: true
+AlignConsecutiveAssignments: true
+AlignOperands: true
+AlignTrailingComments: true
+IndentWidth: 4
 ---
