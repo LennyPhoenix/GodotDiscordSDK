@@ -7,6 +7,9 @@
 
 #include <gdnative_api_struct.gen.h>
 
+/**
+ * @brief User data struct for the ImageManager class.
+ */
 struct ImageManager
 {
     struct IDiscordImageManager *internal;
@@ -15,6 +18,9 @@ struct ImageManager
     Library *lib;
 };
 
+/**
+ * @brief Register the ImageManager class with Godot.
+ */
 void register_image_manager(void *p_handle, Library *p_lib);
 
 #endif // IMAGES_H_

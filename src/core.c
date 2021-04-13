@@ -235,7 +235,7 @@ godot_variant core_get_user_manager(godot_object *p_instance, void *p_method_dat
     godot_object *manager;
     if (!core->users)
     {
-        manager           = instantiate_custom_class("UserManager", "Reference", lib);
+        manager           = instantiate_custom_class("UserManager", "Object", lib);
         UserManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
 
         data->internal = core->internal->get_user_manager(core->internal);
@@ -269,7 +269,7 @@ godot_variant core_get_image_manager(godot_object *p_instance, void *p_method_da
     godot_object *manager;
     if (!core->images)
     {
-        manager            = instantiate_custom_class("ImageManager", "Reference", lib);
+        manager            = instantiate_custom_class("ImageManager", "Object", lib);
         ImageManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal     = core->internal->get_image_manager(core->internal);
         core->images       = data;
@@ -302,7 +302,7 @@ godot_variant core_get_activity_manager(godot_object *p_instance, void *p_method
     godot_object *manager;
     if (!core->activities)
     {
-        manager               = instantiate_custom_class("ActivityManager", "Reference", lib);
+        manager               = instantiate_custom_class("ActivityManager", "Object", lib);
         ActivityManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal        = core->internal->get_activity_manager(core->internal);
         core->activities      = data;
@@ -335,7 +335,7 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, void *p_me
     godot_object *manager;
     if (!core->relationships)
     {
-        manager                   = instantiate_custom_class("RelationshipManager", "Reference", lib);
+        manager                   = instantiate_custom_class("RelationshipManager", "Object", lib);
         RelationshipManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
         data->internal            = core->internal->get_relationship_manager(core->internal);
         core->relationships       = data;

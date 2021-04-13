@@ -11,6 +11,9 @@
 
 #include <gdnative_api_struct.gen.h>
 
+/**
+ * @brief User data struct for the Core class.
+ */
 struct Core
 {
     struct IDiscordCore *internal;
@@ -18,6 +21,7 @@ struct Core
 
     CallbackData *hook_data;
 
+    // Managers
     UserManager *users;
     struct IDiscordUserEvents *user_events;
     ImageManager *images;
@@ -29,6 +33,9 @@ struct Core
     Library *lib;
 };
 
+/**
+ * @brief Register the Core class with Godot.
+ */
 void register_core(void *p_handle, Library *p_lib);
 
 #endif // CORE_H_

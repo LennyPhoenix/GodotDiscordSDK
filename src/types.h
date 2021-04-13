@@ -5,6 +5,9 @@
 
 #include <gdnative_api_struct.gen.h>
 
+/**
+ * @brief The library object, contains helpful structs and a reference to the gdnlib.
+ */
 typedef struct Library
 {
     const godot_gdnative_core_api_struct *core_api;
@@ -14,12 +17,16 @@ typedef struct Library
     const godot_object *gdnlib;
 } Library;
 
+// Forward declarations
 typedef struct Core Core;
 typedef struct UserManager UserManager;
 typedef struct ImageManager ImageManager;
 typedef struct ActivityManager ActivityManager;
 typedef struct RelationshipManager RelationshipManager;
 
+/**
+ * @brief Struct for storing callback data, e.g. objects and function names.
+ */
 typedef struct CallbackData
 {
     godot_object *callback_object;
