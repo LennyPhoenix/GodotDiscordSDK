@@ -14,6 +14,10 @@ Make sure to use the Release version of the library on Windows if you do not hav
 
 For more detailed documentation and instructions, head to [the wiki](https://github.com/LennyPhoenix/GodotDiscordSDK/wiki).
 
+## Quickstart
+
+Head over to the [Project Template](https://github.com/LennyPhoenix/GodotDiscordSDK-ProjectTemplate) and follow the instructions in the README.
+
 ## Downloading
 
 If you can't or don't want to compile the library yourself head to [the actions page](https://github.com/LennyPhoenix/GodotDiscordSDK/actions), or download [a specific release](https://github.com/LennyPhoenix/GodotDiscordSDK/releases).
