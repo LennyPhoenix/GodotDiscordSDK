@@ -57,7 +57,7 @@ opts.Add(
 )
 
 # Define the relative path to the Godot headers.
-godot_headers_path = "godot_headers/"
+godot_headers_path = "godot-headers/"
 
 opts.Update(env)
 
