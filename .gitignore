@@ -139,3 +139,10 @@ platform/windows/godot_res.res
 
 # SDK Source
 src/discord_game_sdk.h
+
+# Clang
+.clang_complete
+
+# CCLS
+.ccls-cache
+.ccls
