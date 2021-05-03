@@ -31,9 +31,7 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
         while (extension)
         {
             if (extension->version.major == 1 && extension->version.minor == 1)
-            {
                 lib.core_1_1_api = (const godot_gdnative_core_1_1_api_struct *)extension;
-            }
 
             extension = extension->next;
         }
