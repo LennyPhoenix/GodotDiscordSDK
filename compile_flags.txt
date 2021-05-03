@@ -1,0 +1,3 @@
+-Igodot-headers
+-Isrc
+-std=c17
