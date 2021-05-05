@@ -243,7 +243,7 @@ godot_variant core_get_user_manager(godot_object *p_instance, void *p_method_dat
     }
     else
     {
-        manager = core->users;
+        manager = core->users->object;
     }
 
     lib->core_api->godot_variant_new_object(&result_variant, manager);
@@ -276,7 +276,7 @@ godot_variant core_get_image_manager(godot_object *p_instance, void *p_method_da
     }
     else
     {
-        manager = core->images;
+        manager = core->images->object;
     }
 
     lib->core_api->godot_variant_new_object(&result_variant, manager);
@@ -309,7 +309,7 @@ godot_variant core_get_activity_manager(godot_object *p_instance, void *p_method
     }
     else
     {
-        manager = core->activities;
+        manager = core->activities->object;
     }
 
     lib->core_api->godot_variant_new_object(&result_variant, manager);
@@ -342,7 +342,7 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, void *p_me
     }
     else
     {
-        manager = core->relationships;
+        manager = core->relationships->object;
     }
 
     lib->core_api->godot_variant_new_object(&result_variant, manager);
