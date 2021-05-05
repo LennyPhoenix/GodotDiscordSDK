@@ -49,17 +49,9 @@ GDCALLINGCONV void activity_party_set_id(godot_object *p_instance, void *p_metho
     Library *lib         = p_method_data;
     ActivityParty *party = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_id);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_id);
+    GODOT_STRING_TO_C_STRING(string, party->internal->id, 128, lib);
 
-    const char *id = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(party->internal->id, 0, sizeof(char) * 128);
-    memcpy(party->internal->id, id, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 

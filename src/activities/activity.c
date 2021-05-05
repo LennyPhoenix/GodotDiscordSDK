@@ -113,17 +113,9 @@ GDCALLINGCONV void activity_set_state(godot_object *p_instance, void *p_method_d
     Library *lib       = p_method_data;
     Activity *activity = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_state);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_state);
+    GODOT_STRING_TO_C_STRING(string, activity->internal->state, 128, lib);
 
-    const char *state = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(activity->internal->state, 0, sizeof(char) * 128);
-    memcpy(activity->internal->state, state, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
@@ -148,17 +140,9 @@ GDCALLINGCONV void activity_set_details(godot_object *p_instance, void *p_method
     Library *lib       = p_method_data;
     Activity *activity = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_details);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_details);
+    GODOT_STRING_TO_C_STRING(string, activity->internal->details, 128, lib);
 
-    const char *details = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(activity->internal->details, 0, sizeof(char) * 128);
-    memcpy(activity->internal->details, details, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 

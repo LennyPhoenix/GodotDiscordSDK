@@ -61,17 +61,9 @@ GDCALLINGCONV void user_set_username(godot_object *p_instance, void *p_method_da
     Library *lib = p_method_data;
     User *user   = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_username);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_username);
+    GODOT_STRING_TO_C_STRING(string, user->internal->username, 256, lib);
 
-    const char *username = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(user->internal->username, 0, sizeof(char) * 256);
-    memcpy(user->internal->username, username, sizeof(char) * MIN(size, 255));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
@@ -96,17 +88,9 @@ GDCALLINGCONV void user_set_discriminator(godot_object *p_instance, void *p_meth
     Library *lib = p_method_data;
     User *user   = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_discriminator);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_discriminator);
+    GODOT_STRING_TO_C_STRING(string, user->internal->discriminator, 8, lib);
 
-    const char *discriminator = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(user->internal->discriminator, 0, sizeof(char) * 8);
-    memcpy(user->internal->discriminator, discriminator, sizeof(char) * MIN(size, 7));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
@@ -131,17 +115,9 @@ GDCALLINGCONV void user_set_avatar(godot_object *p_instance, void *p_method_data
     Library *lib = p_method_data;
     User *user   = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_avatar);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_avatar);
+    GODOT_STRING_TO_C_STRING(string, user->internal->avatar, 128, lib);
 
-    const char *avatar = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(user->internal->avatar, 0, sizeof(char) * 128);
-    memcpy(user->internal->avatar, avatar, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 

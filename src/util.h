@@ -21,6 +21,17 @@
                                                                         \
     Name->object = Instance;
 
+#define GODOT_STRING_TO_C_STRING(GodotString, CString, CStringSize, Lib)            \
+    godot_char_string char_string = Lib->core_api->godot_string_utf8(&GodotString); \
+                                                                                    \
+    const char *c_string = Lib->core_api->godot_char_string_get_data(&char_string); \
+    int c_string_size    = Lib->core_api->godot_char_string_length(&char_string);   \
+                                                                                    \
+    memset(CString, 0, sizeof(char) * (CStringSize));                               \
+    memcpy(CString, c_string, sizeof(char) * MIN(c_string_size, (CStringSize)-1));  \
+                                                                                    \
+    Lib->core_api->godot_char_string_destroy(&char_string);
+
 /**
  * @brief   Get the path of a .gdns file from the name of a class.
  *

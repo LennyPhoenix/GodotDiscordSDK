@@ -41,17 +41,9 @@ GDCALLINGCONV void activity_secrets_set_match(godot_object *p_instance, void *p_
     Library *lib             = p_method_data;
     ActivitySecrets *secrets = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_match);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_match);
+    GODOT_STRING_TO_C_STRING(string, secrets->internal->match, 128, lib);
 
-    const char *match = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(secrets->internal->match, 0, sizeof(char) * 128);
-    memcpy(secrets->internal->match, match, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
@@ -76,17 +68,9 @@ GDCALLINGCONV void activity_secrets_set_join(godot_object *p_instance, void *p_m
     Library *lib             = p_method_data;
     ActivitySecrets *secrets = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_join);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_join);
+    GODOT_STRING_TO_C_STRING(string, secrets->internal->join, 128, lib);
 
-    const char *join = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(secrets->internal->join, 0, sizeof(char) * 128);
-    memcpy(secrets->internal->join, join, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
@@ -111,17 +95,9 @@ GDCALLINGCONV void activity_secrets_set_spectate(godot_object *p_instance, void 
     Library *lib             = p_method_data;
     ActivitySecrets *secrets = p_user_data;
 
-    godot_string string           = lib->core_api->godot_variant_as_string(p_spectate);
-    godot_char_string char_string = lib->core_api->godot_string_utf8(&string);
+    godot_string string = lib->core_api->godot_variant_as_string(p_spectate);
+    GODOT_STRING_TO_C_STRING(string, secrets->internal->spectate, 128, lib);
 
-    const char *spectate = lib->core_api->godot_char_string_get_data(&char_string);
-
-    int size = lib->core_api->godot_char_string_length(&char_string);
-
-    memset(secrets->internal->spectate, 0, sizeof(char) * 128);
-    memcpy(secrets->internal->spectate, spectate, sizeof(char) * MIN(size, 127));
-
-    lib->core_api->godot_char_string_destroy(&char_string);
     lib->core_api->godot_string_destroy(&string);
 }
 
