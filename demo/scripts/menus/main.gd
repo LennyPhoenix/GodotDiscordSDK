@@ -18,3 +18,7 @@ func _on_activities_button_up() -> void:
 
 func _on_relationships_button_up() -> void:
 	emit_signal("switch_to", Main.Menu.RELATIONSHIPS)
+
+
+func _on_networking_button_up() -> void:
+	emit_signal("switch_to", Main.Menu.NETWORKING)

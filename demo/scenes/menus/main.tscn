@@ -51,7 +51,17 @@ margin_bottom = 132.0
 rect_min_size = Vector2( 0, 64 )
 size_flags_horizontal = 3
 text = "Relationships"
+
+[node name="Networking" type="Button" parent="GridContainer"]
+margin_top = 136.0
+margin_right = 510.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 64 )
+size_flags_horizontal = 3
+text = "Networking"
+
 [connection signal="button_up" from="GridContainer/UsersButton" to="." method="_on_users_button_up"]
 [connection signal="button_up" from="GridContainer/ImagesButton" to="." method="_on_images_button_up"]
 [connection signal="button_up" from="GridContainer/ActivitiesButton" to="." method="_on_activities_button_up"]
 [connection signal="button_up" from="GridContainer/Relationships" to="." method="_on_relationships_button_up"]
+[connection signal="button_up" from="GridContainer/Networking" to="." method="_on_networking_button_up"]

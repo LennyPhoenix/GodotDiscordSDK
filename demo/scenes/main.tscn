@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/theme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/main.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/menus/images.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/menus/activities.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/menus/relationships.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/menus/networking.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -129,5 +130,15 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = 1009.0
 margin_bottom = 516.0
+
+[node name="Networking" parent="MarginContainer/VBoxContainer/Menu/MarginContainer" instance=ExtResource( 10 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1009.0
+margin_bottom = 516.0
+
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Title/BackButton" to="." method="to_main"]
 [connection signal="switch_to" from="MarginContainer/VBoxContainer/Menu/MarginContainer/Main" to="." method="_on_main_switch_to"]
