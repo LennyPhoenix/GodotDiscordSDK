@@ -23,4 +23,12 @@ struct NetworkManager
  */
 void register_network_manager(void *p_handle, Library *p_lib);
 
+/**
+ * @brief Discord event called when the current networking route is changed.
+ *
+ * @param[in] p_event_data    The custom event data, in this case the Core object.
+ * @param[in] p_route_data    The new route data for the user.
+ */
+void on_route_update(void *p_event_data, const char *p_route_data);
+
 #endif // NETWORKING_H_

@@ -47,7 +47,7 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, void *p_method_data
         lib->core_api->godot_free(core->user_events);
         lib->core_api->godot_free(core->activity_events);
         lib->core_api->godot_free(core->relationship_events);
-        // lib->core_api->godot_free(core->network_events);
+        lib->core_api->godot_free(core->network_events);
     }
 
     lib->core_api->godot_free(core);
@@ -101,9 +101,10 @@ godot_variant core_create(godot_object *p_instance, void *p_method_data, void *p
         core->relationship_events->on_relationship_update = on_relationship_update;
         params.relationship_events                        = core->relationship_events;
 
-        // core->network_events = lib->core_api->godot_alloc(sizeof(struct IDiscordNetworkEvents));
-        // TODO: Events
-        // params.network_events = core->network_events;
+        core->network_events                  = lib->core_api->godot_alloc(sizeof(struct IDiscordNetworkEvents));
+        core->network_events->on_message      = NULL;
+        core->network_events->on_route_update = on_route_update;
+        params.network_events                 = core->network_events;
 
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &core->internal);
 

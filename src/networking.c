@@ -109,4 +109,53 @@ void register_network_manager(void *p_handle, Library *p_lib)
                                                                         method);
         }
     }
+
+    // Signals
+    {
+        godot_signal signal;
+
+        // Route Update
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("route_update");
+
+            godot_signal_argument route;
+            {
+                memset(&route, 0, sizeof(godot_signal_argument));
+                route.name = p_lib->core_api->godot_string_chars_to_utf8("route");
+
+                route.type = GODOT_VARIANT_TYPE_STRING;
+            }
+
+            godot_signal_argument args[] = {route};
+            signal.args                  = args;
+            signal.num_args              = 1;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "NetworkManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&route.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
+        }
+    }
+}
+
+void on_route_update(void *p_event_data, const char *p_route_data)
+{
+    Core *core   = p_event_data;
+    Library *lib = core->lib;
+
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("route_update");
+
+    godot_variant route_variant;
+
+    godot_string route_string = lib->core_api->godot_string_chars_to_utf8(p_route_data);
+    lib->core_api->godot_variant_new_string(&route_variant, &route_string);
+
+    const godot_variant *args[] = {&route_variant};
+
+    object_emit_signal(core->networking->object, &signal, 1, args, lib);
+
+    lib->core_api->godot_string_destroy(&route_string);
+    lib->core_api->godot_variant_destroy(&route_variant);
+    lib->core_api->godot_string_destroy(&signal);
 }
