@@ -25,6 +25,9 @@ const Presence: = preload("./presence.gdns")
 const Relationship: = preload("./relationship.gdns")
 const RelationshipManager: = preload("./relationship_manager.gdns")
 
+# Networking
+const NetworkManager: = preload("./network_manager.gdns")
+
 enum Result {
 	OK = 0,
 	SERVICE_UNAVAILABLE = 1,

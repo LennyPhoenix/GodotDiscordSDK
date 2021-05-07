@@ -11,6 +11,7 @@
 #include "images.h"
 #include "images/image_dimensions.h"
 #include "images/image_handle.h"
+#include "networking.h"
 #include "relationships.h"
 #include "relationships/presence.h"
 #include "relationships/relationship.h"
@@ -85,4 +86,7 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
     register_presence(p_handle, &lib);
     register_relationship(p_handle, &lib);
     register_relationship_manager(p_handle, &lib);
+
+    // Networking
+    register_network_manager(p_handle, &lib);
 }

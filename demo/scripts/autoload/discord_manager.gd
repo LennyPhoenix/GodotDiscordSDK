@@ -9,6 +9,7 @@ var users: Discord.UserManager
 var images: Discord.ImageManager
 var activities: Discord.ActivityManager
 var relationships: Discord.RelationshipManager
+var networking: Discord.NetworkManager
 
 
 func _ready() -> void:
@@ -55,6 +56,7 @@ func create_core() -> void:
 	images = core.get_image_manager()
 	activities = core.get_activity_manager()
 	relationships = core.get_relationship_manager()
+	networking = core.get_network_manager()
 
 	emit_signal("initialised")
 
@@ -65,6 +67,7 @@ func destroy_core() -> void:
 	images = null
 	activities = null
 	relationships = null
+	networking = null
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:

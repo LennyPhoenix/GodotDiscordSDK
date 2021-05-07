@@ -23,6 +23,7 @@ typedef struct UserManager UserManager;
 typedef struct ImageManager ImageManager;
 typedef struct ActivityManager ActivityManager;
 typedef struct RelationshipManager RelationshipManager;
+typedef struct NetworkManager NetworkManager;
 
 /**
  * @brief Struct for storing callback data, e.g. objects and function names.
