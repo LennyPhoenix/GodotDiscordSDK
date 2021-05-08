@@ -38,7 +38,7 @@ GDCALLINGCONV void image_dimensions_set_width(godot_object *p_instance, void *p_
     Library *lib                = p_method_data;
     ImageDimensions *dimensions = p_user_data;
 
-    dimensions->internal->width = (uint32_t)lib->core_api->godot_variant_as_uint(p_width);
+    dimensions->internal->width = (uint32_t)lib->core_api->godot_variant_as_int(p_width);
 }
 
 godot_variant image_dimensions_get_height(godot_object *p_instance, void *p_method_data, void *p_user_data)
@@ -59,7 +59,7 @@ GDCALLINGCONV void image_dimensions_set_height(godot_object *p_instance, void *p
     Library *lib                = p_method_data;
     ImageDimensions *dimensions = p_user_data;
 
-    dimensions->internal->height = (uint32_t)lib->core_api->godot_variant_as_uint(p_height);
+    dimensions->internal->height = (uint32_t)lib->core_api->godot_variant_as_int(p_height);
 }
 
 void register_image_dimensions(void *p_handle, Library *p_lib)

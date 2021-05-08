@@ -63,14 +63,14 @@ godot_variant core_create(godot_object *p_instance, void *p_method_data, void *p
 
     if (p_num_args == 2 || p_num_args == 3)
     {
-        uint64_t id           = lib->core_api->godot_variant_as_uint(p_args[0]);
-        uint64_t create_flags = lib->core_api->godot_variant_as_uint(p_args[1]);
+        uint64_t id           = (uint64_t)lib->core_api->godot_variant_as_int(p_args[0]);
+        uint64_t create_flags = (uint64_t)lib->core_api->godot_variant_as_int(p_args[1]);
         if (p_num_args == 3)
         {
-            uint64_t instance_id = lib->core_api->godot_variant_as_uint(p_args[2]);
+            int64_t instance_id = lib->core_api->godot_variant_as_int(p_args[2]);
             char instance[128];
             memset(instance, 0, sizeof(char) * 128);
-            sprintf(instance, "%lu", instance_id);
+            sprintf(instance, "%li", instance_id);
 #ifdef _WIN32
             _putenv_s("DISCORD_INSTANCE_ID", instance);
 #else
