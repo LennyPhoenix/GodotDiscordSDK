@@ -80,7 +80,8 @@ godot_variant network_manager_open_peer(godot_object *p_instance, void *p_method
 
     if (p_num_args == 2) // Peer ID, Route
     {
-        uint64_t peer_id          = (uint64_t)lib->core_api->godot_variant_as_int(p_args[0]);
+
+        uint64_t peer_id          = lib->core_api->godot_variant_as_uint(p_args[0]);
         godot_string route_string = lib->core_api->godot_variant_as_string(p_args[1]);
 
         godot_char_string route_char_string = lib->core_api->godot_string_utf8(&route_string);
@@ -96,6 +97,38 @@ godot_variant network_manager_open_peer(godot_object *p_instance, void *p_method
     else
     {
         PRINT_ERROR("Invalid number of arguments for \"open_peer()\" call. Expected 2.", lib);
+        lib->core_api->godot_variant_new_nil(&result_variant);
+    }
+
+    return result_variant;
+}
+
+godot_variant network_manager_update_peer(godot_object *p_instance, void *p_method_data, void *p_user_data,
+                                          int p_num_args, godot_variant **p_args)
+{
+    Library *lib                    = p_method_data;
+    NetworkManager *network_manager = p_user_data;
+
+    godot_variant result_variant;
+
+    if (p_num_args == 2) // Peer ID, Route
+    {
+        uint64_t peer_id          = lib->core_api->godot_variant_as_uint(p_args[0]);
+        godot_string route_string = lib->core_api->godot_variant_as_string(p_args[1]);
+
+        godot_char_string route_char_string = lib->core_api->godot_string_utf8(&route_string);
+        const char *route                   = lib->core_api->godot_char_string_get_data(&route_char_string);
+
+        enum EDiscordResult result = network_manager->internal->update_peer(network_manager->internal, peer_id, route);
+
+        lib->core_api->godot_variant_new_int(&result_variant, result);
+
+        lib->core_api->godot_char_string_destroy(&route_char_string);
+        lib->core_api->godot_string_destroy(&route_string);
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"update_peer()\" call. Expected 2.", lib);
         lib->core_api->godot_variant_new_nil(&result_variant);
     }
 
@@ -175,6 +208,15 @@ void register_network_manager(void *p_handle, Library *p_lib)
             method.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "open_peer",
+                                                                        attributes, method);
+        }
+        // Update Peer
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method      = network_manager_update_peer;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "update_peer",
                                                                         attributes, method);
         }
         // Open Channel
