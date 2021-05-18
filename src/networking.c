@@ -189,6 +189,33 @@ godot_variant network_manager_open_channel(godot_object *p_instance, void *p_met
     return result_variant;
 }
 
+godot_variant network_manager_close_channel(godot_object *p_instance, void *p_method_data, void *p_user_data,
+                                            int p_num_args, godot_variant **p_args)
+{
+    Library *lib                    = p_method_data;
+    NetworkManager *network_manager = p_user_data;
+
+    godot_variant result_variant;
+
+    if (p_num_args == 2) // Peer ID, Channel ID
+    {
+        uint64_t peer_id   = lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint8_t channel_id = (uint8_t)lib->core_api->godot_variant_as_uint(p_args[1]);
+
+        enum EDiscordResult result =
+            network_manager->internal->close_channel(network_manager->internal, peer_id, channel_id);
+
+        lib->core_api->godot_variant_new_int(&result_variant, result);
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"close_channel()\" call. Exptected 2.", lib);
+        lib->core_api->godot_variant_new_nil(&result_variant);
+    }
+
+    return result_variant;
+}
+
 void register_network_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -261,6 +288,15 @@ void register_network_manager(void *p_handle, Library *p_lib)
             method.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "open_channel",
+                                                                        attributes, method);
+        }
+        // Close Channel
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method      = network_manager_close_channel;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "close_channel",
                                                                         attributes, method);
         }
     }
