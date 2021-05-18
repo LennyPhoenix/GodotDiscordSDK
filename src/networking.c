@@ -135,6 +135,32 @@ godot_variant network_manager_update_peer(godot_object *p_instance, void *p_meth
     return result_variant;
 }
 
+godot_variant network_manager_close_peer(godot_object *p_instance, void *p_method_data, void *p_user_data,
+                                         int p_num_args, godot_variant **p_args)
+{
+    Library *lib                    = p_method_data;
+    NetworkManager *network_manager = p_user_data;
+
+    godot_variant result_variant;
+
+    if (p_num_args == 1) // Peer ID
+    {
+
+        uint64_t peer_id = lib->core_api->godot_variant_as_uint(p_args[0]);
+
+        enum EDiscordResult result = network_manager->internal->close_peer(network_manager->internal, peer_id);
+
+        lib->core_api->godot_variant_new_int(&result_variant, result);
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"close_peer()\" call. Expected 1.", lib);
+        lib->core_api->godot_variant_new_nil(&result_variant);
+    }
+
+    return result_variant;
+}
+
 godot_variant network_manager_open_channel(godot_object *p_instance, void *p_method_data, void *p_user_data,
                                            int p_num_args, godot_variant **p_args)
 {
@@ -217,6 +243,15 @@ void register_network_manager(void *p_handle, Library *p_lib)
             method.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "update_peer",
+                                                                        attributes, method);
+        }
+        // Close Peer
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method      = network_manager_close_peer;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "close_peer",
                                                                         attributes, method);
         }
         // Open Channel
