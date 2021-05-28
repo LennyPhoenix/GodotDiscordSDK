@@ -1,10 +1,9 @@
 extends PanelContainer
 
-
-onready var large_image_line_edit: = $VBoxContainer/Large/Image/LineEdit
-onready var large_text_line_edit: = $VBoxContainer/Large/Text/LineEdit
-onready var small_image_line_edit: = $VBoxContainer/Small/Image/LineEdit
-onready var small_text_line_edit: = $VBoxContainer/Small/Text/LineEdit
+onready var large_image_line_edit := $VBoxContainer/Large/Image/LineEdit
+onready var large_text_line_edit := $VBoxContainer/Large/Text/LineEdit
+onready var small_image_line_edit := $VBoxContainer/Small/Image/LineEdit
+onready var small_text_line_edit := $VBoxContainer/Small/Text/LineEdit
 
 var assets: Discord.ActivityAssets setget set_assets
 

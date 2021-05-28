@@ -1,8 +1,6 @@
 extends Node
 
-
-signal initialised()
-
+signal initialised
 
 var core: Discord.Core
 var users: Discord.UserManager
@@ -20,33 +18,21 @@ func _process(_delta: float) -> void:
 	if core:
 		var result: int = core.run_callbacks()
 		if result != Discord.Result.OK:
-			print(
-				"Failed to run callbacks: ",
-				enum_to_string(Discord.Result, result)
-			)
+			print("Failed to run callbacks: ", enum_to_string(Discord.Result, result))
 			destroy_core()
 
 
 func _log_hook(level: int, message: String) -> void:
-	print(
-		"[DISCORD] ", enum_to_string(Discord.LogLevel, level),
-		": ", message
-	)
+	print("[DISCORD] ", enum_to_string(Discord.LogLevel, level), ": ", message)
 
 
 func create_core() -> void:
 	destroy_core()
 	core = Discord.Core.new()
-	var result: int = core.create(
-		807697044516372541,
-		Discord.CreateFlags.NO_REQUIRE_DISCORD
-	)
+	var result: int = core.create(807697044516372541, Discord.CreateFlags.NO_REQUIRE_DISCORD)
 
 	if result != Discord.Result.OK:
-		print(
-			"Failed to initialise Discord Core: ",
-			enum_to_string(Discord.Result, result)
-		)
+		print("Failed to initialise Discord Core: ", enum_to_string(Discord.Result, result))
 		destroy_core()
 		return
 
@@ -71,6 +57,6 @@ func destroy_core() -> void:
 
 
 func enum_to_string(the_enum: Dictionary, value: int) -> String:
-	var index: = the_enum.values().find(value)
+	var index := the_enum.values().find(value)
 	var string: String = the_enum.keys()[index]
 	return string

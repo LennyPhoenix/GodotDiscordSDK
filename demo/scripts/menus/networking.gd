@@ -6,6 +6,5 @@ func _process(_delta: float) -> void:
 		var result: int = DiscordManager.networking.flush()
 		if result != Discord.Result.OK:
 			print(
-				"Failed to flush network: ",
-				DiscordManager.enum_to_string(Discord.Result, result)
+				"Failed to flush network: ", DiscordManager.enum_to_string(Discord.Result, result)
 			)

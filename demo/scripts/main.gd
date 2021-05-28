@@ -1,7 +1,6 @@
 extends Control
 class_name Main
 
-
 enum Menu {
 	MAIN,
 	USERS,
@@ -63,14 +62,13 @@ enum Error {
 	ERR_PRINTER_ON_FIRE = 48,
 }
 
-
-onready var back_button: = $MarginContainer/VBoxContainer/Title/BackButton
-onready var main_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
-onready var users_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
-onready var images_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
-onready var activities_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
-onready var relationships_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Relationships
-onready var networking_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Networking
+onready var back_button := $MarginContainer/VBoxContainer/Title/BackButton
+onready var main_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
+onready var users_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
+onready var images_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
+onready var activities_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
+onready var relationships_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Relationships
+onready var networking_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Networking
 
 
 func _on_main_switch_to(menu: int) -> void:

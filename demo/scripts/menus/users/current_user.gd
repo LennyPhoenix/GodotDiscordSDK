@@ -1,33 +1,23 @@
 extends PanelContainer
 
-
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/Result/LineEdit
-onready var premium_type_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/PremiumType/LineEdit
-onready var user_flags_button: = $VBoxContainer/MarginContainer/VBoxContainer/Flags/OptionButton
-onready var user_flags_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/Flags/LineEdit
-onready var user_info: = $VBoxContainer/MarginContainer/VBoxContainer/User
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/Result/LineEdit
+onready var premium_type_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/PremiumType/LineEdit
+onready var user_flags_button := $VBoxContainer/MarginContainer/VBoxContainer/Flags/OptionButton
+onready var user_flags_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/Flags/LineEdit
+onready var user_info := $VBoxContainer/MarginContainer/VBoxContainer/User
 
 
 func _ready() -> void:
 	for item in Discord.UserFlag.keys():
 		user_flags_button.add_item(item, Discord.UserFlag[item])
 
-	var _err = user_flags_button.connect(
-		"item_selected",
-		self, "_on_flags_item_selected"
-	)
+	var _err = user_flags_button.connect("item_selected", self, "_on_flags_item_selected")
 
-	_err = DiscordManager.connect(
-		"initialised",
-		self, "_on_discord_manager_initialised"
-	)
+	_err = DiscordManager.connect("initialised", self, "_on_discord_manager_initialised")
 
 
 func _on_discord_manager_initialised() -> void:
-	DiscordManager.users.connect(
-		"current_user_update",
-		self, "_on_current_user_update"
-	)
+	DiscordManager.users.connect("current_user_update", self, "_on_current_user_update")
 
 
 func _on_current_user_update() -> void:
@@ -38,10 +28,7 @@ func _on_current_user_update() -> void:
 	var result: int = ret[0]
 	var user: Discord.User = ret[1]
 
-	result_line_edit.text = DiscordManager.enum_to_string(
-		Discord.Result,
-		result
-	)
+	result_line_edit.text = DiscordManager.enum_to_string(Discord.Result, result)
 	user_info.user = user
 
 	DiscordManager.users.get_current_user_premium_type()
@@ -51,8 +38,7 @@ func _on_current_user_update() -> void:
 
 	if result == Discord.Result.OK:
 		premium_type_line_edit.text = DiscordManager.enum_to_string(
-			Discord.PremiumType,
-			premium_type
+			Discord.PremiumType, premium_type
 		)
 
 

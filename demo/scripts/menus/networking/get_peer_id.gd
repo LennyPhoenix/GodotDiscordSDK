@@ -1,7 +1,6 @@
 extends PanelContainer
 
-
-onready var id_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/ID/LineEdit
+onready var id_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/ID/LineEdit
 
 
 func _on_get_peer_id_button_down() -> void:

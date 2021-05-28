@@ -1,9 +1,8 @@
 extends PanelContainer
 
-
-onready var id_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/LineEdit
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
-onready var user_info: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/User
+onready var id_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/LineEdit
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var user_info := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/User
 
 
 func _on_fetch_button_down() -> void:

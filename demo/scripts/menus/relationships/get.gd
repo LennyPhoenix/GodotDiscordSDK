@@ -1,9 +1,8 @@
 extends PanelContainer
 
-
-onready var id_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserID
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
-onready var relationship_info: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Relationship
+onready var id_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserID
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var relationship_info := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Relationship
 
 
 func _on_button_down() -> void:

@@ -1,6 +1,5 @@
 extends ScrollContainer
 
-
 signal switch_to(menu)
 
 
