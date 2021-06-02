@@ -224,22 +224,22 @@ godot_variant network_manager_send_message(godot_object *p_instance, void *p_met
 
     godot_variant result_variant;
 
-    if (p_num_args == 3) // Peer ID, Channel ID, Message
+    if (p_num_args == 3) // Peer ID, Channel ID, Data
     {
-        uint64_t peer_id              = lib->core_api->godot_variant_as_uint(p_args[0]);
-        uint8_t channel_id            = (uint8_t)lib->core_api->godot_variant_as_uint(p_args[1]);
-        godot_pool_byte_array message = lib->core_api->godot_variant_as_pool_byte_array(p_args[2]);
+        uint64_t peer_id           = lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint8_t channel_id         = (uint8_t)lib->core_api->godot_variant_as_uint(p_args[1]);
+        godot_pool_byte_array data = lib->core_api->godot_variant_as_pool_byte_array(p_args[2]);
 
-        godot_pool_byte_array_read_access *read_access = lib->core_api->godot_pool_byte_array_read(&message);
+        godot_pool_byte_array_read_access *read_access = lib->core_api->godot_pool_byte_array_read(&data);
         uint8_t *read_pointer = (uint8_t *)lib->core_api->godot_pool_byte_array_read_access_ptr(read_access);
-        uint32_t size         = (uint32_t)lib->core_api->godot_pool_byte_array_size(&message);
+        uint32_t size         = (uint32_t)lib->core_api->godot_pool_byte_array_size(&data);
 
         enum EDiscordResult result =
             network_manager->internal->send_message(network_manager->internal, peer_id, channel_id, read_pointer, size);
 
         lib->core_api->godot_pool_byte_array_read_access_destroy(read_access);
         lib->core_api->godot_variant_new_int(&result_variant, result);
-        lib->core_api->godot_pool_byte_array_destroy(&message);
+        lib->core_api->godot_pool_byte_array_destroy(&data);
     }
     else
     {
