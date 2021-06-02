@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var start_line_edit: = $VBoxContainer/HBoxContainer/Start/LineEdit
-onready var end_line_edit: = $VBoxContainer/HBoxContainer/End/LineEdit
+onready var start_line_edit := $VBoxContainer/HBoxContainer/Start/LineEdit
+onready var end_line_edit := $VBoxContainer/HBoxContainer/End/LineEdit
 
 var timestamps: Discord.ActivityTimestamps setget set_timestamps
 

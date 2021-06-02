@@ -1,11 +1,10 @@
 extends PanelContainer
 
-
-onready var id_line: = $VBoxContainer/ID/LineEdit
-onready var username_line: = $VBoxContainer/Username/LineEdit
-onready var discriminator_line: = $VBoxContainer/Discriminator/LineEdit
-onready var avatar_line: = $VBoxContainer/Avatar/LineEdit
-onready var bot_line: = $VBoxContainer/Bot/LineEdit
+onready var id_line := $VBoxContainer/ID/LineEdit
+onready var username_line := $VBoxContainer/Username/LineEdit
+onready var discriminator_line := $VBoxContainer/Discriminator/LineEdit
+onready var avatar_line := $VBoxContainer/Avatar/LineEdit
+onready var bot_line := $VBoxContainer/Bot/LineEdit
 
 var user: Discord.User setget set_user
 

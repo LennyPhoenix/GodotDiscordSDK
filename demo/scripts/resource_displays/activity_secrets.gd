@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var join_line_edit: = $VBoxContainer/Join/LineEdit
-onready var spectate_line_edit: = $VBoxContainer/Spectate/LineEdit
+onready var join_line_edit := $VBoxContainer/Join/LineEdit
+onready var spectate_line_edit := $VBoxContainer/Spectate/LineEdit
 
 var secrets: Discord.ActivitySecrets setget set_secrets
 

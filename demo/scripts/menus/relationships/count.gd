@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
-onready var count_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Count/LineEdit
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var count_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Count/LineEdit
 
 
 func _on_button_down() -> void:

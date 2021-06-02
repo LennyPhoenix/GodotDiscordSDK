@@ -189,16 +189,16 @@ godot_variant image_manager_get_data(godot_object *p_instance, void *p_method_da
 
             if (result == DiscordResult_Ok)
             {
-                uint32_t size  = dimensions.width * dimensions.height * 4;
-                uint8_t *bytes = lib->core_api->godot_alloc(sizeof(uint8_t) * size);
+                uint32_t size = dimensions.width * dimensions.height * 4;
+                lib->core_api->godot_pool_byte_array_resize(&data, (int64_t)size);
 
-                result = image_manager->internal->get_data(image_manager->internal, *handle->internal, bytes, size);
+                godot_pool_byte_array_write_access *write_access = lib->core_api->godot_pool_byte_array_write(&data);
+                uint8_t *write_pointer = lib->core_api->godot_pool_byte_array_write_access_ptr(write_access);
 
-                if (result == DiscordResult_Ok)
-                    for (unsigned int i = 0; i < size; i++)
-                        lib->core_api->godot_pool_byte_array_append(&data, bytes[i]);
+                result =
+                    image_manager->internal->get_data(image_manager->internal, *handle->internal, write_pointer, size);
 
-                lib->core_api->godot_free(bytes);
+                lib->core_api->godot_pool_byte_array_write_access_destroy(write_access);
             }
         }
 

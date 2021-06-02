@@ -1,7 +1,6 @@
 tool
 extends TextEdit
 
-
 # Copied from https://github.com/godotengine/godot/blob/master/modules/gdscript/gdscript_tokenizer.cpp#L39
 var KEYWORDS: PoolStringArray = [
 	"Empty",
@@ -208,7 +207,6 @@ var KEYWORDS: PoolStringArray = [
 	"wrapi",
 ]
 
-
 var BASE_TYPES: PoolStringArray = [
 	"AABB",
 	"Array",
@@ -233,7 +231,6 @@ var BASE_TYPES: PoolStringArray = [
 	"Vector2",
 	"Vector3",
 ]
-
 
 var ENGINE_TYPES: PoolStringArray = [
 	"ARVRServer",

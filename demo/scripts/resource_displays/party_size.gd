@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var current_size_line_edit: = $VBoxContainer/HBoxContainer/CurrentSize/LineEdit
-onready var max_size_line_edit: = $VBoxContainer/HBoxContainer/MaxSize/LineEdit
+onready var current_size_line_edit := $VBoxContainer/HBoxContainer/CurrentSize/LineEdit
+onready var max_size_line_edit := $VBoxContainer/HBoxContainer/MaxSize/LineEdit
 
 var party_size: Discord.PartySize setget set_party_size
 

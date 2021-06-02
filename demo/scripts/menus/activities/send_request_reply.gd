@@ -1,9 +1,8 @@
 extends PanelContainer
 
-
-onready var user_id_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserID
-onready var reply_option_button: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Reply/OptionButton
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var user_id_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserID
+onready var reply_option_button := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Reply/OptionButton
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
 
 
 func _ready() -> void:
@@ -18,7 +17,4 @@ func _on_button_down() -> void:
 	DiscordManager.activities.send_request_reply(int(user_id), reply)
 	var result: int = yield(DiscordManager.activities, "send_request_reply_callback")
 
-	result_line_edit.text = DiscordManager.enum_to_string(
-		Discord.Result,
-		result
-	)
+	result_line_edit.text = DiscordManager.enum_to_string(Discord.Result, result)

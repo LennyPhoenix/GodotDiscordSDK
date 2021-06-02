@@ -1,10 +1,9 @@
 extends PanelContainer
 
-
-onready var user_id_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserId
-onready var type_options: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Type
-onready var content_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Content
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var user_id_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/UserId
+onready var type_options := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Type
+onready var content_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Content
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
 
 
 func _ready() -> void:
@@ -20,7 +19,4 @@ func _on_button_down() -> void:
 	DiscordManager.activities.send_invite(int(user_id), type, content)
 	var result: int = yield(DiscordManager.activities, "send_invite_callback")
 
-	result_line_edit.text = DiscordManager.enum_to_string(
-		Discord.Result,
-		result
-	)
+	result_line_edit.text = DiscordManager.enum_to_string(Discord.Result, result)

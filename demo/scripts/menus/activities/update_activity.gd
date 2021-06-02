@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var activity_data: = $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Activity
-onready var result_line_edit: = $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
+onready var activity_data := $VBoxContainer/MarginContainer/VBoxContainer/InputFields/VBoxContainer/Activity
+onready var result_line_edit := $VBoxContainer/MarginContainer/VBoxContainer/OutputFields/VBoxContainer/Result/LineEdit
 
 
 func _on_button_down() -> void:
@@ -11,7 +10,4 @@ func _on_button_down() -> void:
 	DiscordManager.activities.update_activity(activity)
 	var result: int = yield(DiscordManager.activities, "update_activity_callback")
 
-	result_line_edit.text = DiscordManager.enum_to_string(
-		Discord.Result,
-		result
-	)
+	result_line_edit.text = DiscordManager.enum_to_string(Discord.Result, result)

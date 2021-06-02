@@ -1,13 +1,13 @@
 extends Control
 class_name Main
 
-
 enum Menu {
 	MAIN,
 	USERS,
 	IMAGES,
 	ACTIVITIES,
 	RELATIONSHIPS,
+	NETWORKING,
 }
 
 enum Error {
@@ -62,13 +62,13 @@ enum Error {
 	ERR_PRINTER_ON_FIRE = 48,
 }
 
-
-onready var back_button: = $MarginContainer/VBoxContainer/Title/BackButton
-onready var main_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
-onready var users_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
-onready var images_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
-onready var activities_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
-onready var relationships_menu: = $MarginContainer/VBoxContainer/Menu/MarginContainer/Relationships
+onready var back_button := $MarginContainer/VBoxContainer/Title/BackButton
+onready var main_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Main
+onready var users_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Users
+onready var images_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Images
+onready var activities_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Activities
+onready var relationships_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Relationships
+onready var networking_menu := $MarginContainer/VBoxContainer/Menu/MarginContainer/Networking
 
 
 func _on_main_switch_to(menu: int) -> void:
@@ -83,6 +83,8 @@ func _on_main_switch_to(menu: int) -> void:
 			to_activities()
 		Menu.RELATIONSHIPS:
 			to_relationships()
+		Menu.NETWORKING:
+			to_networking()
 
 
 func _hide_all() -> void:
@@ -92,6 +94,7 @@ func _hide_all() -> void:
 	images_menu.visible = false
 	activities_menu.visible = false
 	relationships_menu.visible = false
+	networking_menu.visible = false
 
 
 func to_main() -> void:
@@ -118,3 +121,8 @@ func to_activities() -> void:
 func to_relationships() -> void:
 	_hide_all()
 	relationships_menu.visible = true
+
+
+func to_networking() -> void:
+	_hide_all()
+	networking_menu.visible = true

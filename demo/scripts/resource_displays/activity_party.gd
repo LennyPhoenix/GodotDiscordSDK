@@ -1,8 +1,7 @@
 extends PanelContainer
 
-
-onready var id_line_edit: = $VBoxContainer/ID/LineEdit
-onready var party_size: = $VBoxContainer/Size
+onready var id_line_edit := $VBoxContainer/ID/LineEdit
+onready var party_size := $VBoxContainer/Size
 
 var party: Discord.ActivityParty setget set_party
 

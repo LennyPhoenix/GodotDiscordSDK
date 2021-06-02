@@ -167,7 +167,7 @@ godot_variant relationship_manager_get_at(godot_object *p_instance, void *p_meth
 
     if (p_num_args == 1 || p_num_args == 3) // Index, [Callback Object, Callback Name]
     {
-        uint32_t index = (uint32_t)lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint32_t index = (uint32_t)lib->core_api->godot_variant_as_int(p_args[0]);
 
         godot_object *relationship_object = instantiate_custom_class("Relationship", "Resource", lib);
         Relationship *relationship        = lib->nativescript_api->godot_nativescript_get_userdata(relationship_object);

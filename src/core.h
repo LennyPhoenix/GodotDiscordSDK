@@ -3,6 +3,7 @@
 
 #include "activities.h"
 #include "images.h"
+#include "networking.h"
 #include "relationships.h"
 #include "types.h"
 #include "users.h"
@@ -29,6 +30,8 @@ struct Core
     struct IDiscordActivityEvents *activity_events;
     RelationshipManager *relationships;
     struct IDiscordRelationshipEvents *relationship_events;
+    NetworkManager *networking;
+    struct IDiscordNetworkEvents *network_events;
 
     Library *lib;
 };

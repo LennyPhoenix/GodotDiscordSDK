@@ -80,7 +80,7 @@ GDCALLINGCONV void image_handle_set_size(godot_object *p_instance, void *p_metho
     Library *lib        = p_method_data;
     ImageHandle *handle = p_user_data;
 
-    handle->internal->size = (uint32_t)lib->core_api->godot_variant_as_uint(p_size);
+    handle->internal->size = (uint32_t)lib->core_api->godot_variant_as_int(p_size);
 }
 
 void register_image_handle(void *p_handle, Library *p_lib)

@@ -31,6 +31,8 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, void *p_method_data
         lib->core_api->godot_object_destroy(core->activities->object);
     if (core->relationships)
         lib->core_api->godot_object_destroy(core->relationships->object);
+    if (core->networking)
+        lib->core_api->godot_object_destroy(core->networking->object);
 
     if (core->hook_data)
     {
@@ -45,6 +47,7 @@ GDCALLINGCONV void core_destructor(godot_object *p_instance, void *p_method_data
         lib->core_api->godot_free(core->user_events);
         lib->core_api->godot_free(core->activity_events);
         lib->core_api->godot_free(core->relationship_events);
+        lib->core_api->godot_free(core->network_events);
     }
 
     lib->core_api->godot_free(core);
@@ -64,14 +67,14 @@ godot_variant core_create(godot_object *p_instance, void *p_method_data, void *p
         uint64_t create_flags = lib->core_api->godot_variant_as_uint(p_args[1]);
         if (p_num_args == 3)
         {
-            uint64_t instance_id = lib->core_api->godot_variant_as_uint(p_args[2]);
+            int64_t instance_id = lib->core_api->godot_variant_as_int(p_args[2]);
             char instance[128];
             memset(instance, 0, sizeof(char) * 128);
-            sprintf(instance, "%lu", instance_id);
+            sprintf(instance, "%li", instance_id);
 #ifdef _WIN32
             _putenv_s("DISCORD_INSTANCE_ID", instance);
 #else
-            setenv("DISCORD_INSTANCE_ID", instance, true);
+            setenv("DISCORD_INSTANCE_ID", instance, 1);
 #endif
         }
 
@@ -97,6 +100,11 @@ godot_variant core_create(godot_object *p_instance, void *p_method_data, void *p
         core->relationship_events->on_refresh = on_refresh;
         core->relationship_events->on_relationship_update = on_relationship_update;
         params.relationship_events                        = core->relationship_events;
+
+        core->network_events                  = lib->core_api->godot_alloc(sizeof(struct IDiscordNetworkEvents));
+        core->network_events->on_message      = on_message;
+        core->network_events->on_route_update = on_route_update;
+        params.network_events                 = core->network_events;
 
         enum EDiscordResult result = DiscordCreate(DISCORD_VERSION, &params, &core->internal);
 
@@ -350,6 +358,39 @@ godot_variant core_get_relationship_manager(godot_object *p_instance, void *p_me
     return result_variant;
 }
 
+godot_variant core_get_network_manager(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args,
+                                       godot_variant **p_args)
+{
+    Library *lib = p_method_data;
+    Core *core   = p_user_data;
+
+    godot_variant result_variant;
+
+    if (!core->internal)
+    {
+        PRINT_ERROR("Attempted to run method on unitialised Core, make sure you have run \"create\" first.", lib);
+        lib->core_api->godot_variant_new_nil(&result_variant);
+        return result_variant;
+    }
+
+    godot_object *manager;
+    if (!core->networking)
+    {
+        manager              = instantiate_custom_class("NetworkManager", "Object", lib);
+        NetworkManager *data = lib->nativescript_api->godot_nativescript_get_userdata(manager);
+        data->internal       = core->internal->get_network_manager(core->internal);
+        core->networking     = data;
+    }
+    else
+    {
+        manager = core->networking->object;
+    }
+
+    lib->core_api->godot_variant_new_object(&result_variant, manager);
+
+    return result_variant;
+}
+
 void register_core(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -429,6 +470,15 @@ void register_core(void *p_handle, Library *p_lib)
             method.method_data = p_lib;
 
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "Core", "get_relationship_manager",
+                                                                        attributes, method);
+        }
+        // Get Network Manager
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method      = core_get_network_manager;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "Core", "get_network_manager",
                                                                         attributes, method);
         }
     }
