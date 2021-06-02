@@ -196,7 +196,7 @@ godot_variant image_manager_get_data(godot_object *p_instance, void *p_method_da
 
                 if (result == DiscordResult_Ok)
                     for (unsigned int i = 0; i < size; i++)
-                        lib->core_api->godot_pool_byte_array_append(&data, bytes[i]);
+                        lib->core_api->godot_pool_byte_array_append(&data, bytes[i]); // TODO: Use write_access here
 
                 lib->core_api->godot_free(bytes);
             }

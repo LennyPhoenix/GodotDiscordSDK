@@ -102,7 +102,7 @@ godot_variant core_create(godot_object *p_instance, void *p_method_data, void *p
         params.relationship_events                        = core->relationship_events;
 
         core->network_events                  = lib->core_api->godot_alloc(sizeof(struct IDiscordNetworkEvents));
-        core->network_events->on_message      = NULL;
+        core->network_events->on_message      = on_message;
         core->network_events->on_route_update = on_route_update;
         params.network_events                 = core->network_events;
 

@@ -216,6 +216,40 @@ godot_variant network_manager_close_channel(godot_object *p_instance, void *p_me
     return result_variant;
 }
 
+godot_variant network_manager_send_message(godot_object *p_instance, void *p_method_data, void *p_user_data,
+                                           int p_num_args, godot_variant **p_args)
+{
+    Library *lib                    = p_method_data;
+    NetworkManager *network_manager = p_user_data;
+
+    godot_variant result_variant;
+
+    if (p_num_args == 3) // Peer ID, Channel ID, Message
+    {
+        uint64_t peer_id              = lib->core_api->godot_variant_as_uint(p_args[0]);
+        uint8_t channel_id            = (uint8_t)lib->core_api->godot_variant_as_uint(p_args[1]);
+        godot_pool_byte_array message = lib->core_api->godot_variant_as_pool_byte_array(p_args[2]);
+
+        godot_pool_byte_array_read_access *read_access = lib->core_api->godot_pool_byte_array_read(&message);
+        uint8_t *read_pointer = (uint8_t *)lib->core_api->godot_pool_byte_array_read_access_ptr(read_access);
+        uint32_t size         = (uint32_t)lib->core_api->godot_pool_byte_array_size(&message);
+
+        enum EDiscordResult result =
+            network_manager->internal->send_message(network_manager->internal, peer_id, channel_id, read_pointer, size);
+
+        lib->core_api->godot_pool_byte_array_read_access_destroy(read_access);
+        lib->core_api->godot_variant_new_int(&result_variant, result);
+        lib->core_api->godot_pool_byte_array_destroy(&message);
+    }
+    else
+    {
+        PRINT_ERROR("Invalid number of arguments for \"send_message()\" call. Expected 3.", lib);
+        lib->core_api->godot_variant_new_nil(&result_variant);
+    }
+
+    return result_variant;
+}
+
 void register_network_manager(void *p_handle, Library *p_lib)
 {
     godot_instance_create_func constructor;
@@ -299,12 +333,59 @@ void register_network_manager(void *p_handle, Library *p_lib)
             p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "close_channel",
                                                                         attributes, method);
         }
+        // Send Message
+        {
+            memset(&method, 0, sizeof(godot_instance_method));
+            method.method      = network_manager_send_message;
+            method.method_data = p_lib;
+
+            p_lib->nativescript_api->godot_nativescript_register_method(p_handle, "NetworkManager", "send_message",
+                                                                        attributes, method);
+        }
     }
 
     // Signals
     {
         godot_signal signal;
 
+        // Message
+        {
+            memset(&signal, 0, sizeof(godot_signal));
+            signal.name = p_lib->core_api->godot_string_chars_to_utf8("message");
+
+            godot_signal_argument peer_id;
+            {
+                memset(&peer_id, 0, sizeof(godot_signal_argument));
+                peer_id.name = p_lib->core_api->godot_string_chars_to_utf8("peer_id");
+
+                peer_id.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument channel_id;
+            {
+                memset(&channel_id, 0, sizeof(godot_signal_argument));
+                channel_id.name = p_lib->core_api->godot_string_chars_to_utf8("channel_id");
+
+                channel_id.type = GODOT_VARIANT_TYPE_INT;
+            }
+            godot_signal_argument data;
+            {
+                memset(&data, 0, sizeof(godot_signal_argument));
+                data.name = p_lib->core_api->godot_string_chars_to_utf8("data");
+
+                data.type = GODOT_VARIANT_TYPE_POOL_BYTE_ARRAY;
+            }
+
+            godot_signal_argument args[] = {peer_id, channel_id, data};
+            signal.args                  = args;
+            signal.num_args              = 3;
+
+            p_lib->nativescript_api->godot_nativescript_register_signal(p_handle, "NetworkManager", &signal);
+
+            p_lib->core_api->godot_string_destroy(&data.name);
+            p_lib->core_api->godot_string_destroy(&channel_id.name);
+            p_lib->core_api->godot_string_destroy(&peer_id.name);
+            p_lib->core_api->godot_string_destroy(&signal.name);
+        }
         // Route Update
         {
             memset(&signal, 0, sizeof(godot_signal));
@@ -328,6 +409,42 @@ void register_network_manager(void *p_handle, Library *p_lib)
             p_lib->core_api->godot_string_destroy(&signal.name);
         }
     }
+}
+
+void on_message(void *p_event_data, DiscordNetworkPeerId p_peer_id, DiscordNetworkChannelId p_channel_id,
+                uint8_t *p_data, uint32_t p_data_length)
+{
+    Core *core   = p_event_data;
+    Library *lib = core->lib;
+
+    godot_string signal = lib->core_api->godot_string_chars_to_utf8("message");
+
+    godot_variant peer_id_variant;
+    godot_variant channel_id_variant;
+    godot_variant data_variant;
+
+    godot_pool_byte_array data;
+    lib->core_api->godot_pool_byte_array_new(&data);
+    lib->core_api->godot_pool_byte_array_resize(&data, (int64_t)p_data_length);
+
+    godot_pool_byte_array_write_access *write_access = lib->core_api->godot_pool_byte_array_write(&data);
+    uint8_t *write_pointer = lib->core_api->godot_pool_byte_array_write_access_ptr(write_access);
+    memcpy(write_pointer, p_data, p_data_length);
+
+    lib->core_api->godot_variant_new_uint(&peer_id_variant, p_peer_id);
+    lib->core_api->godot_variant_new_uint(&channel_id_variant, (uint64_t)p_channel_id);
+    lib->core_api->godot_variant_new_pool_byte_array(&data_variant, &data);
+
+    const godot_variant *args[] = {&peer_id_variant, &channel_id_variant, &data_variant};
+
+    object_emit_signal(core->networking->object, &signal, 3, args, lib);
+
+    lib->core_api->godot_pool_byte_array_write_access_destroy(write_access);
+    lib->core_api->godot_pool_byte_array_destroy(&data);
+    lib->core_api->godot_variant_destroy(&data_variant);
+    lib->core_api->godot_variant_destroy(&channel_id_variant);
+    lib->core_api->godot_variant_destroy(&peer_id_variant);
+    lib->core_api->godot_string_destroy(&signal);
 }
 
 void on_route_update(void *p_event_data, const char *p_route_data)
