@@ -73,6 +73,9 @@ if host_platform == "windows":
 folder_name = f"{env['platform']}-{env['bits']}"
 
 if env["platform"] == "linux":
+    if host_platform != "linux":
+        print("""warning: Building for Linux on non-Linux platform.
+Cross-compilation is NOT supported and this will most likely error-out.""")
     env["target_name"] = "lib" + env["target_name"]
 
     if env["target"] == "debug":
@@ -87,6 +90,9 @@ if env["platform"] == "linux":
 
 # Check our platform specifics
 elif env["platform"] == "osx":
+    if host_platform != "osx":
+        print("""warning: Building for OSX on non-OSX platform.
+Cross-compilation is NOT supported and this will most likely error-out.""")
     env["target_name"] = "lib" + env["target_name"]
 
     if env["target"] == "debug":
@@ -99,6 +105,9 @@ elif env["platform"] == "osx":
     env.Append(LIBS=["discord_game_sdk"])
 
 elif env["platform"] == "windows":
+    if host_platform != "windows":
+        print("""warning: Building for Windows on non-Windows platform.
+Cross-compilation is NOT supported and this will most likely error-out.""")
     env.Append(CPPDEFINES=["WIN32", "_WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS"])
     env.Append(CCFLAGS=["-W3", "-GR"])
     if env["target"] == "debug":
