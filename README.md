@@ -1,5 +1,9 @@
 # Godot Discord Game SDK
 
+> Notice 2024/05/31
+> This project has remained largely untouched for a few years now, and I don't currently have the bandwidth for a rewrite, so I am choosing to archive it.
+> If you would like to maintain the project, feel free to fork or send me an email.
+
 [![Windows](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/windows-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/windows-builds.yml)
 [![MacOS](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/macos-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/macos-builds.yml)
 [![Linux](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/linux-builds.yml/badge.svg?branch=main)](https://github.com/LennyPhoenix/GodotDiscordSDK/actions/workflows/linux-builds.yml)
